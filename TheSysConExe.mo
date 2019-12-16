@@ -31,8 +31,8 @@ package TheSysConExe "Thermal systems control exercise"
       connect(case900Template.TSensor, computeDiscomfort.TZon) annotation (Line(
             points={{76.8,32.4},{41.6,32.4},{41.6,108.678},{72,108.678}}, color={0,0,
               127}));
-      connect(computeDiscomfort.totDis, discomfort) annotation (Line(points={{
-              91.62,108.678},{106,108.678},{106,100},{130,100}}, color={0,0,127}));
+      connect(computeDiscomfort.totDis, discomfort) annotation (Line(points={{91.62,
+              108.678},{106,108.678},{106,100},{130,100}},       color={0,0,127}));
       connect(setpoints.CooSet, computeDiscomfort.cooSet) annotation (Line(points={{-61.1,
               114.236},{11.55,114.236},{11.55,114.116},{72,114.116}},     color={0,0,
               127}));
@@ -491,10 +491,10 @@ First implementation.
               {19,-20},{-2,-20}}, color={0,127,255}));
       connect(bou.ports[1], pump.port_a) annotation (Line(points={{-32,-90},{
               -12,-90},{-12,-70}}, color={0,127,255}));
-      connect(rad.heatPortCon, case900Template.gainCon) annotation (Line(points
-            ={{-34.8,-48},{28,-48},{28,26.4},{78,26.4}}, color={191,0,0}));
-      connect(rad.heatPortRad, case900Template.gainRad) annotation (Line(points
-            ={{-34.8,-52},{30,-52},{30,22.8},{78,22.8}}, color={191,0,0}));
+      connect(rad.heatPortCon, case900Template.gainCon) annotation (Line(points=
+             {{-34.8,-48},{28,-48},{28,26.4},{78,26.4}}, color={191,0,0}));
+      connect(rad.heatPortRad, case900Template.gainRad) annotation (Line(points=
+             {{-34.8,-52},{30,-52},{30,22.8},{78,22.8}}, color={191,0,0}));
       connect(Tsup.y, hea.TSet) annotation (Line(points={{-5.2,26},{20,26},{20,
               -12},{0,-12}}, color={0,0,127}));
       connect(val.port_a, hea.port_b) annotation (Line(points={{-42,-24},{-42,
@@ -565,10 +565,10 @@ First implementation.
       connect(bou.ports[1],pump. port_a)
         annotation (Line(points={{-32,-90},{-12,-90},{-12,-70}},
                                                              color={0,127,255}));
-      connect(rad.heatPortCon, case900Template.gainCon) annotation (Line(points
-            ={{-34.8,-48},{28,-48},{28,26.4},{78,26.4}}, color={191,0,0}));
-      connect(rad.heatPortRad, case900Template.gainRad) annotation (Line(points
-            ={{-34.8,-52},{30,-52},{30,22.8},{78,22.8}}, color={191,0,0}));
+      connect(rad.heatPortCon, case900Template.gainCon) annotation (Line(points=
+             {{-34.8,-48},{28,-48},{28,26.4},{78,26.4}}, color={191,0,0}));
+      connect(rad.heatPortRad, case900Template.gainRad) annotation (Line(points=
+             {{-34.8,-52},{30,-52},{30,22.8},{78,22.8}}, color={191,0,0}));
       connect(pump.P, intPow.u) annotation (Line(points={{9,-61},{30.5,-61},{
               30.5,-58},{54,-58}}, color={0,0,127}));
       connect(intPow.y, multiSum.u[1]) annotation (Line(points={{77,-58},{80,
@@ -633,10 +633,10 @@ First implementation.
       connect(bou.ports[1],pump. port_a)
         annotation (Line(points={{-32,-90},{-12,-90},{-12,-70}},
                                                              color={0,127,255}));
-      connect(rad.heatPortCon, case900Template.gainCon) annotation (Line(points
-            ={{-34.8,-48},{28,-48},{28,26.4},{78,26.4}}, color={191,0,0}));
-      connect(rad.heatPortRad, case900Template.gainRad) annotation (Line(points
-            ={{-34.8,-52},{30,-52},{30,22.8},{78,22.8}}, color={191,0,0}));
+      connect(rad.heatPortCon, case900Template.gainCon) annotation (Line(points=
+             {{-34.8,-48},{28,-48},{28,26.4},{78,26.4}}, color={191,0,0}));
+      connect(rad.heatPortRad, case900Template.gainRad) annotation (Line(points=
+             {{-34.8,-52},{30,-52},{30,22.8},{78,22.8}}, color={191,0,0}));
       connect(pump.P, intPow.u) annotation (Line(points={{9,-61},{30.5,-61},{
               30.5,-58},{54,-58}}, color={0,0,127}));
       connect(intPow.y, multiSum.u[1]) annotation (Line(points={{77,-58},{80,
@@ -655,7 +655,7 @@ First implementation.
       extends BaseClases.Bui1IdealHeating;
       Modelica.Blocks.Continuous.LimPID PID(
         controllerType=Modelica.Blocks.Types.SimpleController.PI,
-        k=1,
+        k=0.8,
         yMax=3000,
         yMin=0)
         annotation (Placement(transformation(extent={{-42,-10},{-22,10}})));
@@ -667,6 +667,14 @@ First implementation.
               {0,0,127}));
       connect(case900Template.TSensor, PID.u_m) annotation (Line(points={{76.8,
               32.4},{-10,32.4},{-10,-28},{-32,-28},{-32,-12}}, color={0,0,127}));
+      annotation (
+        experiment(StopTime=2419200, __Dymola_Algorithm="Lsodar"),
+        __Dymola_experimentSetupOutput,
+        __Dymola_experimentFlags(
+          Advanced(GenerateVariableDependencies=false, OutputModelicaCode=false),
+          Evaluate=false,
+          OutputCPUtime=false,
+          OutputFlatModelica=false));
     end Sol1IdealHeating;
 
     model Sol2ThermostaticValve
@@ -696,8 +704,8 @@ First implementation.
               103.273},{-48,103.273},{-48,48},{-108,48},{-108,19},{-97,19}},
             color={0,0,127}));
       connect(case900Template.TSensor, PID.u_m) annotation (Line(points={{76.8,
-              32.4},{12,32.4},{12,42},{-34,42},{-34,4},{-91,4},{-91,13}}, color
-            ={0,0,127}));
+              32.4},{12,32.4},{12,42},{-34,42},{-34,4},{-91,4},{-91,13}}, color=
+             {0,0,127}));
       connect(PID.y, val.y) annotation (Line(points={{-85.5,19},{-54,19},{-54,
               -30},{-49.2,-30}}, color={0,0,127}));
       connect(booToRea.y, pump.dp_in) annotation (Line(points={{-81.5,-39},{-2,
@@ -707,6 +715,15 @@ First implementation.
       connect(greaterThreshold.y, booToRea.u) annotation (Line(points={{-59.6,
               12},{-44,12},{-44,-8},{-98,-8},{-98,-39},{-93,-39}}, color={255,0,
               255}));
+      annotation (
+        experiment(StopTime=2419200, __Dymola_Algorithm="Lsodar"),
+        __Dymola_experimentSetupOutput,
+        __Dymola_experimentFlags(
+          Advanced(GenerateVariableDependencies=false, OutputModelicaCode=false),
+
+          Evaluate=false,
+          OutputCPUtime=false,
+          OutputFlatModelica=false));
     end Sol2ThermostaticValve;
 
     model Sol3Tsupply
@@ -730,10 +747,15 @@ First implementation.
     model Sol4TSupplyHeatingCurve
       extends BaseClases.Bui4TsupplyHeatingCurve;
       IDEAS.Controls.ControlHeating.HeatingCurves.HeatingCurve heatingCurve(
-        TSupMin=313.15,
+        m=1,
+        TSup_nominal=333.15,
+        TSupMin=293.15,
         minSup=true,
+        TRet_nominal=303.15,
+        TOut_nominal=273.15,
                    use_TRoo_in=true,
-        dTOutHeaBal=8)
+        dTOutHeaBal=8,
+        timeFilter=3600)
         annotation (Placement(transformation(extent={{-30,24},{-10,44}})));
       Buildings.BoundaryConditions.WeatherData.Bus weaBus annotation (Placement(
             transformation(extent={{-96,58},{-84,70}}),   iconTransformation(extent=
