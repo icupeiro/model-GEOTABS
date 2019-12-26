@@ -332,31 +332,177 @@ package TheSysConExe "Thermal systems control exercise"
             coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{
                 100,100}})));
     end Occupancy;
+
+    partial model envBoiPumRad "Envelope boiler pump and radiators"
+      extends Exercises.Exe1BuildingEnvelope(occ(
+          setHeaOcc=21 + 273.15,
+          setHeaUno=21 + 273.15,
+          setCooOcc=23 + 273.15,
+          setCooUno=23 + 273.15));
+      package MediumWater = IDEAS.Media.Water "Water Medium";
+      IDEAS.Fluid.HeatExchangers.Radiators.RadiatorEN442_2 radNor(
+        redeclare package Medium = MediumWater,
+        Q_flow_nominal=1000,
+        T_a_nominal=333.15,
+        T_b_nominal=323.15,
+        energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial)
+        "Radiator for north zone" annotation (Placement(transformation(
+            extent={{10,-10},{-10,10}},
+            rotation=90,
+            origin={50,-10})));
+      IDEAS.Fluid.HeatExchangers.Radiators.RadiatorEN442_2 radSou(
+        redeclare package Medium = MediumWater,
+        Q_flow_nominal=1000,
+        T_a_nominal=333.15,
+        T_b_nominal=323.15,
+        energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial)
+        "Radiator for south zone" annotation (Placement(transformation(
+            extent={{10,-10},{-10,10}},
+            rotation=90,
+            origin={90,-10})));
+      IDEAS.Fluid.Movers.FlowControlled_dp pum(
+        dp_nominal=20000,
+        inputType=IDEAS.Fluid.Types.InputType.Constant,
+        m_flow_nominal=radNor.m_flow_nominal + radSou.m_flow_nominal,
+        redeclare package Medium = MediumWater,
+        energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial)
+        "Circulation pump at secondary side"
+        annotation (Placement(transformation(extent={{140,50},{120,70}})));
+      IDEAS.Fluid.Sensors.TemperatureTwoPort senTemSup(redeclare package Medium =
+            MediumWater, m_flow_nominal=pum.m_flow_nominal)
+        "Supply water temperature sensor"
+        annotation (Placement(transformation(extent={{168,70},{148,50}})));
+      IDEAS.Fluid.Sources.Boundary_pT bou(nPorts=1, redeclare package Medium =
+            MediumWater) "Expansion vessel" annotation (Placement(
+            transformation(
+            extent={{-10,10},{10,-10}},
+            rotation=270,
+            origin={110,82})));
+      IDEAS.Fluid.HeatExchangers.Heater_T boi(
+        redeclare package Medium = MediumWater,
+        m_flow_nominal=pum.m_flow_nominal,
+        dp_nominal=10000) "Ideal boiler with prescribed supply temperature"
+        annotation (Placement(transformation(extent={{220,10},{200,30}})));
+      Modelica.Blocks.Sources.Constant const(k=60 + 273.15)
+        annotation (Placement(transformation(extent={{220,40},{240,60}})));
+      Modelica.Blocks.Continuous.Integrator Ene(k=1/3600000)
+        "Electrical energy meter with conversion to kWh"
+        annotation (Placement(transformation(extent={{220,72},{240,92}})));
+      IDEAS.Fluid.FixedResistances.Junction jun1(
+        redeclare package Medium = MediumWater,
+        m_flow_nominal={radNor.m_flow_nominal,-radNor.m_flow_nominal - radSou.m_flow_nominal,
+            -radSou.m_flow_nominal},
+        portFlowDirection_1=Modelica.Fluid.Types.PortFlowDirection.Entering,
+        portFlowDirection_2=Modelica.Fluid.Types.PortFlowDirection.Leaving,
+        portFlowDirection_3=Modelica.Fluid.Types.PortFlowDirection.Entering,
+        dp_nominal={500,0,500}) "Junction"
+        annotation (Placement(transformation(extent={{80,-40},{100,-60}})));
+      IDEAS.Fluid.FixedResistances.Junction jun(
+        redeclare package Medium = MediumWater,
+        m_flow_nominal={radNor.m_flow_nominal + radSou.m_flow_nominal,-radNor.m_flow_nominal,
+            -radSou.m_flow_nominal},
+        portFlowDirection_1=Modelica.Fluid.Types.PortFlowDirection.Entering,
+        portFlowDirection_2=Modelica.Fluid.Types.PortFlowDirection.Leaving,
+        portFlowDirection_3=Modelica.Fluid.Types.PortFlowDirection.Leaving,
+        dp_nominal={1000,0,0}) "Junction"
+        annotation (Placement(transformation(extent={{100,50},{80,70}})));
+    equation
+      connect(radNor.heatPortCon, rectangularZoneTemplate.gainCon) annotation (
+          Line(points={{42.8,-8},{20,-8},{20,27},{10,27}}, color={191,0,0}));
+      connect(radNor.heatPortRad, rectangularZoneTemplate.gainRad) annotation (
+          Line(points={{42.8,-12},{16,-12},{16,24},{10,24}}, color={191,0,0}));
+      connect(radSou.heatPortCon, rectangularZoneTemplate1.gainCon) annotation (
+         Line(points={{82.8,-8},{66,-8},{66,-33},{10,-33}}, color={191,0,0}));
+      connect(radSou.heatPortRad, rectangularZoneTemplate1.gainRad) annotation (
+         Line(points={{82.8,-12},{70,-12},{70,-36},{10,-36}}, color={191,0,0}));
+      connect(bou.ports[1], pum.port_b) annotation (Line(points={{110,72},{110,
+              60},{120,60}}, color={0,127,255}));
+      connect(senTemSup.port_b, pum.port_a)
+        annotation (Line(points={{148,60},{140,60}}, color={0,127,255}));
+      connect(const.y, boi.TSet) annotation (Line(points={{241,50},{256,50},{
+              256,28},{222,28}}, color={0,0,127}));
+      connect(boi.port_b, senTemSup.port_a) annotation (Line(points={{200,20},{
+              180,20},{180,60},{168,60}}, color={0,127,255}));
+      connect(boi.Q_flow, Ene.u) annotation (Line(points={{199,28},{192,28},{
+              192,82},{218,82}}, color={0,0,127}));
+      connect(radNor.port_b, jun1.port_1) annotation (Line(points={{50,-20},{50,
+              -50},{80,-50}}, color={0,127,255}));
+      connect(radSou.port_b, jun1.port_3)
+        annotation (Line(points={{90,-20},{90,-40}}, color={0,127,255}));
+      connect(jun1.port_2, boi.port_a) annotation (Line(points={{100,-50},{220,
+              -50},{220,20}}, color={0,127,255}));
+      connect(pum.port_b, jun.port_1)
+        annotation (Line(points={{120,60},{100,60}}, color={0,127,255}));
+      annotation (Diagram(coordinateSystem(extent={{-100,-100},{260,100}})),
+                                                        Icon(coordinateSystem(
+              extent={{-100,-100},{260,100}})),
+        experiment(StopTime=2419200, __Dymola_Algorithm="Lsodar"),
+        __Dymola_experimentSetupOutput,
+        __Dymola_experimentFlags(
+          Advanced(GenerateVariableDependencies=false, OutputModelicaCode=false),
+          Evaluate=false,
+          OutputCPUtime=false,
+          OutputFlatModelica=false));
+    end envBoiPumRad;
   end BaseClases;
 
   package Solutions "Package with cotrollers implemented"
 
+    model Sol2OnOffThermostat
+      "Solution of exercise 2 for building control with on-off thermostat for the pump"
+      extends Exercises.Exe2OnOffThermostat(pum(inputType=IDEAS.Fluid.Types.InputType.Stages));
+      Modelica.Blocks.Math.BooleanToInteger booToInt
+        "Convert boolean signal into integer "
+        annotation (Placement(transformation(extent={{42,70},{62,90}})));
+      Modelica.Blocks.Math.Add add
+        annotation (Placement(transformation(extent={{-42,70},{-22,90}})));
+      Modelica.Blocks.Sources.Constant OffSet(k=1)
+        "Offset from heating set point"
+        annotation (Placement(transformation(extent={{-74,92},{-54,112}})));
+    protected
+      Modelica.Blocks.Logical.OnOffController onOffCon(bandwidth=1)
+        "On off controller for switching on and off the pump of the emission system according to zone temperature readings"
+        annotation (Placement(transformation(extent={{0,70},{20,90}})));
+    equation
+      connect(booToInt.y, pum.stage) annotation (Line(points={{63,80},{80,80},{
+              80,98},{130,98},{130,72}}, color={255,127,0}));
+      connect(onOffCon.y, booToInt.u)
+        annotation (Line(points={{21,80},{40,80}}, color={255,0,255}));
+      connect(rectangularZoneTemplate1.TSensor, onOffCon.u) annotation (Line(
+            points={{11,-28},{14,-28},{14,-6},{-20,-6},{-20,74},{-2,74}}, color
+            ={0,0,127}));
+      connect(add.y, onOffCon.reference) annotation (Line(points={{-21,80},{-12,
+              80},{-12,86},{-2,86}}, color={0,0,127}));
+      connect(occ.setHea, add.u2) annotation (Line(points={{-58,44},{-52,44},{
+              -52,74},{-44,74}}, color={0,0,127}));
+      connect(add.u1, OffSet.y) annotation (Line(points={{-44,86},{-48,86},{-48,
+              102},{-53,102}}, color={0,0,127}));
+      annotation (Diagram(coordinateSystem(extent={{-100,-100},{260,120}})),
+          Icon(coordinateSystem(extent={{-100,-100},{260,120}})));
+    end Sol2OnOffThermostat;
+
+    model Sol3ThermostaticValves
+      "Solution of exercise 3 for building control with thermostatic valves"
+      extends Exercises.Exe3ThermostaticValves(valNor(P=0.2), valSou(P=0.2));
+    end Sol3ThermostaticValves;
   end Solutions;
 
   package Exercises "Package with all exercises"
     model Exe1BuildingEnvelope
       "Building envelope model with two zones and office occupancy"
-      extends IDEAS.Examples.Tutorial.Example5(
-        rectangularZoneTemplate(redeclare BaseClases.Comfort
-                                                  comfort(setCoo=occupancy.setCoo,
-                                                          setHea=occupancy.setHea),
-                                redeclare BaseClases.Occupancy
-                                                    occNum(k=occupancy.k),
-          l=sqrt(occupancy.A),
-          w=sqrt(occupancy.A),
-          AZone=occupancy.A),
-        rectangularZoneTemplate1(redeclare BaseClases.Comfort
-                                                   comfort(setCoo=occupancy.setCoo,
-                                                           setHea=occupancy.setHea),
-                                 redeclare BaseClases.Occupancy
-                                                     occNum(k=occupancy.k),
-          AZone=occupancy.A))
-      annotation (
+      extends IDEAS.Examples.Tutorial.Example5(rectangularZoneTemplate(
+          redeclare BaseClases.Comfort comfort(setCoo=occ.setCoo, setHea=occ.setHea),
+
+          redeclare BaseClases.Occupancy occNum(k=occ.k),
+          l=sqrt(occ.A),
+          w=sqrt(occ.A),
+          AZone=occ.A), rectangularZoneTemplate1(
+          redeclare BaseClases.Comfort comfort(setCoo=occ.setCoo, setHea=occ.setHea),
+
+          redeclare BaseClases.Occupancy occNum(k=occ.k),
+          l=sqrt(occ.A),
+          w=sqrt(occ.A),
+          AZone=occ.A)) annotation (
         experiment(
           StartTime=10000000,
           StopTime=11000000,
@@ -365,11 +511,12 @@ package TheSysConExe "Thermal systems control exercise"
         __Dymola_experimentSetupOutput,
         __Dymola_experimentFlags(
           Advanced(GenerateVariableDependencies=false, OutputModelicaCode=false),
+
           Evaluate=false,
           OutputCPUtime=false,
           OutputFlatModelica=false));
 
-      BaseClases.Occupancy occupancy(
+      BaseClases.Occupancy occ(
         linearise=false,
         A=50,
         k=5)
@@ -387,90 +534,59 @@ package TheSysConExe "Thermal systems control exercise"
     end Exe1BuildingEnvelope;
 
     model Exe2OnOffThermostat
-      "Building control with an on-off thermostat to control the pump"
-      extends Exe1BuildingEnvelope;
-      package MediumWater = IDEAS.Media.Water "Water Medium";
-      IDEAS.Fluid.HeatExchangers.Radiators.RadiatorEN442_2
-                                                     rad(
-        redeclare package Medium = MediumWater,
-        Q_flow_nominal=500,
-        T_a_nominal=318.15,
-        T_b_nominal=308.15,
-        energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial)
-                            "Radiator for zone 1" annotation (Placement(
-            transformation(
-            extent={{10,-10},{-10,10}},
-            rotation=90,
-            origin={50,-10})));
-      IDEAS.Fluid.HeatExchangers.Radiators.RadiatorEN442_2
-                                                     rad1(
-        redeclare package Medium = MediumWater,
-        Q_flow_nominal=500,
-        T_a_nominal=318.15,
-        T_b_nominal=308.15,
-        energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial)
-                            "Radiator for zone 2" annotation (Placement(
-            transformation(
-            extent={{10,-10},{-10,10}},
-            rotation=90,
-            origin={90,-10})));
-      IDEAS.Fluid.Movers.FlowControlled_dp pumEmi(
-        dp_nominal=20000,
-        inputType=IDEAS.Fluid.Types.InputType.Constant,
-        m_flow_nominal=rad.m_flow_nominal + rad1.m_flow_nominal,
-        redeclare package Medium = MediumWater,
-        energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial)
-        "Circulation pump for the emission system"
-        annotation (Placement(transformation(extent={{120,50},{100,70}})));
-      IDEAS.Fluid.Sensors.TemperatureTwoPort senTemSup(redeclare package Medium
-          = MediumWater, m_flow_nominal=pumEmi.m_flow_nominal)
-        "Supply water temperature sensor"
-        annotation (Placement(transformation(extent={{146,70},{126,50}})));
-      IDEAS.Fluid.HeatExchangers.Heater_T
-                                    boi(
-        redeclare package Medium = MediumWater,
-        m_flow_nominal=pumEmi.m_flow_nominal,
-        dp_nominal=0) "Ideal heating boiler"
-        annotation (Placement(transformation(extent={{180,-10},{160,10}})));
-      IDEAS.Fluid.Sources.Boundary_pT
-                                bou(nPorts=1, redeclare package Medium =
-            MediumWater)
-        "Absolute pressure boundary"
-        annotation (Placement(transformation(extent={{-10,-10},{10,10}},
-            rotation=-90,
-            origin={110,90})));
+      "Building control by switching emission system on and off"
+      extends BaseClases.envBoiPumRad;
     equation
-      connect(rad.heatPortCon, rectangularZoneTemplate.gainCon) annotation (Line(
-            points={{42.8,-8},{20,-8},{20,27},{10,27}}, color={191,0,0}));
-      connect(rad.heatPortRad, rectangularZoneTemplate.gainRad) annotation (Line(
-            points={{42.8,-12},{16,-12},{16,24},{10,24}}, color={191,0,0}));
-      connect(rad1.heatPortCon, rectangularZoneTemplate1.gainCon) annotation (Line(
-            points={{82.8,-8},{66,-8},{66,-33},{10,-33}}, color={191,0,0}));
-      connect(rad1.heatPortRad, rectangularZoneTemplate1.gainRad) annotation (Line(
-            points={{82.8,-12},{70,-12},{70,-36},{10,-36}}, color={191,0,0}));
-      connect(senTemSup.port_b, pumEmi.port_a)
-        annotation (Line(points={{126,60},{120,60}}, color={0,127,255}));
-      connect(senTemSup.port_a,boi. port_b) annotation (Line(points={{146,60},{
-              160,60},{160,0}}, color={0,127,255}));
-      connect(boi.port_a,rad1. port_b) annotation (Line(points={{180,0},{180,
-              -20},{90,-20}}, color={0,127,255}));
-      connect(rad1.port_a, pumEmi.port_b) annotation (Line(points={{90,0},{92,0},{92,
-              60},{100,60}}, color={0,127,255}));
-      connect(rad.port_a, pumEmi.port_b)
-        annotation (Line(points={{50,0},{50,60},{100,60}}, color={0,127,255}));
-      connect(boi.port_a, rad.port_b) annotation (Line(points={{180,0},{180,-26},
-              {50,-26},{50,-20}}, color={0,127,255}));
-      connect(pumEmi.port_a, bou.ports[1]) annotation (Line(points={{120,60},{
-              120,76},{110,76},{110,80}}, color={0,127,255}));
-      annotation (Diagram(coordinateSystem(extent={{-100,-100},{240,100}}),
-            graphics={                     Text(
-              extent={{138,98},{224,90}},
-              lineColor={28,108,200},
-              textString="This sets the absolute pressure only"), Line(points={{126,
-                  86},{134,92}}, color={28,108,200})}), Icon(coordinateSystem(
-              extent={{-100,-100},{240,100}})));
+      connect(jun.port_3, radSou.port_a)
+        annotation (Line(points={{90,50},{90,0}}, color={0,127,255}));
+      connect(jun.port_2, radNor.port_a)
+        annotation (Line(points={{80,60},{50,60},{50,0}}, color={0,127,255}));
+      annotation (
+        experiment(StopTime=2419200, __Dymola_Algorithm="Lsodar"),
+        __Dymola_experimentSetupOutput,
+        __Dymola_experimentFlags(
+          Advanced(GenerateVariableDependencies=false, OutputModelicaCode=false),
+
+          Evaluate=false,
+          OutputCPUtime=false,
+          OutputFlatModelica=false));
     end Exe2OnOffThermostat;
+
+    model Exe3ThermostaticValves "Building control through thermostatic valves"
+      extends BaseClases.envBoiPumRad;
+      IDEAS.Fluid.Actuators.Valves.TwoWayTRV valNor(
+        m_flow_nominal=radNor.m_flow_nominal,
+        dpValve_nominal=20000,
+        redeclare package Medium = MediumWater)
+        "Thermostatic valve for north zone" annotation (Placement(
+            transformation(
+            extent={{10,-10},{-10,10}},
+            rotation=90,
+            origin={50,30})));
+      IDEAS.Fluid.Actuators.Valves.TwoWayTRV valSou(
+        dpValve_nominal=20000,
+        m_flow_nominal=radSou.m_flow_nominal,
+        redeclare package Medium = MediumWater)
+        "Thermostatic valve for south zone" annotation (Placement(
+            transformation(
+            extent={{10,-10},{-10,10}},
+            rotation=90,
+            origin={90,30})));
+    equation
+      connect(valNor.port_b, radNor.port_a)
+        annotation (Line(points={{50,20},{50,0}}, color={0,127,255}));
+      connect(valSou.port_b, radSou.port_a)
+        annotation (Line(points={{90,20},{90,0}}, color={0,127,255}));
+      connect(rectangularZoneTemplate.TSensor, valNor.T) annotation (Line(
+            points={{11,32},{26,32},{26,30},{39.4,30}}, color={0,0,127}));
+      connect(rectangularZoneTemplate1.TSensor, valSou.T) annotation (Line(
+            points={{11,-28},{32,-28},{32,12},{79.4,12},{79.4,30}}, color={0,0,
+              127}));
+      connect(jun.port_3, valSou.port_a)
+        annotation (Line(points={{90,50},{90,40}}, color={0,127,255}));
+      connect(jun.port_2, valNor.port_a)
+        annotation (Line(points={{80,60},{50,60},{50,40}}, color={0,127,255}));
+    end Exe3ThermostaticValves;
   end Exercises;
-  annotation (uses(IDEAS(version="2.0.0"), Modelica(version="3.2.2"),
-      Buildings(version="6.0.0")));
+  annotation (uses(IDEAS(version="2.0.0"), Modelica(version="3.2.2")));
 end TheSysConExe;
