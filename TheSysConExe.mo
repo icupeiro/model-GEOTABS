@@ -383,8 +383,6 @@ package TheSysConExe "Thermal systems control exercise"
         m_flow_nominal=pum.m_flow_nominal,
         dp_nominal=10000) "Ideal boiler with prescribed supply temperature"
         annotation (Placement(transformation(extent={{220,10},{200,30}})));
-      Modelica.Blocks.Sources.Constant const(k=60 + 273.15)
-        annotation (Placement(transformation(extent={{220,40},{240,60}})));
       Modelica.Blocks.Continuous.Integrator Ene(k=1/3600000)
         "Electrical energy meter with conversion to kWh"
         annotation (Placement(transformation(extent={{220,72},{240,92}})));
@@ -419,8 +417,6 @@ package TheSysConExe "Thermal systems control exercise"
               60},{120,60}}, color={0,127,255}));
       connect(senTemSup.port_b, pum.port_a)
         annotation (Line(points={{148,60},{140,60}}, color={0,127,255}));
-      connect(const.y, boi.TSet) annotation (Line(points={{241,50},{256,50},{
-              256,28},{222,28}}, color={0,0,127}));
       connect(boi.port_b, senTemSup.port_a) annotation (Line(points={{200,20},{
               180,20},{180,60},{168,60}}, color={0,127,255}));
       connect(boi.Q_flow, Ene.u) annotation (Line(points={{199,28},{192,28},{
@@ -469,8 +465,8 @@ package TheSysConExe "Thermal systems control exercise"
       connect(onOffCon.y, booToInt.u)
         annotation (Line(points={{21,80},{40,80}}, color={255,0,255}));
       connect(rectangularZoneTemplate1.TSensor, onOffCon.u) annotation (Line(
-            points={{11,-28},{14,-28},{14,-6},{-20,-6},{-20,74},{-2,74}}, color
-            ={0,0,127}));
+            points={{11,-28},{14,-28},{14,-6},{-20,-6},{-20,74},{-2,74}}, color=
+             {0,0,127}));
       connect(add.y, onOffCon.reference) annotation (Line(points={{-21,80},{-12,
               80},{-12,86},{-2,86}}, color={0,0,127}));
       connect(occ.setHea, add.u2) annotation (Line(points={{-58,44},{-52,44},{
@@ -485,6 +481,59 @@ package TheSysConExe "Thermal systems control exercise"
       "Solution of exercise 3 for building control with thermostatic valves"
       extends Exercises.Exe3ThermostaticValves(valNor(P=0.2), valSou(P=0.2));
     end Sol3ThermostaticValves;
+
+    model Sol4HeatingCurveDerivation
+      "Solution of the exercise on the derivation of the building heating curve"
+      extends Exercises.Exe4HeatingCurveDerivation(conPID(
+          controllerType=Modelica.Blocks.Types.SimpleController.PI,
+          k=100,
+          Ti=600,
+          yMax=273.15 + 60,
+          yMin=273.15 + 20,
+          initType=Modelica.Blocks.Types.InitPID.InitialState));
+      Modelica.Blocks.Continuous.Filter lowPasFilTe(
+        analogFilter=Modelica.Blocks.Types.AnalogFilter.Butterworth,
+        filterType=Modelica.Blocks.Types.FilterType.LowPass,
+        f_cut=1/(24*3600)) "Low pass filter for the outdoor temperature"
+        annotation (Placement(transformation(extent={{0,60},{20,80}})));
+      Modelica.Blocks.Continuous.Filter lowPasFilSup(
+        analogFilter=Modelica.Blocks.Types.AnalogFilter.Butterworth,
+        filterType=Modelica.Blocks.Types.FilterType.LowPass,
+        f_cut=1/(24*3600)) "Low pass filter for the supply temperature"
+        annotation (Placement(transformation(extent={{150,-10},{170,10}})));
+    protected
+      IDEAS.BoundaryConditions.WeatherData.Bus weaDatBus
+        "Weather data bus connectable to weaBus connector from Buildings Library"
+        annotation (Placement(transformation(extent={{-62,72},{-42,92}})));
+    equation
+      connect(sim.weaDatBus, weaDatBus) annotation (Line(
+          points={{-80.1,90},{-68,90},{-68,82},{-52,82}},
+          color={255,204,51},
+          thickness=0.5), Text(
+          string="%second",
+          index=1,
+          extent={{6,3},{6,3}},
+          horizontalAlignment=TextAlignment.Left));
+      connect(weaDatBus.TDryBul, lowPasFilTe.u) annotation (Line(
+          points={{-52,82},{-38,82},{-38,70},{-2,70}},
+          color={255,204,51},
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{-6,3},{-6,3}},
+          horizontalAlignment=TextAlignment.Right));
+      connect(senTemSup.T, lowPasFilSup.u) annotation (Line(points={{158,49},{
+              158,28},{134,28},{134,0},{148,0}}, color={0,0,127}));
+      annotation (
+        experiment(StopTime=2419200, __Dymola_Algorithm="Lsodar"),
+        __Dymola_experimentSetupOutput,
+        __Dymola_experimentFlags(
+          Advanced(GenerateVariableDependencies=false, OutputModelicaCode=false),
+
+          Evaluate=false,
+          OutputCPUtime=false,
+          OutputFlatModelica=false));
+    end Sol4HeatingCurveDerivation;
   end Solutions;
 
   package Exercises "Package with all exercises"
@@ -492,13 +541,11 @@ package TheSysConExe "Thermal systems control exercise"
       "Building envelope model with two zones and office occupancy"
       extends IDEAS.Examples.Tutorial.Example5(rectangularZoneTemplate(
           redeclare BaseClases.Comfort comfort(setCoo=occ.setCoo, setHea=occ.setHea),
-
           redeclare BaseClases.Occupancy occNum(k=occ.k),
           l=sqrt(occ.A),
           w=sqrt(occ.A),
           AZone=occ.A), rectangularZoneTemplate1(
           redeclare BaseClases.Comfort comfort(setCoo=occ.setCoo, setHea=occ.setHea),
-
           redeclare BaseClases.Occupancy occNum(k=occ.k),
           l=sqrt(occ.A),
           w=sqrt(occ.A),
@@ -511,7 +558,6 @@ package TheSysConExe "Thermal systems control exercise"
         __Dymola_experimentSetupOutput,
         __Dymola_experimentFlags(
           Advanced(GenerateVariableDependencies=false, OutputModelicaCode=false),
-
           Evaluate=false,
           OutputCPUtime=false,
           OutputFlatModelica=false));
@@ -530,23 +576,28 @@ package TheSysConExe "Thermal systems control exercise"
           Advanced(GenerateVariableDependencies=false, OutputModelicaCode=false),
           Evaluate=false,
           OutputCPUtime=false,
-          OutputFlatModelica=false));
+          OutputFlatModelica=false),
+        Diagram(coordinateSystem(extent={{-100,-100},{100,100}})),
+        Icon(coordinateSystem(extent={{-100,-100},{120,100}})));
     end Exe1BuildingEnvelope;
 
     model Exe2OnOffThermostat
       "Building control by switching emission system on and off"
       extends BaseClases.envBoiPumRad;
+      Modelica.Blocks.Sources.Constant const(k=60 + 273.15)
+        annotation (Placement(transformation(extent={{220,40},{240,60}})));
     equation
       connect(jun.port_3, radSou.port_a)
         annotation (Line(points={{90,50},{90,0}}, color={0,127,255}));
       connect(jun.port_2, radNor.port_a)
         annotation (Line(points={{80,60},{50,60},{50,0}}, color={0,127,255}));
+      connect(const.y, boi.TSet) annotation (Line(points={{241,50},{256,50},{
+              256,28},{222,28}}, color={0,0,127}));
       annotation (
         experiment(StopTime=2419200, __Dymola_Algorithm="Lsodar"),
         __Dymola_experimentSetupOutput,
         __Dymola_experimentFlags(
           Advanced(GenerateVariableDependencies=false, OutputModelicaCode=false),
-
           Evaluate=false,
           OutputCPUtime=false,
           OutputFlatModelica=false));
@@ -572,6 +623,8 @@ package TheSysConExe "Thermal systems control exercise"
             extent={{10,-10},{-10,10}},
             rotation=90,
             origin={90,30})));
+      Modelica.Blocks.Sources.Constant const(k=60 + 273.15)
+        annotation (Placement(transformation(extent={{220,40},{240,60}})));
     equation
       connect(valNor.port_b, radNor.port_a)
         annotation (Line(points={{50,20},{50,0}}, color={0,127,255}));
@@ -586,7 +639,65 @@ package TheSysConExe "Thermal systems control exercise"
         annotation (Line(points={{90,50},{90,40}}, color={0,127,255}));
       connect(jun.port_2, valNor.port_a)
         annotation (Line(points={{80,60},{50,60},{50,40}}, color={0,127,255}));
+      connect(const.y, boi.TSet) annotation (Line(points={{241,50},{256,50},{
+              256,28},{222,28}}, color={0,0,127}));
     end Exe3ThermostaticValves;
+
+    model Exe4HeatingCurveDerivation "Derivation of the building heating curve"
+      extends BaseClases.envBoiPumRad;
+      Modelica.Blocks.Continuous.LimPID conPID
+        "PID controller for the supply temperature from ideal boiler"
+        annotation (Placement(transformation(extent={{200,-82},{220,-62}})));
+    equation
+      connect(jun.port_3, radSou.port_a)
+        annotation (Line(points={{90,50},{90,0}}, color={0,127,255}));
+      connect(jun.port_2, radNor.port_a)
+        annotation (Line(points={{80,60},{50,60},{50,0}}, color={0,127,255}));
+      connect(occ.setHea, conPID.u_s) annotation (Line(points={{-58,44},{-46,44},
+              {-46,-72},{198,-72}}, color={0,0,127}));
+      connect(conPID.y, boi.TSet) annotation (Line(points={{221,-72},{240,-72},
+              {240,28},{222,28}}, color={0,0,127}));
+      connect(rectangularZoneTemplate.TSensor, conPID.u_m) annotation (Line(
+            points={{11,32},{20,32},{20,46},{-20,46},{-20,-94},{210,-94},{210,
+              -84}}, color={0,0,127}));
+    end Exe4HeatingCurveDerivation;
+
+    model Exe5HeatingCurveImplementation
+      "Implementation of the heating curve derived in the previous exercise"
+      extends BaseClases.envBoiPumRad;
+      IDEAS.Fluid.Actuators.Valves.TwoWayTRV valNor(
+        m_flow_nominal=radNor.m_flow_nominal,
+        dpValve_nominal=20000,
+        redeclare package Medium = MediumWater)
+        "Thermostatic valve for north zone" annotation (Placement(
+            transformation(
+            extent={{10,-10},{-10,10}},
+            rotation=90,
+            origin={50,30})));
+      IDEAS.Fluid.Actuators.Valves.TwoWayTRV valSou(
+        dpValve_nominal=20000,
+        m_flow_nominal=radSou.m_flow_nominal,
+        redeclare package Medium = MediumWater)
+        "Thermostatic valve for south zone" annotation (Placement(
+            transformation(
+            extent={{10,-10},{-10,10}},
+            rotation=90,
+            origin={90,30})));
+    equation
+      connect(valNor.port_b, radNor.port_a)
+        annotation (Line(points={{50,20},{50,0}}, color={0,127,255}));
+      connect(valSou.port_b, radSou.port_a)
+        annotation (Line(points={{90,20},{90,0}}, color={0,127,255}));
+      connect(rectangularZoneTemplate.TSensor,valNor. T) annotation (Line(
+            points={{11,32},{26,32},{26,30},{39.4,30}}, color={0,0,127}));
+      connect(rectangularZoneTemplate1.TSensor,valSou. T) annotation (Line(
+            points={{11,-28},{32,-28},{32,12},{79.4,12},{79.4,30}}, color={0,0,
+              127}));
+      connect(jun.port_3,valSou. port_a)
+        annotation (Line(points={{90,50},{90,40}}, color={0,127,255}));
+      connect(jun.port_2,valNor. port_a)
+        annotation (Line(points={{80,60},{50,60},{50,40}}, color={0,127,255}));
+    end Exe5HeatingCurveImplementation;
   end Exercises;
   annotation (uses(IDEAS(version="2.0.0"), Modelica(version="3.2.2")));
 end TheSysConExe;
