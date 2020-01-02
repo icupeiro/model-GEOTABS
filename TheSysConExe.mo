@@ -333,10 +333,8 @@ package TheSysConExe "Thermal systems control exercise"
                 100,100}})));
     end Occupancy;
 
-    partial model envBoiPumRad "Envelope boiler pump and radiators"
+    partial model envRadPumBoi "Envelope, radiators, pump and boiler"
       extends Exercises.Exe1BuildingEnvelope(occ(
-          setHeaOcc=21 + 273.15,
-          setHeaUno=21 + 273.15,
           setCooOcc=23 + 273.15,
           setCooUno=23 + 273.15));
       package MediumWater = IDEAS.Media.Water "Water Medium";
@@ -368,8 +366,8 @@ package TheSysConExe "Thermal systems control exercise"
         energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial)
         "Circulation pump at secondary side"
         annotation (Placement(transformation(extent={{140,50},{120,70}})));
-      IDEAS.Fluid.Sensors.TemperatureTwoPort senTemSup(redeclare package Medium =
-            MediumWater, m_flow_nominal=pum.m_flow_nominal)
+      IDEAS.Fluid.Sensors.TemperatureTwoPort senTemSup(redeclare package Medium
+          = MediumWater, m_flow_nominal=pum.m_flow_nominal)
         "Supply water temperature sensor"
         annotation (Placement(transformation(extent={{168,70},{148,50}})));
       IDEAS.Fluid.Sources.Boundary_pT bou(nPorts=1, redeclare package Medium =
@@ -439,7 +437,449 @@ package TheSysConExe "Thermal systems control exercise"
           Evaluate=false,
           OutputCPUtime=false,
           OutputFlatModelica=false));
-    end envBoiPumRad;
+    end envRadPumBoi;
+
+    partial model envFloPumHP_old "Envelope, floor heating, pump and heat pump"
+      extends Exercises.Exe1BuildingEnvelope(occ(
+          setHeaOcc=21 + 273.15,
+          setHeaUno=21 + 273.15,
+          setCooOcc=23 + 273.15,
+          setCooUno=23 + 273.15),
+        rectangularZoneTemplate(bouTypFlo=IDEAS.Buildings.Components.Interfaces.BoundaryType.SlabOnGround,
+            hasEmb=true),
+        rectangularZoneTemplate1(bouTypFlo=IDEAS.Buildings.Components.Interfaces.BoundaryType.SlabOnGround,
+            hasEmb=true));
+      package MediumWater = IDEAS.Media.Water "Water Medium";
+      IDEAS.Fluid.Movers.FlowControlled_dp pum(
+        dp_nominal=20000,
+        inputType=IDEAS.Fluid.Types.InputType.Constant,
+        m_flow_nominal=embNor.m_flow_nominal + embSou.m_flow_nominal,
+        redeclare package Medium = MediumWater,
+        energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial)
+        "Circulation pump at secondary side"
+        annotation (Placement(transformation(extent={{140,50},{120,70}})));
+      IDEAS.Fluid.Sensors.TemperatureTwoPort senTemSup(redeclare package Medium
+          = MediumWater, m_flow_nominal=pum.m_flow_nominal)
+        "Supply water temperature sensor"
+        annotation (Placement(transformation(extent={{168,70},{148,50}})));
+      IDEAS.Fluid.Sources.Boundary_pT bou(nPorts=1, redeclare package Medium =
+            MediumWater) "Expansion vessel" annotation (Placement(
+            transformation(
+            extent={{-10,10},{10,-10}},
+            rotation=270,
+            origin={110,82})));
+      Modelica.Blocks.Continuous.Integrator Ene(k=1/3600000)
+        "Electrical energy meter with conversion to kWh"
+        annotation (Placement(transformation(extent={{266,72},{286,92}})));
+      IDEAS.Fluid.FixedResistances.Junction jun1(
+        redeclare package Medium = MediumWater,
+        m_flow_nominal={embNor.m_flow_nominal,-embNor.m_flow_nominal - embSou.m_flow_nominal,
+            -embSou.m_flow_nominal},
+        portFlowDirection_1=Modelica.Fluid.Types.PortFlowDirection.Entering,
+        portFlowDirection_2=Modelica.Fluid.Types.PortFlowDirection.Leaving,
+        portFlowDirection_3=Modelica.Fluid.Types.PortFlowDirection.Entering,
+        dp_nominal={500,0,500}) "Junction"
+        annotation (Placement(transformation(extent={{80,-40},{100,-60}})));
+      IDEAS.Fluid.FixedResistances.Junction jun(
+        redeclare package Medium = MediumWater,
+        m_flow_nominal={embNor.m_flow_nominal + embSou.m_flow_nominal,-embNor.m_flow_nominal,
+            -embSou.m_flow_nominal},
+        portFlowDirection_1=Modelica.Fluid.Types.PortFlowDirection.Entering,
+        portFlowDirection_2=Modelica.Fluid.Types.PortFlowDirection.Leaving,
+        portFlowDirection_3=Modelica.Fluid.Types.PortFlowDirection.Leaving,
+        dp_nominal={1000,0,0}) "Junction"
+        annotation (Placement(transformation(extent={{100,50},{80,70}})));
+      IDEAS.Fluid.HeatExchangers.RadiantSlab.EmbeddedPipe embNor(
+        redeclare package Medium = MediumWater,
+        redeclare IDEAS.Fluid.HeatExchangers.RadiantSlab.BaseClasses.FH_Standard1
+          RadSlaCha,
+        allowFlowReversal=true,
+        m_flow_nominal=0.02,
+        A_floor=rectangularZoneTemplate.AZone)
+        "Embedded pipe of floor heating in north zone"
+        annotation (Placement(transformation(extent={{40,-10},{60,10}})));
+      IDEAS.Fluid.HeatExchangers.RadiantSlab.EmbeddedPipe embSou(
+        redeclare package Medium = MediumWater,
+        redeclare IDEAS.Fluid.HeatExchangers.RadiantSlab.BaseClasses.FH_Standard1
+          RadSlaCha,
+        allowFlowReversal=true,
+        m_flow_nominal=0.02,
+        A_floor=rectangularZoneTemplate.AZone)
+        "Embedded pipe of floor heating in south zone"
+        annotation (Placement(transformation(extent={{80,-10},{100,10}})));
+      IDEAS.Fluid.HeatPumps.ScrollWaterToWater heaPum(
+        m2_flow_nominal=pumPrim.m_flow_nominal,
+        enable_variable_speed=false,
+        m1_flow_nominal=pum.m_flow_nominal,
+        redeclare package Medium1 = MediumWater,
+        redeclare package Medium2 = MediumWater,
+        datHeaPum=
+            IDEAS.Fluid.HeatPumps.Data.ScrollWaterToWater.Heating.Viessmann_BW301A21_28kW_5_94COP_R410A(),
+        scaling_factor=0.025,
+        dp1_nominal=10000,
+        dp2_nominal=10000,
+        energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial)
+        "Heat pump model, rescaled for low thermal powers" annotation (Placement(
+            transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=90,
+            origin={240,-10})));
+      IDEAS.Fluid.Sources.Boundary_pT
+                                bou1(
+        nPorts=2,
+        redeclare package Medium = MediumWater,
+        T=283.15) "Cold water source for heat pump"
+                  annotation (Placement(transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=180,
+            origin={320,-10})));
+      IDEAS.Fluid.Movers.FlowControlled_dp pumPrim(
+        inputType=IDEAS.Fluid.Types.InputType.Constant,
+        dp_nominal=10000,
+        m_flow_nominal=embNor.m_flow_nominal + embSou.m_flow_nominal,
+        redeclare package Medium = MediumWater,
+        energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial)
+        "Circulation pump at primary side"
+        annotation (Placement(transformation(extent={{290,30},{270,50}})));
+    equation
+      connect(bou.ports[1], pum.port_b) annotation (Line(points={{110,72},{110,
+              60},{120,60}}, color={0,127,255}));
+      connect(senTemSup.port_b, pum.port_a)
+        annotation (Line(points={{148,60},{140,60}}, color={0,127,255}));
+      connect(pum.port_b, jun.port_1)
+        annotation (Line(points={{120,60},{100,60}}, color={0,127,255}));
+      connect(embNor.port_b, jun1.port_1) annotation (Line(points={{60,0},{66,0},{66,
+              -50},{80,-50}}, color={0,127,255}));
+      connect(embSou.port_b, jun1.port_3) annotation (Line(points={{100,0},{104,0},{
+              104,-20},{90,-20},{90,-40}}, color={0,127,255}));
+      connect(rectangularZoneTemplate.gainEmb[1], embNor.heatPortEmb[1])
+        annotation (Line(points={{10,21},{28,21},{28,10},{50,10}}, color={191,0,0}));
+      connect(rectangularZoneTemplate1.gainEmb[1], embSou.heatPortEmb[1])
+        annotation (Line(points={{10,-39},{74,-39},{74,10},{90,10}}, color={191,0,0}));
+      connect(heaPum.port_a2, pumPrim.port_b)
+        annotation (Line(points={{246,0},{246,40},{270,40}}, color={0,127,255}));
+      connect(heaPum.port_b2, bou1.ports[1]) annotation (Line(points={{246,-20},{246,
+              -50},{298,-50},{298,-12},{310,-12}}, color={0,127,255}));
+      connect(pumPrim.port_a, bou1.ports[2]) annotation (Line(points={{290,40},{298,
+              40},{298,-8},{310,-8}}, color={0,127,255}));
+      connect(heaPum.P, Ene.u) annotation (Line(points={{240,1},{242,1},{242,82},{264,
+              82}}, color={0,0,127}));
+      connect(jun1.port_2, heaPum.port_a1) annotation (Line(points={{100,-50},{234,-50},
+              {234,-20}}, color={0,127,255}));
+      annotation (Diagram(coordinateSystem(extent={{-100,-100},{340,100}})),
+                                                        Icon(coordinateSystem(
+              extent={{-100,-100},{340,100}})),
+        experiment(StopTime=2419200, __Dymola_Algorithm="Lsodar"),
+        __Dymola_experimentSetupOutput,
+        __Dymola_experimentFlags(
+          Advanced(GenerateVariableDependencies=false, OutputModelicaCode=false),
+          Evaluate=false,
+          OutputCPUtime=false,
+          OutputFlatModelica=false));
+    end envFloPumHP_old;
+
+    model envFloPumHP_aux "Envelope, floor heating, pump, and heat pump"
+      extends Exercises.Exe1BuildingEnvelope(rectangularZoneTemplate(
+          linIntRad=true,
+          redeclare IDEAS.Buildings.Data.Constructions.InsulatedFloorHeating
+            conTypFlo,
+          hasEmb=true), rectangularZoneTemplate1(redeclare
+            IDEAS.Buildings.Data.Constructions.InsulatedFloorHeating conTypFlo,
+            hasEmb=true));
+
+      package MediumWater = IDEAS.Media.Water "Water Medium";
+      IDEAS.Fluid.Movers.FlowControlled_dp pum(
+        dp_nominal=20000,
+        inputType=IDEAS.Fluid.Types.InputType.Stages,
+        m_flow_nominal=embNor.m_flow_nominal + embSou.m_flow_nominal,
+        redeclare package Medium = MediumWater,
+        energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial)
+        "Circulation pump at secondary side"
+        annotation (Placement(transformation(extent={{140,50},{120,70}})));
+      IDEAS.Fluid.Sensors.TemperatureTwoPort senTemSup(redeclare package Medium =
+            MediumWater, m_flow_nominal=pum.m_flow_nominal)
+        "Supply water temperature sensor"
+        annotation (Placement(transformation(extent={{168,70},{148,50}})));
+      IDEAS.Fluid.Sources.Boundary_pT bou(nPorts=1, redeclare package Medium =
+            MediumWater) "Expansion vessel" annotation (Placement(
+            transformation(
+            extent={{-10,10},{10,-10}},
+            rotation=270,
+            origin={110,82})));
+      IDEAS.Fluid.FixedResistances.Junction jun1(
+        redeclare package Medium = MediumWater,
+        m_flow_nominal={embNor.m_flow_nominal,-embNor.m_flow_nominal - embSou.m_flow_nominal,
+            -embSou.m_flow_nominal},
+        portFlowDirection_1=Modelica.Fluid.Types.PortFlowDirection.Entering,
+        portFlowDirection_2=Modelica.Fluid.Types.PortFlowDirection.Leaving,
+        portFlowDirection_3=Modelica.Fluid.Types.PortFlowDirection.Entering,
+        dp_nominal={500,0,500}) "Junction"
+        annotation (Placement(transformation(extent={{80,-40},{100,-60}})));
+      IDEAS.Fluid.FixedResistances.Junction jun(
+        redeclare package Medium = MediumWater,
+        m_flow_nominal={embNor.m_flow_nominal + embSou.m_flow_nominal,-embNor.m_flow_nominal,
+            -embSou.m_flow_nominal},
+        portFlowDirection_1=Modelica.Fluid.Types.PortFlowDirection.Entering,
+        portFlowDirection_2=Modelica.Fluid.Types.PortFlowDirection.Leaving,
+        portFlowDirection_3=Modelica.Fluid.Types.PortFlowDirection.Leaving,
+        dp_nominal={1000,0,0}) "Junction"
+        annotation (Placement(transformation(extent={{100,50},{80,70}})));
+      IDEAS.Fluid.HeatExchangers.RadiantSlab.EmbeddedPipe embNor(
+        redeclare package Medium = MediumWater,
+        redeclare IDEAS.Fluid.HeatExchangers.RadiantSlab.BaseClasses.FH_Standard1
+          RadSlaCha,
+        allowFlowReversal=true,
+        m_flow_nominal=0.02,
+        A_floor=rectangularZoneTemplate.AZone)
+        "Embedded pipe of floor heating in north zone"
+        annotation (Placement(transformation(extent={{40,-10},{60,10}})));
+      IDEAS.Fluid.HeatExchangers.RadiantSlab.EmbeddedPipe embSou(
+        redeclare package Medium = MediumWater,
+        redeclare IDEAS.Fluid.HeatExchangers.RadiantSlab.BaseClasses.FH_Standard1
+          RadSlaCha,
+        allowFlowReversal=true,
+        m_flow_nominal=0.02,
+        A_floor=rectangularZoneTemplate.AZone)
+        "Embedded pipe of floor heating in south zone"
+        annotation (Placement(transformation(extent={{80,-10},{100,10}})));
+      Modelica.Blocks.Continuous.Integrator Ene(k=1/3600000)
+        "Electrical energy meter with conversion to kWh"
+        annotation (Placement(transformation(extent={{272,74},{292,94}})));
+      IDEAS.Fluid.HeatPumps.ScrollWaterToWater heaPum(
+        m2_flow_nominal=pumPrim.m_flow_nominal,
+        enable_variable_speed=false,
+        m1_flow_nominal=pum.m_flow_nominal,
+        redeclare package Medium1 = MediumWater,
+        redeclare package Medium2 = MediumWater,
+        datHeaPum=
+            IDEAS.Fluid.HeatPumps.Data.ScrollWaterToWater.Heating.Viessmann_BW301A21_28kW_5_94COP_R410A(),
+        scaling_factor=0.05,
+        dp1_nominal=10000,
+        dp2_nominal=10000,
+        energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial)
+        "Heat pump model, rescaled for low thermal powers" annotation (Placement(
+            transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=90,
+            origin={246,-8})));
+      IDEAS.Fluid.Sources.Boundary_pT
+                                bou1(
+        nPorts=2,
+        redeclare package Medium = MediumWater,
+        T=283.15) "Cold water source for heat pump"
+                  annotation (Placement(transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=180,
+            origin={326,-8})));
+      IDEAS.Fluid.Movers.FlowControlled_dp pumPrim(
+        inputType=IDEAS.Fluid.Types.InputType.Stages,
+        dp_nominal=10000,
+        m_flow_nominal=embNor.m_flow_nominal + embSou.m_flow_nominal,
+        redeclare package Medium = MediumWater,
+        energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial)
+        "Circulation pump at primary side"
+        annotation (Placement(transformation(extent={{296,32},{276,52}})));
+      Modelica.Blocks.Math.BooleanToInteger booToInt
+        "Convert boolean signal into integer "
+        annotation (Placement(transformation(extent={{42,70},{62,90}})));
+      Modelica.Blocks.Math.Add add
+        annotation (Placement(transformation(extent={{-42,70},{-22,90}})));
+      Modelica.Blocks.Sources.Constant OffSet(k=0.5)
+        "Offset from heating set point"
+        annotation (Placement(transformation(extent={{-74,92},{-54,112}})));
+    protected
+      Modelica.Blocks.Logical.OnOffController onOffCon(bandwidth=1)
+        "On off controller for switching on and off the pump of the emission system according to zone temperature readings"
+        annotation (Placement(transformation(extent={{0,70},{20,90}})));
+    equation
+      connect(bou.ports[1],pum. port_b) annotation (Line(points={{110,72},{110,
+              60},{120,60}}, color={0,127,255}));
+      connect(senTemSup.port_b,pum. port_a)
+        annotation (Line(points={{148,60},{140,60}}, color={0,127,255}));
+      connect(pum.port_b,jun. port_1)
+        annotation (Line(points={{120,60},{100,60}}, color={0,127,255}));
+      connect(embNor.port_b,jun1. port_1) annotation (Line(points={{60,0},{66,0},{66,
+              -50},{80,-50}}, color={0,127,255}));
+      connect(embSou.port_b,jun1. port_3) annotation (Line(points={{100,0},{104,0},{
+              104,-20},{90,-20},{90,-40}}, color={0,127,255}));
+      connect(rectangularZoneTemplate1.gainEmb[1],embSou. heatPortEmb[1])
+        annotation (Line(points={{10,-39},{74,-39},{74,10},{90,10}}, color={191,0,0}));
+      connect(rectangularZoneTemplate.gainEmb[1], embNor.heatPortEmb[1])
+        annotation (Line(points={{10,21},{28,21},{28,10},{50,10}}, color={191,0,0}));
+      connect(jun.port_3, embSou.port_a) annotation (Line(points={{90,50},{90,20},{76,
+              20},{76,0},{80,0}}, color={0,127,255}));
+      connect(jun.port_2, embNor.port_a) annotation (Line(points={{80,60},{36,60},{36,
+              0},{40,0}}, color={0,127,255}));
+      connect(heaPum.port_a2,pumPrim. port_b)
+        annotation (Line(points={{252,2},{252,42},{276,42}}, color={0,127,255}));
+      connect(heaPum.port_b2,bou1. ports[1]) annotation (Line(points={{252,-18},{252,
+              -48},{304,-48},{304,-10},{316,-10}}, color={0,127,255}));
+      connect(pumPrim.port_a,bou1. ports[2]) annotation (Line(points={{296,42},{304,
+              42},{304,-6},{316,-6}}, color={0,127,255}));
+      connect(heaPum.P,Ene. u) annotation (Line(points={{246,3},{248,3},{248,84},{270,
+              84}}, color={0,0,127}));
+      connect(jun1.port_2, heaPum.port_a1) annotation (Line(points={{100,-50},{240,-50},
+              {240,-18}}, color={0,127,255}));
+      connect(heaPum.port_b1, senTemSup.port_a)
+        annotation (Line(points={{240,2},{240,60},{168,60}}, color={0,127,255}));
+      connect(booToInt.y, pum.stage) annotation (Line(points={{63,80},{82,80},{82,98},
+              {130,98},{130,72}},        color={255,127,0}));
+      connect(onOffCon.y,booToInt. u)
+        annotation (Line(points={{21,80},{40,80}}, color={255,0,255}));
+      connect(rectangularZoneTemplate1.TSensor,onOffCon. u) annotation (Line(
+            points={{11,-28},{14,-28},{14,-6},{-20,-6},{-20,74},{-2,74}}, color=
+             {0,0,127}));
+      connect(add.y,onOffCon. reference) annotation (Line(points={{-21,80},{-12,
+              80},{-12,86},{-2,86}}, color={0,0,127}));
+      connect(occ.setHea,add. u2) annotation (Line(points={{-58,44},{-52,44},{
+              -52,74},{-44,74}}, color={0,0,127}));
+      connect(add.u1,OffSet. y) annotation (Line(points={{-44,86},{-48,86},{-48,
+              102},{-53,102}}, color={0,0,127}));
+      connect(booToInt.y, heaPum.stage) annotation (Line(points={{63,80},{82,80},{82,
+              112},{338,112},{338,-74},{243,-74},{243,-20}}, color={255,127,0}));
+      connect(booToInt.y, pumPrim.stage) annotation (Line(points={{63,80},{82,80},{82,
+              106},{300,106},{300,62},{286,62},{286,54}}, color={255,127,0}));
+      annotation (Diagram(coordinateSystem(extent={{-100,-100},{340,120}})), Icon(
+            coordinateSystem(extent={{-100,-100},{340,120}})));
+    end envFloPumHP_aux;
+
+    model envFloPum "Envelope, floor heating, and pump"
+      extends Exercises.Exe1BuildingEnvelope(rectangularZoneTemplate(
+          linIntRad=true,
+          redeclare IDEAS.Buildings.Data.Constructions.InsulatedFloorHeating
+            conTypFlo,
+          hasEmb=true), rectangularZoneTemplate1(redeclare
+            IDEAS.Buildings.Data.Constructions.InsulatedFloorHeating conTypFlo,
+            hasEmb=true));
+
+      package MediumWater = IDEAS.Media.Water "Water Medium";
+      IDEAS.Fluid.Movers.FlowControlled_dp pum(
+        dp_nominal=20000,
+        inputType=IDEAS.Fluid.Types.InputType.Stages,
+        m_flow_nominal=embNor.m_flow_nominal + embSou.m_flow_nominal,
+        redeclare package Medium = MediumWater,
+        energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial)
+        "Circulation pump at secondary side"
+        annotation (Placement(transformation(extent={{140,50},{120,70}})));
+      IDEAS.Fluid.Sensors.TemperatureTwoPort senTemSup(redeclare package Medium
+          = MediumWater, m_flow_nominal=pum.m_flow_nominal)
+        "Supply water temperature sensor"
+        annotation (Placement(transformation(extent={{168,70},{148,50}})));
+      IDEAS.Fluid.Sources.Boundary_pT bou(nPorts=1, redeclare package Medium =
+            MediumWater) "Expansion vessel" annotation (Placement(
+            transformation(
+            extent={{-10,10},{10,-10}},
+            rotation=270,
+            origin={110,82})));
+      IDEAS.Fluid.FixedResistances.Junction jun1(
+        redeclare package Medium = MediumWater,
+        m_flow_nominal={embNor.m_flow_nominal,-embNor.m_flow_nominal - embSou.m_flow_nominal,
+            -embSou.m_flow_nominal},
+        portFlowDirection_1=Modelica.Fluid.Types.PortFlowDirection.Entering,
+        portFlowDirection_2=Modelica.Fluid.Types.PortFlowDirection.Leaving,
+        portFlowDirection_3=Modelica.Fluid.Types.PortFlowDirection.Entering,
+        dp_nominal={500,0,500}) "Junction"
+        annotation (Placement(transformation(extent={{80,-40},{100,-60}})));
+      IDEAS.Fluid.HeatExchangers.RadiantSlab.EmbeddedPipe embNor(
+        redeclare package Medium = MediumWater,
+        redeclare IDEAS.Fluid.HeatExchangers.RadiantSlab.BaseClasses.FH_Standard1
+          RadSlaCha,
+        allowFlowReversal=true,
+        m_flow_nominal=0.02,
+        A_floor=rectangularZoneTemplate.AZone)
+        "Embedded pipe of floor heating in north zone"
+        annotation (Placement(transformation(extent={{40,-10},{60,10}})));
+      IDEAS.Fluid.HeatExchangers.RadiantSlab.EmbeddedPipe embSou(
+        redeclare package Medium = MediumWater,
+        redeclare IDEAS.Fluid.HeatExchangers.RadiantSlab.BaseClasses.FH_Standard1
+          RadSlaCha,
+        allowFlowReversal=true,
+        m_flow_nominal=0.02,
+        A_floor=rectangularZoneTemplate.AZone)
+        "Embedded pipe of floor heating in south zone"
+        annotation (Placement(transformation(extent={{80,-10},{100,10}})));
+      IDEAS.Fluid.FixedResistances.Junction jun(
+        redeclare package Medium = MediumWater,
+        m_flow_nominal={embNor.m_flow_nominal + embSou.m_flow_nominal,-embNor.m_flow_nominal,
+            -embSou.m_flow_nominal},
+        portFlowDirection_1=Modelica.Fluid.Types.PortFlowDirection.Entering,
+        portFlowDirection_2=Modelica.Fluid.Types.PortFlowDirection.Leaving,
+        portFlowDirection_3=Modelica.Fluid.Types.PortFlowDirection.Leaving,
+        dp_nominal={1000,0,0}) "Junction"
+        annotation (Placement(transformation(extent={{100,50},{80,70}})));
+    equation
+      connect(bou.ports[1],pum. port_b) annotation (Line(points={{110,72},{110,
+              60},{120,60}}, color={0,127,255}));
+      connect(senTemSup.port_b,pum. port_a)
+        annotation (Line(points={{148,60},{140,60}}, color={0,127,255}));
+      connect(embNor.port_b,jun1. port_1) annotation (Line(points={{60,0},{66,0},{66,
+              -50},{80,-50}}, color={0,127,255}));
+      connect(embSou.port_b,jun1. port_3) annotation (Line(points={{100,0},{104,0},{
+              104,-20},{90,-20},{90,-40}}, color={0,127,255}));
+      connect(rectangularZoneTemplate1.gainEmb[1],embSou. heatPortEmb[1])
+        annotation (Line(points={{10,-39},{74,-39},{74,10},{90,10}}, color={191,0,0}));
+      connect(rectangularZoneTemplate.gainEmb[1], embNor.heatPortEmb[1])
+        annotation (Line(points={{10,21},{28,21},{28,10},{50,10}}, color={191,0,0}));
+      connect(pum.port_b,jun. port_1)
+        annotation (Line(points={{120,60},{100,60}}, color={0,127,255}));
+      annotation (Diagram(coordinateSystem(extent={{-100,-100},{340,120}})), Icon(
+            coordinateSystem(extent={{-100,-100},{340,120}})));
+    end envFloPum;
+
+    model EnvFloPumHP "Building envelope, floor heating, pump, and heat pump"
+      extends envFloPum;
+      Modelica.Blocks.Continuous.Integrator Ene(k=1/3600000)
+        "Electrical energy meter with conversion to kWh"
+        annotation (Placement(transformation(extent={{272,74},{292,94}})));
+      IDEAS.Fluid.HeatPumps.ScrollWaterToWater heaPum(
+        m2_flow_nominal=pumPrim.m_flow_nominal,
+        enable_variable_speed=false,
+        m1_flow_nominal=pum.m_flow_nominal,
+        redeclare package Medium1 = MediumWater,
+        redeclare package Medium2 = MediumWater,
+        datHeaPum=
+            IDEAS.Fluid.HeatPumps.Data.ScrollWaterToWater.Heating.Viessmann_BW301A21_28kW_5_94COP_R410A(),
+
+        scaling_factor=0.05,
+        dp1_nominal=10000,
+        dp2_nominal=10000,
+        energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial)
+        "Heat pump model, rescaled for low thermal powers" annotation (Placement(
+            transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=90,
+            origin={246,-8})));
+      IDEAS.Fluid.Sources.Boundary_pT
+                                bou1(
+        nPorts=2,
+        redeclare package Medium = MediumWater,
+        T=283.15) "Cold water source for heat pump"
+                  annotation (Placement(transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=180,
+            origin={326,-8})));
+      IDEAS.Fluid.Movers.FlowControlled_dp pumPrim(
+        inputType=IDEAS.Fluid.Types.InputType.Stages,
+        dp_nominal=10000,
+        m_flow_nominal=embNor.m_flow_nominal + embSou.m_flow_nominal,
+        redeclare package Medium = MediumWater,
+        energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial)
+        "Circulation pump at primary side"
+        annotation (Placement(transformation(extent={{296,32},{276,52}})));
+    equation
+      connect(heaPum.port_a2,pumPrim. port_b)
+        annotation (Line(points={{252,2},{252,42},{276,42}}, color={0,127,255}));
+      connect(heaPum.port_b2,bou1. ports[1]) annotation (Line(points={{252,-18},{252,
+              -48},{304,-48},{304,-10},{316,-10}}, color={0,127,255}));
+      connect(pumPrim.port_a,bou1. ports[2]) annotation (Line(points={{296,42},{304,
+              42},{304,-6},{316,-6}}, color={0,127,255}));
+      connect(heaPum.P,Ene. u) annotation (Line(points={{246,3},{248,3},{248,84},{270,
+              84}}, color={0,0,127}));
+      connect(jun1.port_2,heaPum. port_a1) annotation (Line(points={{100,-50},{240,-50},
+              {240,-18}}, color={0,127,255}));
+      connect(heaPum.port_b1, senTemSup.port_a)
+        annotation (Line(points={{240,2},{240,60},{168,60}}, color={0,127,255}));
+    end EnvFloPumHP;
   end BaseClases;
 
   package Solutions "Package with cotrollers implemented"
@@ -464,15 +904,15 @@ package TheSysConExe "Thermal systems control exercise"
               80,98},{130,98},{130,72}}, color={255,127,0}));
       connect(onOffCon.y, booToInt.u)
         annotation (Line(points={{21,80},{40,80}}, color={255,0,255}));
-      connect(rectangularZoneTemplate1.TSensor, onOffCon.u) annotation (Line(
-            points={{11,-28},{14,-28},{14,-6},{-20,-6},{-20,74},{-2,74}}, color=
-             {0,0,127}));
       connect(add.y, onOffCon.reference) annotation (Line(points={{-21,80},{-12,
               80},{-12,86},{-2,86}}, color={0,0,127}));
       connect(occ.setHea, add.u2) annotation (Line(points={{-58,44},{-52,44},{
               -52,74},{-44,74}}, color={0,0,127}));
       connect(add.u1, OffSet.y) annotation (Line(points={{-44,86},{-48,86},{-48,
               102},{-53,102}}, color={0,0,127}));
+      connect(onOffCon.u, rectangularZoneTemplate.TSensor) annotation (Line(
+            points={{-2,74},{-10,74},{-10,60},{20,60},{20,32},{11,32}}, color={
+              0,0,127}));
       annotation (Diagram(coordinateSystem(extent={{-100,-100},{260,120}})),
           Icon(coordinateSystem(extent={{-100,-100},{260,120}})),
         experiment(StopTime=2419200),
@@ -579,6 +1019,107 @@ package TheSysConExe "Thermal systems control exercise"
               40,70},{40,50},{-40,50},{-40,-80},{258,-80},{258,40},{254,40}},
             color={0,0,127}));
     end Sol5HeatingCurveImplementation;
+
+    model Sol6FloorHeatingOnOffThermostat
+      "Solution of exercise with floor heating, heat pump, and on off thermostat"
+      extends Exercises.Exe6FloorHeatingOnOffThermostat;
+      Modelica.Blocks.Math.BooleanToInteger booToInt
+        "Convert boolean signal into integer "
+        annotation (Placement(transformation(extent={{42,70},{62,90}})));
+      Modelica.Blocks.Math.Add add
+        annotation (Placement(transformation(extent={{-42,70},{-22,90}})));
+      Modelica.Blocks.Sources.Constant OffSet(k=0.5)
+        "Offset from heating set point"
+        annotation (Placement(transformation(extent={{-74,92},{-54,112}})));
+    protected
+      Modelica.Blocks.Logical.OnOffController onOffCon(bandwidth=1)
+        "On off controller for switching on and off the pump of the emission system according to zone temperature readings"
+        annotation (Placement(transformation(extent={{0,70},{20,90}})));
+    equation
+      connect(booToInt.y, pum.stage) annotation (Line(points={{63,80},{82,80},{82,98},
+              {130,98},{130,72}},        color={255,127,0}));
+      connect(onOffCon.y,booToInt. u)
+        annotation (Line(points={{21,80},{40,80}}, color={255,0,255}));
+      connect(add.y,onOffCon. reference) annotation (Line(points={{-21,80},{-12,
+              80},{-12,86},{-2,86}}, color={0,0,127}));
+      connect(occ.setHea,add. u2) annotation (Line(points={{-58,44},{-52,44},{
+              -52,74},{-44,74}}, color={0,0,127}));
+      connect(add.u1,OffSet. y) annotation (Line(points={{-44,86},{-48,86},{-48,
+              102},{-53,102}}, color={0,0,127}));
+      connect(booToInt.y, heaPum.stage) annotation (Line(points={{63,80},{82,80},{82,
+              112},{338,112},{338,-74},{243,-74},{243,-20}}, color={255,127,0}));
+      connect(booToInt.y, pumPrim.stage) annotation (Line(points={{63,80},{82,80},{82,
+              106},{300,106},{300,62},{286,62},{286,54}}, color={255,127,0}));
+      connect(onOffCon.u, rectangularZoneTemplate.TSensor) annotation (Line(
+            points={{-2,74},{-10,74},{-10,60},{20,60},{20,32},{11,32}}, color={
+              0,0,127}));
+    end Sol6FloorHeatingOnOffThermostat;
+
+    model Sol7FloorHeatingThermostaticValves
+      "Solution of exercise with floor heating, thermostatic valves, and heat pump"
+      extends BaseClases.EnvFloPumHP;
+      IDEAS.Fluid.Actuators.Valves.TwoWayTRV valNor(
+        m_flow_nominal=embNor.m_flow_nominal,
+        dpValve_nominal=20000,
+        redeclare package Medium = MediumWater)
+        "Thermostatic valve for north zone" annotation (Placement(
+            transformation(
+            extent={{10,-10},{-10,10}},
+            rotation=90,
+            origin={50,30})));
+      IDEAS.Fluid.Actuators.Valves.TwoWayTRV valSou(
+        dpValve_nominal=20000,
+        m_flow_nominal=embSou.m_flow_nominal,
+        redeclare package Medium = MediumWater)
+        "Thermostatic valve for south zone" annotation (Placement(
+            transformation(
+            extent={{10,-10},{-10,10}},
+            rotation=90,
+            origin={90,30})));
+      Modelica.Blocks.Math.BooleanToInteger booToInt
+        "Convert boolean signal into integer "
+        annotation (Placement(transformation(extent={{42,70},{62,90}})));
+      Modelica.Blocks.Math.Add add
+        annotation (Placement(transformation(extent={{-42,70},{-22,90}})));
+      Modelica.Blocks.Sources.Constant OffSet(k=0.5)
+        "Offset from heating set point"
+        annotation (Placement(transformation(extent={{-74,92},{-54,112}})));
+    protected
+      Modelica.Blocks.Logical.OnOffController onOffCon(bandwidth=1)
+        "On off controller for switching on and off the pump of the emission system according to zone temperature readings"
+        annotation (Placement(transformation(extent={{0,70},{20,90}})));
+    equation
+      connect(rectangularZoneTemplate.TSensor,valNor. T) annotation (Line(
+            points={{11,32},{26,32},{26,30},{39.4,30}}, color={0,0,127}));
+      connect(jun.port_3, valSou.port_a)
+        annotation (Line(points={{90,50},{90,40}}, color={0,127,255}));
+      connect(rectangularZoneTemplate1.TSensor, valSou.T) annotation (Line(
+            points={{11,-28},{30,-28},{30,14},{72,14},{72,30},{79.4,30}}, color
+            ={0,0,127}));
+      connect(valSou.port_b, embSou.port_a) annotation (Line(points={{90,20},{
+              90,14},{76,14},{76,0},{80,0}}, color={0,127,255}));
+      connect(valNor.port_a, jun.port_2)
+        annotation (Line(points={{50,40},{50,60},{80,60}}, color={0,127,255}));
+      connect(valNor.port_b, embNor.port_a) annotation (Line(points={{50,20},{
+              50,16},{34,16},{34,0},{40,0}}, color={0,127,255}));
+      connect(booToInt.y, pum.stage) annotation (Line(points={{63,80},{82,80},{82,98},
+              {130,98},{130,72}},        color={255,127,0}));
+      connect(onOffCon.y,booToInt. u)
+        annotation (Line(points={{21,80},{40,80}}, color={255,0,255}));
+      connect(add.y,onOffCon. reference) annotation (Line(points={{-21,80},{-12,
+              80},{-12,86},{-2,86}}, color={0,0,127}));
+      connect(occ.setHea,add. u2) annotation (Line(points={{-58,44},{-52,44},{
+              -52,74},{-44,74}}, color={0,0,127}));
+      connect(add.u1,OffSet. y) annotation (Line(points={{-44,86},{-48,86},{-48,
+              102},{-53,102}}, color={0,0,127}));
+      connect(booToInt.y, heaPum.stage) annotation (Line(points={{63,80},{82,80},{82,
+              112},{338,112},{338,-74},{243,-74},{243,-20}}, color={255,127,0}));
+      connect(booToInt.y, pumPrim.stage) annotation (Line(points={{63,80},{82,80},{82,
+              106},{300,106},{300,62},{286,62},{286,54}}, color={255,127,0}));
+      connect(onOffCon.u, rectangularZoneTemplate.TSensor) annotation (Line(
+            points={{-2,74},{-10,74},{-10,60},{20,60},{20,32},{11,32}}, color={
+              0,0,127}));
+    end Sol7FloorHeatingThermostaticValves;
   end Solutions;
 
   package Exercises "Package with all exercises"
@@ -610,6 +1151,10 @@ package TheSysConExe "Thermal systems control exercise"
       BaseClases.Occupancy occ(
         linearise=false,
         A=50,
+        setHeaOcc=21 + 273.15,
+        setHeaUno=21 + 273.15,
+        setCooOcc=23 + 273.15,
+        setCooUno=23 + 273.15,
         k=5)
         "Occupancy schedule and setpoints for each of the zones in the building"
         annotation (Placement(transformation(extent={{-80,40},{-60,60}})));
@@ -628,7 +1173,7 @@ package TheSysConExe "Thermal systems control exercise"
 
     model Exe2OnOffThermostat
       "Building control by switching emission system on and off"
-      extends BaseClases.envBoiPumRad;
+      extends BaseClases.envRadPumBoi;
       Modelica.Blocks.Sources.Constant const(k=60 + 273.15)
         annotation (Placement(transformation(extent={{220,40},{240,60}})));
     equation
@@ -649,7 +1194,7 @@ package TheSysConExe "Thermal systems control exercise"
     end Exe2OnOffThermostat;
 
     model Exe3ThermostaticValves "Building control through thermostatic valves"
-      extends BaseClases.envBoiPumRad;
+      extends BaseClases.envRadPumBoi;
       IDEAS.Fluid.Actuators.Valves.TwoWayTRV valNor(
         m_flow_nominal=radNor.m_flow_nominal,
         dpValve_nominal=20000,
@@ -689,7 +1234,7 @@ package TheSysConExe "Thermal systems control exercise"
     end Exe3ThermostaticValves;
 
     model Exe4HeatingCurveDerivation "Derivation of the building heating curve"
-      extends BaseClases.envBoiPumRad;
+      extends BaseClases.envRadPumBoi;
       Modelica.Blocks.Continuous.LimPID conPID
         "PID controller for the supply temperature from ideal boiler"
         annotation (Placement(transformation(extent={{200,-82},{220,-62}})));
@@ -709,7 +1254,7 @@ package TheSysConExe "Thermal systems control exercise"
 
     model Exe5HeatingCurveImplementation
       "Implementation of the heating curve derived in the previous exercise"
-      extends BaseClases.envBoiPumRad;
+      extends BaseClases.envRadPumBoi;
 
       IDEAS.Fluid.Actuators.Valves.TwoWayTRV valNor(
         m_flow_nominal=radNor.m_flow_nominal,
@@ -750,6 +1295,53 @@ package TheSysConExe "Thermal systems control exercise"
               28},{228,40},{231,40}},
                                  color={0,0,127}));
     end Exe5HeatingCurveImplementation;
+
+    model Exe6FloorHeatingOnOffThermostat
+      "Building with floor heating as emission system and heat pump as production system"
+      extends BaseClases.EnvFloPumHP;
+    equation
+      connect(jun.port_2, embNor.port_a) annotation (Line(points={{80,60},{50,
+              60},{50,20},{34,20},{34,0},{40,0}}, color={0,127,255}));
+      connect(jun.port_3, embSou.port_a) annotation (Line(points={{90,50},{90,
+              20},{76,20},{76,0},{80,0}}, color={0,127,255}));
+    end Exe6FloorHeatingOnOffThermostat;
+
+    model Exe7FloorHeatingThermostaticValves
+      "Building with floor heating, thermostatic valves, and heat pump"
+      extends BaseClases.EnvFloPumHP;
+      IDEAS.Fluid.Actuators.Valves.TwoWayTRV valNor(
+        m_flow_nominal=embNor.m_flow_nominal,
+        dpValve_nominal=20000,
+        redeclare package Medium = MediumWater)
+        "Thermostatic valve for north zone" annotation (Placement(
+            transformation(
+            extent={{10,-10},{-10,10}},
+            rotation=90,
+            origin={50,30})));
+      IDEAS.Fluid.Actuators.Valves.TwoWayTRV valSou(
+        dpValve_nominal=20000,
+        m_flow_nominal=embSou.m_flow_nominal,
+        redeclare package Medium = MediumWater)
+        "Thermostatic valve for south zone" annotation (Placement(
+            transformation(
+            extent={{10,-10},{-10,10}},
+            rotation=90,
+            origin={90,30})));
+    equation
+      connect(rectangularZoneTemplate.TSensor,valNor. T) annotation (Line(
+            points={{11,32},{26,32},{26,30},{39.4,30}}, color={0,0,127}));
+      connect(jun.port_3, valSou.port_a)
+        annotation (Line(points={{90,50},{90,40}}, color={0,127,255}));
+      connect(rectangularZoneTemplate1.TSensor, valSou.T) annotation (Line(
+            points={{11,-28},{30,-28},{30,14},{72,14},{72,30},{79.4,30}}, color
+            ={0,0,127}));
+      connect(valSou.port_b, embSou.port_a) annotation (Line(points={{90,20},{
+              90,14},{76,14},{76,0},{80,0}}, color={0,127,255}));
+      connect(valNor.port_a, jun.port_2)
+        annotation (Line(points={{50,40},{50,60},{80,60}}, color={0,127,255}));
+      connect(valNor.port_b, embNor.port_a) annotation (Line(points={{50,20},{
+              50,16},{34,16},{34,0},{40,0}}, color={0,127,255}));
+    end Exe7FloorHeatingThermostaticValves;
   end Exercises;
   annotation (uses(IDEAS(version="2.0.0"), Modelica(version="3.2.2")));
 end TheSysConExe;
