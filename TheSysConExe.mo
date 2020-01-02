@@ -452,7 +452,7 @@ package TheSysConExe "Thermal systems control exercise"
         annotation (Placement(transformation(extent={{42,70},{62,90}})));
       Modelica.Blocks.Math.Add add
         annotation (Placement(transformation(extent={{-42,70},{-22,90}})));
-      Modelica.Blocks.Sources.Constant OffSet(k=1)
+      Modelica.Blocks.Sources.Constant OffSet(k=0.5)
         "Offset from heating set point"
         annotation (Placement(transformation(extent={{-74,92},{-54,112}})));
     protected
@@ -474,7 +474,15 @@ package TheSysConExe "Thermal systems control exercise"
       connect(add.u1, OffSet.y) annotation (Line(points={{-44,86},{-48,86},{-48,
               102},{-53,102}}, color={0,0,127}));
       annotation (Diagram(coordinateSystem(extent={{-100,-100},{260,120}})),
-          Icon(coordinateSystem(extent={{-100,-100},{260,120}})));
+          Icon(coordinateSystem(extent={{-100,-100},{260,120}})),
+        experiment(StopTime=2419200),
+        __Dymola_experimentSetupOutput,
+        __Dymola_experimentFlags(
+          Advanced(GenerateVariableDependencies=false, OutputModelicaCode=false),
+
+          Evaluate=false,
+          OutputCPUtime=false,
+          OutputFlatModelica=false));
     end Sol2OnOffThermostat;
 
     model Sol3ThermostaticValves
@@ -494,12 +502,12 @@ package TheSysConExe "Thermal systems control exercise"
       Modelica.Blocks.Continuous.Filter lowPasFilTe(
         analogFilter=Modelica.Blocks.Types.AnalogFilter.Butterworth,
         filterType=Modelica.Blocks.Types.FilterType.LowPass,
-        f_cut=1/(24*3600)) "Low pass filter for the outdoor temperature"
+        f_cut=1/(3*3600))  "Low pass filter for the outdoor temperature"
         annotation (Placement(transformation(extent={{0,60},{20,80}})));
       Modelica.Blocks.Continuous.Filter lowPasFilSup(
         analogFilter=Modelica.Blocks.Types.AnalogFilter.Butterworth,
         filterType=Modelica.Blocks.Types.FilterType.LowPass,
-        f_cut=1/(24*3600)) "Low pass filter for the supply temperature"
+        f_cut=1/(3*3600))  "Low pass filter for the supply temperature"
         annotation (Placement(transformation(extent={{150,-10},{170,10}})));
     protected
       IDEAS.BoundaryConditions.WeatherData.Bus weaDatBus
@@ -529,11 +537,48 @@ package TheSysConExe "Thermal systems control exercise"
         __Dymola_experimentSetupOutput,
         __Dymola_experimentFlags(
           Advanced(GenerateVariableDependencies=false, OutputModelicaCode=false),
-
           Evaluate=false,
           OutputCPUtime=false,
           OutputFlatModelica=false));
     end Sol4HeatingCurveDerivation;
+
+    model Sol5HeatingCurveImplementation
+      "Solution to the heating curve exercise"
+      extends Exercises.Exe5HeatingCurveImplementation(
+        heaCurTab(table=[266,335; 286,315]),
+        valNor(P=0.2),
+        valSou(P=0.2));
+
+      Modelica.Blocks.Continuous.Filter lowPasFilTe(
+        analogFilter=Modelica.Blocks.Types.AnalogFilter.Butterworth,
+        filterType=Modelica.Blocks.Types.FilterType.LowPass,
+        f_cut=1/(3*3600))  "Low pass filter for the outdoor temperature"
+        annotation (Placement(transformation(extent={{0,60},{20,80}})));
+    protected
+      IDEAS.BoundaryConditions.WeatherData.Bus weaDatBus
+        "Weather data bus connectable to weaBus connector from Buildings Library"
+        annotation (Placement(transformation(extent={{-62,72},{-42,92}})));
+    equation
+      connect(sim.weaDatBus,weaDatBus)  annotation (Line(
+          points={{-80.1,90},{-68,90},{-68,82},{-52,82}},
+          color={255,204,51},
+          thickness=0.5), Text(
+          string="%second",
+          index=1,
+          extent={{6,3},{6,3}},
+          horizontalAlignment=TextAlignment.Left));
+      connect(weaDatBus.TDryBul,lowPasFilTe. u) annotation (Line(
+          points={{-52,82},{-38,82},{-38,70},{-2,70}},
+          color={255,204,51},
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{-6,3},{-6,3}},
+          horizontalAlignment=TextAlignment.Right));
+      connect(lowPasFilTe.y, heaCurTab.u[1]) annotation (Line(points={{21,70},{
+              40,70},{40,50},{-40,50},{-40,-80},{258,-80},{258,40},{254,40}},
+            color={0,0,127}));
+    end Sol5HeatingCurveImplementation;
   end Solutions;
 
   package Exercises "Package with all exercises"
@@ -665,6 +710,7 @@ package TheSysConExe "Thermal systems control exercise"
     model Exe5HeatingCurveImplementation
       "Implementation of the heating curve derived in the previous exercise"
       extends BaseClases.envBoiPumRad;
+
       IDEAS.Fluid.Actuators.Valves.TwoWayTRV valNor(
         m_flow_nominal=radNor.m_flow_nominal,
         dpValve_nominal=20000,
@@ -683,6 +729,9 @@ package TheSysConExe "Thermal systems control exercise"
             extent={{10,-10},{-10,10}},
             rotation=90,
             origin={90,30})));
+      Modelica.Blocks.Tables.CombiTable1D heaCurTab(              columns={2})
+        "Heating curve table"
+        annotation (Placement(transformation(extent={{252,30},{232,50}})));
     equation
       connect(valNor.port_b, radNor.port_a)
         annotation (Line(points={{50,20},{50,0}}, color={0,127,255}));
@@ -697,6 +746,9 @@ package TheSysConExe "Thermal systems control exercise"
         annotation (Line(points={{90,50},{90,40}}, color={0,127,255}));
       connect(jun.port_2,valNor. port_a)
         annotation (Line(points={{80,60},{50,60},{50,40}}, color={0,127,255}));
+      connect(boi.TSet, heaCurTab.y[1]) annotation (Line(points={{222,28},{228,
+              28},{228,40},{231,40}},
+                                 color={0,0,127}));
     end Exe5HeatingCurveImplementation;
   end Exercises;
   annotation (uses(IDEAS(version="2.0.0"), Modelica(version="3.2.2")));
