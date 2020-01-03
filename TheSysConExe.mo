@@ -366,8 +366,8 @@ package TheSysConExe "Thermal systems control exercise"
         energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial)
         "Circulation pump at secondary side"
         annotation (Placement(transformation(extent={{140,50},{120,70}})));
-      IDEAS.Fluid.Sensors.TemperatureTwoPort senTemSup(redeclare package Medium
-          = MediumWater, m_flow_nominal=pum.m_flow_nominal)
+      IDEAS.Fluid.Sensors.TemperatureTwoPort senTemSup(redeclare package Medium =
+            MediumWater, m_flow_nominal=pum.m_flow_nominal)
         "Supply water temperature sensor"
         annotation (Placement(transformation(extent={{168,70},{148,50}})));
       IDEAS.Fluid.Sources.Boundary_pT bou(nPorts=1, redeclare package Medium =
@@ -457,8 +457,8 @@ package TheSysConExe "Thermal systems control exercise"
         energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial)
         "Circulation pump at secondary side"
         annotation (Placement(transformation(extent={{140,50},{120,70}})));
-      IDEAS.Fluid.Sensors.TemperatureTwoPort senTemSup(redeclare package Medium
-          = MediumWater, m_flow_nominal=pum.m_flow_nominal)
+      IDEAS.Fluid.Sensors.TemperatureTwoPort senTemSup(redeclare package Medium =
+            MediumWater, m_flow_nominal=pum.m_flow_nominal)
         "Supply water temperature sensor"
         annotation (Placement(transformation(extent={{168,70},{148,50}})));
       IDEAS.Fluid.Sources.Boundary_pT bou(nPorts=1, redeclare package Medium =
@@ -535,7 +535,6 @@ package TheSysConExe "Thermal systems control exercise"
         redeclare package Medium2 = MediumWater,
         datHeaPum=
             IDEAS.Fluid.HeatPumps.Data.ScrollWaterToWater.Heating.Viessmann_BW301A21_28kW_5_94COP_R410A(),
-
         scaling_factor=0.05,
         dp1_nominal=10000,
         dp2_nominal=10000,
@@ -545,6 +544,7 @@ package TheSysConExe "Thermal systems control exercise"
             extent={{-10,-10},{10,10}},
             rotation=90,
             origin={246,-8})));
+
       IDEAS.Fluid.Sources.Boundary_pT
                                 bou1(
         nPorts=2,
@@ -613,7 +613,6 @@ package TheSysConExe "Thermal systems control exercise"
         __Dymola_experimentSetupOutput,
         __Dymola_experimentFlags(
           Advanced(GenerateVariableDependencies=false, OutputModelicaCode=false),
-
           Evaluate=false,
           OutputCPUtime=false,
           OutputFlatModelica=false));
@@ -788,8 +787,8 @@ package TheSysConExe "Thermal systems control exercise"
       connect(jun.port_3, valSou.port_a)
         annotation (Line(points={{90,50},{90,40}}, color={0,127,255}));
       connect(rectangularZoneTemplate1.TSensor, valSou.T) annotation (Line(
-            points={{11,-28},{30,-28},{30,14},{72,14},{72,30},{79.4,30}}, color
-            ={0,0,127}));
+            points={{11,-28},{30,-28},{30,14},{72,14},{72,30},{79.4,30}}, color=
+             {0,0,127}));
       connect(valSou.port_b, embSou.port_a) annotation (Line(points={{90,20},{
               90,14},{76,14},{76,0},{80,0}}, color={0,127,255}));
       connect(valNor.port_a, jun.port_2)
@@ -871,7 +870,8 @@ package TheSysConExe "Thermal systems control exercise"
     end Sol8FloorHeatingBufferTank;
   end Solutions;
 
-  package Exercises "Package with all exercises"
+  package Exercises
+    "Exercise session Thermal Systems - dynamic behaviour & control"
     model Exe1BuildingEnvelope
       "Building envelope model with two zones and office occupancy"
       extends IDEAS.Examples.Tutorial.Example5(rectangularZoneTemplate(
@@ -918,6 +918,7 @@ package TheSysConExe "Thermal systems control exercise"
           OutputFlatModelica=false),
         Diagram(coordinateSystem(extent={{-100,-100},{100,100}})),
         Icon(coordinateSystem(extent={{-100,-100},{120,100}})));
+
     end Exe1BuildingEnvelope;
 
     model Exe2OnOffThermostat
@@ -1084,8 +1085,8 @@ package TheSysConExe "Thermal systems control exercise"
       connect(jun.port_3, valSou.port_a)
         annotation (Line(points={{90,50},{90,40}}, color={0,127,255}));
       connect(rectangularZoneTemplate1.TSensor, valSou.T) annotation (Line(
-            points={{11,-28},{30,-28},{30,14},{72,14},{72,30},{79.4,30}}, color
-            ={0,0,127}));
+            points={{11,-28},{30,-28},{30,14},{72,14},{72,30},{79.4,30}}, color=
+             {0,0,127}));
       connect(valSou.port_b, embSou.port_a) annotation (Line(points={{90,20},{
               90,14},{76,14},{76,0},{80,0}}, color={0,127,255}));
       connect(valNor.port_a, jun.port_2)
@@ -1131,8 +1132,8 @@ package TheSysConExe "Thermal systems control exercise"
       connect(jun.port_3, valSou.port_a)
         annotation (Line(points={{90,50},{90,40}}, color={0,127,255}));
       connect(rectangularZoneTemplate1.TSensor, valSou.T) annotation (Line(
-            points={{11,-28},{30,-28},{30,14},{72,14},{72,30},{79.4,30}}, color
-            ={0,0,127}));
+            points={{11,-28},{30,-28},{30,14},{72,14},{72,30},{79.4,30}}, color=
+             {0,0,127}));
       connect(valSou.port_b, embSou.port_a) annotation (Line(points={{90,20},{
               90,14},{76,14},{76,0},{80,0}}, color={0,127,255}));
       connect(valNor.port_a, jun.port_2)
@@ -1146,6 +1147,61 @@ package TheSysConExe "Thermal systems control exercise"
       annotation (Diagram(coordinateSystem(extent={{-100,-100},{340,140}})),
           Icon(coordinateSystem(extent={{-100,-100},{340,140}})));
     end Exe8FloorHeatingBufferTank;
+
+  annotation (
+  preferredView="info",
+  Documentation(info="<html>
+<p>
+You have been recently hired by an engineering consultancy company: 
+<i>The Sysis Consultants</i>, which stands for Thermal Systems Simulations 
+Consultants. Even though your experience is very short, your knowledge is very 
+valuable since the company is just starting up. In fact, the company is composed 
+of only three people: Carl, Bob and you, and your colleagues have already 
+trusted you your very first project. 
+</p>
+<p>
+The well-known architectural and construction firm <i>BeautifulEnvelopes</i> have 
+designed an astonishing building envelope of a two zone office building in Uccle,
+Belgium. However, they have no clue on how to design and dimension the thermal 
+systems required to acclimatize the building for the cold Belgium winters, not 
+to mention the control strategies associated to such systems. They have decided 
+to outsource these tasks to <i>The Sysis Consultants</i> and they will pay a 
+substantial ammount of money if the project is successful before the challenging 
+established deadline. Right now Carl is in parental leave, and Bob is extremely
+busy with other projects, so it's your full responsability to get this project 
+successfully done on time and deliver a workable and efficient design of the 
+thermal systems and their control strategies.  
+</p>
+<p>
+To success in your difficult task you'll be using this powerful tool: Dymola, 
+together with the <a href=\"modelica://IDEAS\">IDEAS</a> Modelica library 
+designed by KU Leuven and, of course, 
+all the wisdom that you've acquired in your lectures of Thermal Systems. 
+</p>
+<p>
+The figure below shows a section of the schematic view of the model
+</p>
+<p align=\"center\">
+<img alt=\"image\" src=\"modelica://Buildings/Resources/Images/UsersGuide/HydronicHeating.png\" border=\"1\"/>
+</p>
+<p>
+The web page for this library is
+<a href=\"http://simulationresearch.lbl.gov/modelica\">http://simulationresearch.lbl.gov/modelica</a>,
+and the development page is
+<a href=\"https://github.com/lbl-srg/modelica-buildings\">https://github.com/lbl-srg/modelica-buildings</a>.
+Contributions to further advance the library are welcomed.
+Contributions may not only be in the form of model development, but also
+through model use, model testing,
+requirements definition or providing feedback regarding the model applicability
+to solve specific problems.
+</p>
+</html>"));
+
   end Exercises;
+
+  package Resources
+    package Images
+    end Images;
+  end Resources;
   annotation (uses(IDEAS(version="2.0.0"), Modelica(version="3.2.2")));
 end TheSysConExe;
