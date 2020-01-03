@@ -30,7 +30,7 @@ equation
           0,0,127}));
   annotation (Diagram(coordinateSystem(extent={{-100,-100},{260,120}})),
       Icon(coordinateSystem(extent={{-100,-100},{260,120}})),
-    experiment(StopTime=2419200),
+    experiment(StopTime=2419200, __Dymola_Algorithm="Lsodar"),
     __Dymola_experimentSetupOutput,
     __Dymola_experimentFlags(
       Advanced(GenerateVariableDependencies=false, OutputModelicaCode=false),
