@@ -44,6 +44,57 @@ model Exe1BuildingEnvelope
       OutputCPUtime=false,
       OutputFlatModelica=false),
     Diagram(coordinateSystem(extent={{-100,-100},{100,100}})),
-    Icon(coordinateSystem(extent={{-100,-100},{120,100}})));
+    Icon(coordinateSystem(extent={{-100,-100},{120,100}})),
+    Documentation(info="<html>
+<p>
+This is the model of the building envelope that Carl developed from 
+the construction data provided by <i>BeautifulEnvelopes</i>. At first
+glance, it may seem simple, but it is an accurate representation of 
+the thermal behaviour of the future building envelope. Your first task
+is to get familiar with this building model, understand its components,
+simulate it, and plot the results making sure that everything makes sense. 
+</p>
+<p>
+You can hover your mouse over the different components to see their class
+name (in red) and their instance name (grey). An instance is just a particular 
+class filled in with specific attributes. You can get further information 
+of each class by right clicking the component and selecting  
+<i>Open class in new tab</i>. 
+<\\p>
+<p>
+The first component at the top-left of the model is a <code>SimInfoManager<\\code>.
+This element reads typical yearly weather data of Uccle, where the building
+is to be located. It reads the weather data from a TMY file, and transmits 
+this information to other inner components of the model that may require
+this information. 
+<\\p>
+<p>
+The next component is an instance of an <code>Occupancy<\\code> model used to 
+designate the heating and cooling setpoints: <code>setHea<\\code> and 
+<code>setCoo<\\code>, which are the lower and upper comfort bounds 
+allowed in the building. Instantiating this model allows to simultaneously
+define these comfort constraints for both building zones, without having to
+redefine these in each of them. The same applies for the occupancy schedules
+(number of occupants per time of the day) and the zone areas, as a 
+symmetric distribution is assumed: north and south zone have the same
+area and number of occupants. 
+<\\p>
+<p>
+Finally, the north and south zones of the building are each modelled with
+a <code>RectangularZoneTemplate<\\code> class of IDEAS. Notice that these
+zones are connected through an internal wall, enabling heat exchange between 
+them. The floor and ceiling of each zone are connected as well which 
+enforces these components of the zone to have the same properties. 
+<\\p>
+<p>
+You can simulate the model using the simulate button 
+<img alt=\"image\" src=\"modelica://TheSysConExe/Resources/Images/simulate.png\" width=\"40\" border=\"1\"/>
+at the simulation pane located in the top-right of the Dymola window. 
+Before simulating, make sure you set your start simulation time to 0 and your
+stop simulatino time to 28 days in the simulation setup   
+<img alt=\"image\" src=\"modelica://TheSysConExe/Resources/Images/simSetup.png\" width=\"40\" border=\"1\"/>.
+<\\p>
+
+</html>"));
 
 end Exe1BuildingEnvelope;

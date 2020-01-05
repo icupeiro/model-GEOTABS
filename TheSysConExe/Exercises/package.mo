@@ -56,20 +56,24 @@ You can find the development page of this library at:
 https://github.com/open-ideas</a>, 
 together with other useful resources like a crash course on how to use Modelica
 and the IDEAS library itself. 
-Last but no least, you count with all the wisdom that you've acquired in your 
-lectures of Thermal Systems and that you'll certainly need to use.  
+Last but no least, you count with all the wisdom that you've acquired during 
+your lectures of Thermal Systems and that you'll certainly need to use.  
 </p>
 <p>
 Luckily, Carl left 
 <a href=\"modelica://TheSysConExe.Exercises.Exe1BuildingEnvelope\">
 a first model of the building envelope</a>.
 where you can start from. 
-Your main task consists on taking this building enevelope model and perform simulations
+Your main task consists on perform simulations of this building envelope model
 to identify the most suitable thermal systems and their controls. 
 From their experience, <i>The Sysis Consultants</i> have developed 
-
 a template form 
-that you should use to write down all your results and summarize your conclusions.  
+that you should use to write down all your results and summarize your conclusions.
+This form will be eventually used as a deliverable to the <i>BeautifulEnvelopes</i>
+architectural firm. 
+</p>
+<p>
+GOOD LUCK!
 </p>
 
 </html>"));
