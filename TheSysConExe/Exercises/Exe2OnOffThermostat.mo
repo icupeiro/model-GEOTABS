@@ -3,6 +3,7 @@ model Exe2OnOffThermostat
   "Building control by switching emission system on and off"
   extends BaseClases.envRadPumBoi;
   Modelica.Blocks.Sources.Constant const(k=60 + 273.15)
+    "Supply temperature setpoint"
     annotation (Placement(transformation(extent={{220,40},{240,60}})));
 equation
   connect(jun.port_3, radSou.port_a)
@@ -23,7 +24,8 @@ equation
 <p>
 You have extended the previous model with a very simple heating system 
 to provide thermal comfort in both zones of the building. This first
-proposal is composed of an emission system that has one radiator per zone 
+proposal is composed of an emission system and a production system. 
+The emission system has one radiator per zone 
 (<code>radNor<\\code> and <code>radSou<\\code>) and one pump 
 (<code>pum<\\code>) to circulate the heating fluid (<code>MediumWater<\\code>). 
 The production system is an ideal boiler that allows to externally set 
@@ -43,21 +45,23 @@ switches on and off the circulation pump of the emission system. A
 thermostat senses the indoor temperature in one of the zones and 
 compares against a predefined indoor temperature setpoint. The controller
 reacts to the sensed value by switching on and off the circulation pump
-depending on the indoor temperature value. If the indoor temperature 
+depending on the indoor temperature reading. If the indoor temperature 
 lowers down the temperature setpoint minus a certain offset, then the
 pump is switched on. If the indoor temperature surpases the temperature
-setpoint plus a certain offset, then the pump is switched off. An 
-schematic of this controller is represented in the following figure. 
+setpoint plus a certain offset, then the pump is switched off. The figure
+below shows an schematic of this controller and an abstraction of the 
+expected output. 
 </p>
 <p align=\"center\">
-<img alt=\"image\" src=\"modelica://TheSysConExe/Resources/Images/feedbackControl.png\" width=\"1000\" border=\"1\"/>
+<img alt=\"image\" src=\"modelica://TheSysConExe/Resources/Images/feedbackControl.png\" width=\"1400\" border=\"1\"/>
 </p>
 It's important to note that, in this case, we are not controlling the 
 production system (the boiler). Instead, we only control the circulation 
-pump and fix a constant supply temperature for the production system.
-To enable the circulation pump to read an external control input you may
-modify the <i>inputType</i> parameter of the pump in the General view and 
-change it to <i>Use integer input to select state</i>.
+pump and assume that the boiler will be able to provide the established
+constant supply temperature every time that the water circulates.
+To enable the pump to read an external control input you may want 
+to modify the <i>\"inputType\"</i> parameter of the pump in the General view and 
+change it to <i>\"Use integer input to select state\"</i>.
 
 <p>
 You can implement the described control logic by using the following 
@@ -76,21 +80,22 @@ blocks:
 <li>
 <code>Modelica.Blocks.Sources.Constant</code>
 </li>
+</ol>
 
 <p>
 You can use the <code>setHea</code> of the <code>occ</code> block as 
 heating temperature setpoint. You may want to add an offset to this 
 temperature setpoint before using it as the reference of your on-off 
 controller to avoid an excesive discomfort.  
-<p>
 </p>
-Before start dragging and dropping these blocks into your model start 
-by understanding how these blocks work, what they actually do, and how
-they can be used within the control logic. Once that is clear, instantiate
-the blocks and connect them to build the controller. It must be pointed
-out that there are several ways to implement the same control logic. If 
-you find other blocks that may lead to an equivalent result you are very
-encouraged to try them out!
+<p>
+Before start tunning your controller, you should
+understand how these blocks work, what they actually do, and how
+they can be used within the control logic. Once that is clear, drag and drop
+the blocks from the Package Browser and connect them to build the controller. 
+It must be pointed out that there are several ways to implement the same 
+control logic. If you find other blocks that may lead to an equivalent result, 
+you are very encouraged to try them out!
 </p>
 
 <h4>Questions</h4>
@@ -99,15 +104,39 @@ encouraged to try them out!
 In the previous exercise it was clear that there was thermal discomfort 
 and no energy consumption since the thermal systems were missing. However,
 from now on you will use these two variables as key performance indicators 
-to compare between the thermal systems and control logics proposed.  
+to compare between the proposed thermal systems and control logics.  
 It is possible to quantify the thermal energy consumed as well as the 
-total discomfort in the building by integrating the instantaneous power
+total discomfort in each of the zones by integrating the instantaneous power
 and the temperature deviations out of the comfort range. The former is 
 usually expressed in units of kW*h, the latter is expressed in units
 of K*h. This model already computes these quantities and the corresponding
-unit changes, you can access them at <code>ene.y<\\occ.A> and 
-<code>rectangularZoneTemplate.comfort.totDis<\\occ.A>, respectively. Which are 
-these values at the end of the simulation? does them make sense? 
+unit changes, you can access them at <code>ene.y<\\occ.A>, 
+<code>rectangularZoneTemplate.comfort.totDis<\\occ.A>, and 
+<code>rectangularZoneTemplate.comfort.totDis<\\occ.A>. 
+Which are the values of the energy use of the boiler, and the total 
+discomfort in the north and zouth zones at the end of the simulation? 
+does them make sense? 
 </li>
+<li>
+Is there a substantial thermal discomfort difference between both zones? 
+Why does that happen? 
+</li>
+<li>
+What happens if you change the zone where the thermostat is located? 
+</li>
+<li>
+Play around with the supply temperature of the boiler by changing 
+the <code>k</code> parameter of block <code>const</code>. Is it necessary 
+to have such a high supply temperature setpoint or can it be lowered down? 
+Is there a minimum supply temperature setpoint to cope with the building
+envelope heating losses? In case yes, which one? 
+</li>
+<li>
+Is there an added value on lowering down the supply temperature setpoint? 
+Would it be interesting to vary the supply temperature setpoint? in case
+yes, why and how would you vary it? 
+</li>
+</ol>
+
 </html>"));
 end Exe2OnOffThermostat;

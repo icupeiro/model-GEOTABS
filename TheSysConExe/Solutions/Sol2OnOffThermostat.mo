@@ -1,7 +1,8 @@
 within TheSysConExe.Solutions;
 model Sol2OnOffThermostat
   "Solution of exercise 2 for building control with on-off thermostat for the pump"
-  extends Exercises.Exe2OnOffThermostat(pum(inputType=IDEAS.Fluid.Types.InputType.Stages));
+  extends Exercises.Exe2OnOffThermostat(pum(inputType=IDEAS.Fluid.Types.InputType.Stages), const(k
+        =45 + 273.15));
   Modelica.Blocks.Math.BooleanToInteger booToInt
     "Convert boolean signal into integer "
     annotation (Placement(transformation(extent={{42,70},{62,90}})));
