@@ -62,7 +62,7 @@ constant supply temperature every time that the water circulates.
 To enable the pump to read an external control input you may want 
 to modify the <i>\"inputType\"</i> parameter of the pump in the General view and 
 change it to <i>\"Use integer input to select state\"</i>.
-
+</p>
 <p>
 You can implement the described control logic by using the following 
 blocks:
