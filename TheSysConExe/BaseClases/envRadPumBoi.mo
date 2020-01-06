@@ -47,8 +47,8 @@ partial model envRadPumBoi "Envelope, radiators, pump and boiler"
     m_flow_nominal=pum.m_flow_nominal,
     dp_nominal=10000) "Ideal boiler with prescribed supply temperature"
     annotation (Placement(transformation(extent={{220,10},{200,30}})));
-  Modelica.Blocks.Continuous.Integrator Ene(k=1/3600000)
-    "Electrical energy meter with conversion to kWh"
+  Modelica.Blocks.Continuous.Integrator ene(k=1/3600000)
+    "Energy meter with conversion to kWh"
     annotation (Placement(transformation(extent={{220,72},{240,92}})));
   IDEAS.Fluid.FixedResistances.Junction jun1(
     redeclare package Medium = MediumWater,
@@ -83,7 +83,7 @@ equation
     annotation (Line(points={{148,60},{140,60}}, color={0,127,255}));
   connect(boi.port_b, senTemSup.port_a) annotation (Line(points={{200,20},{
           180,20},{180,60},{168,60}}, color={0,127,255}));
-  connect(boi.Q_flow, Ene.u) annotation (Line(points={{199,28},{192,28},{
+  connect(boi.Q_flow,ene. u) annotation (Line(points={{199,28},{192,28},{
           192,82},{218,82}}, color={0,0,127}));
   connect(radNor.port_b, jun1.port_1) annotation (Line(points={{50,-20},{50,
           -50},{80,-50}}, color={0,127,255}));

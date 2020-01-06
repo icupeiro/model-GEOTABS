@@ -1,7 +1,7 @@
 within TheSysConExe.BaseClases;
 model EnvFloPumHP "Building envelope, floor heating, pump, and heat pump"
   extends envFloPum;
-  Modelica.Blocks.Continuous.Integrator Ene(k=1/3600000)
+  Modelica.Blocks.Continuous.Integrator ene(k=1/3600000)
     "Electrical energy meter with conversion to kWh"
     annotation (Placement(transformation(extent={{272,74},{292,94}})));
   IDEAS.Fluid.HeatPumps.ScrollWaterToWater heaPum(
@@ -46,7 +46,7 @@ equation
           -48},{304,-48},{304,-10},{316,-10}}, color={0,127,255}));
   connect(pumPrim.port_a,bou1. ports[2]) annotation (Line(points={{296,42},{304,
           42},{304,-6},{316,-6}}, color={0,127,255}));
-  connect(heaPum.P,Ene. u) annotation (Line(points={{246,3},{248,3},{248,84},{270,
+  connect(heaPum.P,ene. u) annotation (Line(points={{246,3},{248,3},{248,84},{270,
           84}}, color={0,0,127}));
   connect(jun1.port_2,heaPum. port_a1) annotation (Line(points={{100,-50},{240,-50},
           {240,-18}}, color={0,127,255}));

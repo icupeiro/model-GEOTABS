@@ -31,7 +31,7 @@ model Exe1BuildingEnvelope
     setHeaUno=21 + 273.15,
     setCooOcc=23 + 273.15,
     setCooUno=23 + 273.15,
-    k=5)
+    k=10)
     "Occupancy schedule and setpoints for each of the zones in the building"
     annotation (Placement(transformation(extent={{-80,40},{-60,60}})));
 
@@ -75,25 +75,61 @@ designate the heating and cooling setpoints: <code>setHea<\\code> and
 allowed in the building. Instantiating this model allows to simultaneously
 define these comfort constraints for both building zones, without having to
 redefine these in each of them. The same applies for the occupancy schedules
-(number of occupants per time of the day) and the zone areas, as a 
+(number of occupants per time of the day) and the zone areas. A 
 symmetric distribution is assumed: north and south zone have the same
 area and number of occupants. 
-<\\p>
+</p>
 <p>
 Finally, the north and south zones of the building are each modelled with
 a <code>RectangularZoneTemplate<\\code> class of IDEAS. Notice that these
 zones are connected through an internal wall, enabling heat exchange between 
-them. The floor and ceiling of each zone are connected as well which 
+them. The floor and ceiling of each zone are connected as well, which 
 enforces these components of the zone to have the same properties. 
-<\\p>
+</p>
 <p>
 You can simulate the model using the simulate button 
 <img alt=\"image\" src=\"modelica://TheSysConExe/Resources/Images/simulate.png\" width=\"40\" border=\"1\"/>
 at the simulation pane located in the top-right of the Dymola window. 
-Before simulating, make sure you set your start simulation time to 0 and your
-stop simulatino time to 28 days in the simulation setup   
+Before simulating, make sure that the start simulation time is set to 0 
+and the stop simulatino time to 28 days. You can check that in the 
+simulation setup   
 <img alt=\"image\" src=\"modelica://TheSysConExe/Resources/Images/simSetup.png\" width=\"40\" border=\"1\"/>.
+To see the simulation results, access the Simulation view at the 
+bottom-right of the Dymola window. Then, select a bunch of variables that
+you'd like to plot from the variable browser. For instance, the graph 
+below has been obtained by choosing the comfort setpoints, the indoor
+temperatures of both zones and the outdoor temperature. 
+</p>
+<p align=\"center\">
+<img alt=\"image\" src=\"modelica://TheSysConExe/Resources/Images/Exe1BuildingEnvelope.png\" width=\"1800\" border=\"1\"/>
+</p>
+<p>
+Make sure you obtain a similar graph when plotting the same variables and
+then plot any variable you need to answer the following questions. 
+</p>
+<h4>Questions</h4>
+<ol>
+<li>
+Was it expected to have such low temperatures within the building zones?
+Why does that happen?
+</li>
+<li>
+What is the influence of increasing the zone area? why does that happen? 
+You can change the area of the zones at <code>occ.A<\\occ.A>.
+</li>
+<li>
+What is the influence of increasing the number of occupants per zone? 
+why does that happen? You can change the number of occupants per zone during 
+the occupied period at <code>occ.nOcc<\\occ.A>. Notice that the occupancy 
+schedule is not constant. If you'd like to see the number of occupants 
+per zone plot <code>occ.nOcc<\\occ.A>
+</li>
+<p>
+Well done! now you're ready to start adding thermal systems to the building.
+Before continuing, change back the parameters of the area and the number of 
+occupants to their originall value.  
 <\\p>
+
 
 </html>"));
 

@@ -67,7 +67,7 @@ where you can start from.
 Your main task consists on perform simulations of this building envelope model
 to identify the most suitable thermal systems and their controls. 
 From their experience, <i>The Sysis Consultants</i> have developed 
-a template form 
+a template 
 that you should use to write down all your results and summarize your conclusions.
 This form will be eventually used as a deliverable to the <i>BeautifulEnvelopes</i>
 architectural firm. 
