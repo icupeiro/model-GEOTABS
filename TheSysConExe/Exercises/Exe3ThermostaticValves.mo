@@ -20,6 +20,7 @@ model Exe3ThermostaticValves "Building control through thermostatic valves"
         rotation=90,
         origin={90,30})));
   Modelica.Blocks.Sources.Constant const(k=60 + 273.15)
+    "Supply temperature setpoint"
     annotation (Placement(transformation(extent={{220,40},{240,60}})));
 equation
   connect(valNor.port_b, radNor.port_a)
@@ -37,7 +38,8 @@ equation
     annotation (Line(points={{80,60},{50,60},{50,40}}, color={0,127,255}));
   connect(const.y, boi.TSet) annotation (Line(points={{241,50},{256,50},{
           256,28},{222,28}}, color={0,0,127}));
-  annotation (Documentation(info="<html>
+  annotation (
+    Documentation(info="<html>
 <p>
 As you have probably realised from the previous exercise, the thermal 
 behaviour of the on-off control logic was quite reactive, leading to 
@@ -63,7 +65,7 @@ valve looks in reality and how it looks in the IDEAS library.
 <p>
 You may want to open the IDEAS model of the TRV into a new tab to 
 examine how it works. Look into the <code>yExp</code> block that 
-defines the characteristic of the valve opening and set the parameters
+defines the valve opening characteristic and set the parameters
 <code>TSet</code> and <code>P</code> of each valve accordingly. 
 You can perform several simulations and use trial and error to 
 improve your results. 
@@ -71,9 +73,34 @@ improve your results.
 <p>
 It may also be interesting to include the on-off control logic from 
 the previous exercise to switch on the distribution pump only when 
-necessary. Notice that in Dymola you can simply <code>Ctrl+C</code>
+necessary. In Dymola you can simply <code>Ctrl+C</code>
 and <code>Ctrl+P</code> blocks and connections at the same time. 
-Finally, you can lower down the boiler supply temperature to   
+If you do so, recall to change the input type of the pump as well. 
+Finally, you can lower down the boiler supply temperature as in the 
+previous exercise to lower down energy usage as much as possible.   
 </p>
-</html>"));
+<h4>Questions</h4>
+<ol>
+<li>
+Once you have properly tunned the parameters in each valve. 
+Which are the values of the energy use of the boiler, and the total 
+discomfort in the north and south zones at the end of the simulation? 
+does them make sense? How do they compare with the previous exercise?
+</li>
+<li>
+How the zone temperature profiles compare with the previous exercise? 
+</li>
+<li>
+Why are there still zone temperature peaks that remain after adding 
+the thermostatic valves? 
+</li>
+</ol>
+</html>"),
+    experiment(StopTime=2419200, __Dymola_Algorithm="Lsodar"),
+    __Dymola_experimentSetupOutput,
+    __Dymola_experimentFlags(
+      Advanced(GenerateVariableDependencies=false, OutputModelicaCode=false),
+      Evaluate=false,
+      OutputCPUtime=false,
+      OutputFlatModelica=false));
 end Exe3ThermostaticValves;

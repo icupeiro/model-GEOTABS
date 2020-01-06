@@ -53,7 +53,7 @@ below shows an schematic of this controller and an abstraction of the
 expected output. 
 </p>
 <p align=\"center\">
-<img alt=\"image\" src=\"modelica://TheSysConExe/Resources/Images/feedbackControl.png\" width=\"1400\" border=\"1\"/>
+<img alt=\"image\" src=\"modelica://TheSysConExe/Resources/Images/feedbackControl.png\" width=\"1600\" border=\"1\"/>
 </p>
 It's important to note that, in this case, we are not controlling the 
 production system (the boiler). Instead, we only control the circulation 
