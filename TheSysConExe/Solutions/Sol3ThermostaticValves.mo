@@ -1,7 +1,8 @@
 within TheSysConExe.Solutions;
 model Sol3ThermostaticValves
   "Solution of exercise 3 for building control with thermostatic valves"
-  extends Exercises.Exe3ThermostaticValves(valNor(P=0.2), valSou(P=0.2),
+  extends Exercises.Exe3RadiatorsThermostaticValves(
+                                           valNor(P=0.2), valSou(P=0.2),
     const(k=50 + 273.15),
     pum(inputType=IDEAS.Fluid.Types.InputType.Stages));
   Modelica.Blocks.Math.BooleanToInteger booToInt

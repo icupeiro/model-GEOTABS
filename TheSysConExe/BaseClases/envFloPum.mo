@@ -1,6 +1,7 @@
 within TheSysConExe.BaseClases;
 model envFloPum "Envelope, floor heating, and pump"
-  extends Exercises.Exe1BuildingEnvelope(rectangularZoneTemplate(
+  extends Exercises.Exe1RadiatorsBuildingEnvelope(
+                                         rectangularZoneTemplate(
       linIntRad=true,
       redeclare IDEAS.Buildings.Data.Constructions.InsulatedFloorHeating
         conTypFlo,

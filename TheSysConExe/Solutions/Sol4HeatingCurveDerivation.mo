@@ -1,7 +1,8 @@
 within TheSysConExe.Solutions;
 model Sol4HeatingCurveDerivation
   "Solution of the exercise on the derivation of the building heating curve"
-  extends Exercises.Exe4HeatingCurveDerivation(conPID(
+  extends Exercises.Exe4RadiatorsHeatingCurveDerivation(
+                                               conPID(
       controllerType=Modelica.Blocks.Types.SimpleController.PI,
       k=100,
       Ti=600,

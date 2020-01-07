@@ -1,6 +1,7 @@
 within TheSysConExe.BaseClases;
 partial model envRadPumBoi "Envelope, radiators, pump and boiler"
-  extends Exercises.Exe1BuildingEnvelope(occ(
+  extends Exercises.Exe1RadiatorsBuildingEnvelope(
+                                         occ(
       setCooOcc=23 + 273.15,
       setCooUno=23 + 273.15));
   package MediumWater = IDEAS.Media.Water "Water Medium";
