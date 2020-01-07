@@ -41,4 +41,12 @@ equation
   connect(boi.TSet, heaCurTab.y[1]) annotation (Line(points={{222,28},{228,
           28},{228,40},{231,40}},
                              color={0,0,127}));
+  annotation (Documentation(info="<html>
+<p>
+Now it is about time for you to see if there is an 
+added value on implementing the heating curve derived in 
+the previous exercise and obtain some good operational 
+savings for your clients.  
+</p>
+</html>"));
 end Exe5HeatingCurveImplementation;
