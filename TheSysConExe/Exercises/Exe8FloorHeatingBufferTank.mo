@@ -1,7 +1,7 @@
 within TheSysConExe.Exercises;
 model Exe8FloorHeatingBufferTank
   "Exercise with floor heating, heat pump, and a buffer tank to decouple emission circuit from production circuit"
-  extends BaseClases.EnvFloPumHP;
+  extends BaseClases.envFloPumHP;
   IDEAS.Fluid.Actuators.Valves.TwoWayTRV valNor(
     m_flow_nominal=embNor.m_flow_nominal,
     dpValve_nominal=20000,

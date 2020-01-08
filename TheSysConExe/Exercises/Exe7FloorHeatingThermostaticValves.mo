@@ -1,7 +1,7 @@
 within TheSysConExe.Exercises;
 model Exe7FloorHeatingThermostaticValves
   "Building with floor heating, thermostatic valves, and heat pump"
-  extends BaseClases.EnvFloPumHP;
+  extends BaseClases.envFloPumHP;
   IDEAS.Fluid.Actuators.Valves.TwoWayTRV valNor(
     m_flow_nominal=embNor.m_flow_nominal,
     dpValve_nominal=20000,

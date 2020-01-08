@@ -1,5 +1,5 @@
 within TheSysConExe.BaseClases;
-model EnvFloPumHP "Building envelope, floor heating, pump, and heat pump"
+model envFloPumHP "Building envelope, floor heating, pump, and heat pump"
   extends envFloPum;
   Modelica.Blocks.Continuous.Integrator ene(k=1/3600000)
     "Electrical energy meter with conversion to kWh"
@@ -12,7 +12,7 @@ model EnvFloPumHP "Building envelope, floor heating, pump, and heat pump"
     redeclare package Medium2 = MediumWater,
     datHeaPum=
         IDEAS.Fluid.HeatPumps.Data.ScrollWaterToWater.Heating.Viessmann_BW301A21_28kW_5_94COP_R410A(),
-    scaling_factor=0.05,
+    scaling_factor=0.03,
     dp1_nominal=10000,
     dp2_nominal=10000,
     energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial)
@@ -50,4 +50,4 @@ equation
           84}}, color={0,0,127}));
   connect(jun1.port_2,heaPum. port_a1) annotation (Line(points={{100,-50},{240,-50},
           {240,-18}}, color={0,127,255}));
-end EnvFloPumHP;
+end envFloPumHP;

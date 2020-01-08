@@ -112,11 +112,11 @@ nominal values):
   </tr>
   <tr>
     <td>Radiator (2750 W)</td>
-    <td> 155.26</td>
+    <td> 155.3</td>
   </tr>
   <tr>
     <td>Radiator (1073 W)</td>
-    <td> 48.69</td>
+    <td> 48.7</td>
   </tr>
   <tr>
     <td>Boiler (7 kW) without outdoor reset control</td>
