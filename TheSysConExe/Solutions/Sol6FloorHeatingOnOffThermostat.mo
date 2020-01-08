@@ -2,7 +2,7 @@ within TheSysConExe.Solutions;
 model Sol6FloorHeatingOnOffThermostat
   "Solution of exercise with floor heating, heat pump, and on off thermostat"
   extends Exercises.Exe6FloorHeatingOnOffThermostat(heaPum(scaling_factor=0.05),
-      pum(inputType=IDEAS.Fluid.Types.InputType.Constant, dp_nominal=20000));
+      pum(inputType=IDEAS.Fluid.Types.InputType.Constant));
   Modelica.Blocks.Math.BooleanToInteger booToInt
     "Convert boolean signal into integer "
     annotation (Placement(transformation(extent={{42,70},{62,90}})));

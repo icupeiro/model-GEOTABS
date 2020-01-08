@@ -47,5 +47,23 @@ equation
   connect(tan.port_a, heaPum.port_b1) annotation (Line(points={{212,60},{
           240,60},{240,2}}, color={0,127,255}));
   annotation (Diagram(coordinateSystem(extent={{-100,-100},{340,140}})),
-      Icon(coordinateSystem(extent={{-100,-100},{340,140}})));
+      Icon(coordinateSystem(extent={{-100,-100},{340,140}})),
+    Documentation(info="<html>
+<p>
+Attempting to solve the problem encountered in the previous exercise, 
+you decide to include a buffer tank that decouples the HP functioning
+from the emission circuit. 
+</p>
+<h4>Questions</h4>
+<ol>
+<li>
+How does exactly the buffer tank helps to solve the problem of the 
+previous exercise? 
+</li>
+<li>
+What is the energy consumed by the compressor of the heat pump? and
+the total discomfort in each of the zones?
+</li>
+</ol>
+</html>"));
 end Exe8FloorHeatingBufferTank;

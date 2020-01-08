@@ -39,8 +39,23 @@ the floor of the zones. This model is used for floor heating and
 for Termally Activated Building Systems (TABS). Also, if you open 
 the floor window of each zone you will realize that its material 
 structure has been replaced by an insulated floor heating type with 
-heat injection between a layer of 7cm of polyurethane and a layer of 
-5cm screed. This type also includes 10cm of concrete. 
+heat injection between a layer of 7cm of insulation and a layer of 
+5cm screed. This type also includes 10cm of concrete. A graphical 
+representation of this floor type and a radiant floor under construction
+is shown in the figures below. 
+</p>
+<p align=\"center\">
+<img alt=\"image\" src=\"modelica://TheSysConExe/Resources/Images/floorHeating.png\" width=\"1000\" border=\"1\"/>
+</p>
+<p>
+<i>Source fig left: </i>
+<a href=\"https://www.quora.com/What-is-the-best-flooring-for-radiant-heat-systems\">
+Citygas</a>
+</p>
+<p>
+<i>Source fig right: </i>
+<a href=\"http://www.spiderex.it/\">
+Spiderex</a>
 </p>
 <p>
 Start by implementing an on-off control logic similar to 

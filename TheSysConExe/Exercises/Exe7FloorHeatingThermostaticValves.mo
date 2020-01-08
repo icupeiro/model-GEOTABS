@@ -36,4 +36,42 @@ equation
           50,16},{34,16},{34,0},{40,0}}, color={0,127,255}));
   connect(heaPum.port_b1, senTemSup.port_a) annotation (Line(points={{240,2},
           {240,60},{168,60},{168,60}}, color={0,127,255}));
+  annotation (Documentation(info="<html>
+<p>
+This exercise is equivalent to 
+<a href=\"modelica://TheSysConExe.Exercises.Exe3RadiatorsThermostaticValves\">
+TheSysConExe.Exercises.Exe3RadiatorsThermostaticValves</a> 
+in the sense that valves are introduced to control the water flow
+through the emission system in each zone, seeking a better temperature
+control. Normally, a motorized valve would be used to control the 
+water flow. However, we still model the valve in this exercise as 
+a TRV since the working principle is the same and the resulting model
+is more efficient. 
+</p>
+<p>
+Firs, add the on-off control already implemented in the previous 
+exercise. Then, Tune the parameters in each valve to properly follow
+the heating setopoint and simulate to answer the following questions. 
+</p>
+
+<h4>Questions</h4>
+<ol>
+<li>
+How the zone temperature profiles compare with the previous exercise? 
+</li>
+<li>
+In fact, we have probably achieved an smoother temperature control. 
+We may even expect it to be more efficient, however, we see that both, the energy
+use and thermal discomfort have considerably increased. What is the reason
+for that?
+<p>
+Hint: plot the following variables to help you elaborate an answer:
+The heat pump condenser temperature <code>heaPum.con.T</code>, the heat pump
+heat flow rate <code>heaPum.QCon_flow</code>, the floor heating heat 
+flow rates <code>embNor.QTot</code> and <code>embSou.QTot</code>, and the
+heat pump COP <code>heaPum.com.COP</code>.
+</p>
+</li>
+</ol>
+</html>"));
 end Exe7FloorHeatingThermostaticValves;

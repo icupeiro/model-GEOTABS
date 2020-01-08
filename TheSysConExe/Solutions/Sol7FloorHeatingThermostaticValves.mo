@@ -1,11 +1,15 @@
 within TheSysConExe.Solutions;
 model Sol7FloorHeatingThermostaticValves
   "Solution of exercise with floor heating, thermostatic valves, and heat pump"
-  extends Exercises.Exe7FloorHeatingThermostaticValves;
+  extends Exercises.Exe7FloorHeatingThermostaticValves(
+    valNor(P=0.5),
+    valSou(P=0.5),
+    heaPum(scaling_factor=0.05));
   IDEAS.Fluid.Actuators.Valves.TwoWayTRV valNor(
     m_flow_nominal=embNor.m_flow_nominal,
     dpValve_nominal=20000,
-    redeclare package Medium = MediumWater)
+    redeclare package Medium = MediumWater,
+    P=0.5)
     "Thermostatic valve for north zone" annotation (Placement(
         transformation(
         extent={{10,-10},{-10,10}},
@@ -14,7 +18,8 @@ model Sol7FloorHeatingThermostaticValves
   IDEAS.Fluid.Actuators.Valves.TwoWayTRV valSou(
     dpValve_nominal=20000,
     m_flow_nominal=embSou.m_flow_nominal,
-    redeclare package Medium = MediumWater)
+    redeclare package Medium = MediumWater,
+    P=0.5)
     "Thermostatic valve for south zone" annotation (Placement(
         transformation(
         extent={{10,-10},{-10,10}},
