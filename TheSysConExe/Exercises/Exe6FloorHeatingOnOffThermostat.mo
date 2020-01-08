@@ -46,12 +46,12 @@ heat injection between a layer of 7cm of polyurethane and a layer of
 Start by implementing an on-off control logic similar to 
 <a href=\"modelica://TheSysConExe.Exercises.Exe2RadiatorsOnOffThermostat\">
 TheSysConExe.Exercises.Exe2OnOffThermostat</a>. 
-This time, take into account that you should swtch three integer 
-variables: the pump of the primary circuit, the pump of the secondary
-circuit, and the compressor of the heat pump. The pump of the primary
-circuit will activate the circulation of water through the emission 
-system. The pump of the secondary circuit will activate the circulation
-of water from the Geleitsbeek river through the evaporator of the heat
+This time, take into account that you should swtch on and off the 
+compressor of the heat pump. The circulation pumps should always be on.
+The pump of the primary
+circuit will activate the water circulation through the emission 
+system. The pump of the secondary circuit will activate the water circulation
+from the Geleitsbeek river through the evaporator of the heat
 pump. Finally, the heat pump compressor will activate the refrigerant 
 thermodynamic circuit that will transfer heat from the cold to the hot source. 
 The three of them should be switched on and off at the same time. 

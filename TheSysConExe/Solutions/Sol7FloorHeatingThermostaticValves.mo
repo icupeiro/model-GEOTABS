@@ -1,7 +1,7 @@
 within TheSysConExe.Solutions;
 model Sol7FloorHeatingThermostaticValves
   "Solution of exercise with floor heating, thermostatic valves, and heat pump"
-  extends BaseClases.envFloPumHP;
+  extends Exercises.Exe7FloorHeatingThermostaticValves;
   IDEAS.Fluid.Actuators.Valves.TwoWayTRV valNor(
     m_flow_nominal=embNor.m_flow_nominal,
     dpValve_nominal=20000,
@@ -46,8 +46,6 @@ equation
     annotation (Line(points={{50,40},{50,60},{80,60}}, color={0,127,255}));
   connect(valNor.port_b, embNor.port_a) annotation (Line(points={{50,20},{
           50,16},{34,16},{34,0},{40,0}}, color={0,127,255}));
-  connect(booToInt.y, pum.stage) annotation (Line(points={{63,80},{82,80},{82,98},
-          {130,98},{130,72}},        color={255,127,0}));
   connect(onOffCon.y,booToInt. u)
     annotation (Line(points={{21,80},{40,80}}, color={255,0,255}));
   connect(add.y,onOffCon. reference) annotation (Line(points={{-21,80},{-12,
@@ -58,8 +56,6 @@ equation
           102},{-53,102}}, color={0,0,127}));
   connect(booToInt.y, heaPum.stage) annotation (Line(points={{63,80},{82,80},{82,
           112},{338,112},{338,-74},{243,-74},{243,-20}}, color={255,127,0}));
-  connect(booToInt.y, pumPrim.stage) annotation (Line(points={{63,80},{82,80},{82,
-          106},{300,106},{300,62},{286,62},{286,54}}, color={255,127,0}));
   connect(onOffCon.u, rectangularZoneTemplate.TSensor) annotation (Line(
         points={{-2,74},{-10,74},{-10,60},{20,60},{20,32},{11,32}}, color={
           0,0,127}));

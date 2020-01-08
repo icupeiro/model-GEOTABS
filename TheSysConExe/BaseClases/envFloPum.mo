@@ -12,7 +12,7 @@ model envFloPum "Envelope, floor heating, and pump"
   package MediumWater = IDEAS.Media.Water "Water Medium";
   IDEAS.Fluid.Movers.FlowControlled_dp pum(
     dp_nominal=20000,
-    inputType=IDEAS.Fluid.Types.InputType.Stages,
+    inputType=IDEAS.Fluid.Types.InputType.Constant,
     m_flow_nominal=embNor.m_flow_nominal + embSou.m_flow_nominal,
     redeclare package Medium = MediumWater,
     energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial)
