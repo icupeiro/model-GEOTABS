@@ -48,12 +48,12 @@ is shown in the figures below.
 <img alt=\"image\" src=\"modelica://TheSysConExe/Resources/Images/floorHeating.png\" width=\"1000\" border=\"1\"/>
 </p>
 <p>
-<i>Source fig left: </i>
+<i>Source left figure: </i>
 <a href=\"https://www.quora.com/What-is-the-best-flooring-for-radiant-heat-systems\">
 Citygas</a>
 </p>
 <p>
-<i>Source fig right: </i>
+<i>Source right figure: </i>
 <a href=\"http://www.spiderex.it/\">
 Spiderex</a>
 </p>
@@ -74,9 +74,10 @@ The performance data used for the implemented heat pump are
 for a 21 kW heat pump, which is much more than we require for our 
 Therefore, set the heat pump scaling factor to a value able to 
 cope with the heat losses but such that do not oversizes the nominal 
-power of the heat pump. For instance, if you use 0.05 as scaling factor, 
-the model will rescale the heat pump behaviour to a thermal power of 5 %
-from the original heat pump of 21 kW. 
+power of the heat pump. For instance, if you use 0.1 as scaling factor, 
+the model will rescale the heat pump behaviour to a thermal power of 10 %
+from the original heat pump of 21 kW. You can open the heat pump model
+and go to the information tab for more specification of how this model works. 
 </p>
 <p>
 <h4>Questions</h4>
@@ -85,6 +86,13 @@ from the original heat pump of 21 kW.
 According to the chosen scaling factor, what would be the nominal 
 power of the heat pump required for this instalation? 
 </li>
+<p>
+Note: watch out with large scaling factors. These will lead not only to higher
+installation costs because of an oversized heat pump, but also to decrease the 
+system performance. The latest may be caused by the temperature protection 
+of the heat pump model that disables the heat pump when temperature exceeds a 
+predefined threshold. 
+</p>
 <li>
 Which are the values of the energy use of the heat pump compressor? 
 What is the total discomfort in the north and south zones at the end of the simulation? 
@@ -110,5 +118,12 @@ smart-grid?
 </li>
 </ol>
 </p>
-</html>"));
+</html>"),
+    experiment(StopTime=2419200, __Dymola_Algorithm="Lsodar"),
+    __Dymola_experimentSetupOutput,
+    __Dymola_experimentFlags(
+      Advanced(GenerateVariableDependencies=false, OutputModelicaCode=false),
+      Evaluate=false,
+      OutputCPUtime=false,
+      OutputFlatModelica=false));
 end Exe6FloorHeatingOnOffThermostat;

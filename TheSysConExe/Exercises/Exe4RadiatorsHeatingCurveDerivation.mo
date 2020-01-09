@@ -177,5 +177,12 @@ discomfort in the north and south zones at the end of the simulation?
 </li>
 </ol>
 
-</html>"));
+</html>"),
+    experiment(StopTime=2419200, __Dymola_Algorithm="Lsodar"),
+    __Dymola_experimentSetupOutput,
+    __Dymola_experimentFlags(
+      Advanced(GenerateVariableDependencies=false, OutputModelicaCode=false),
+      Evaluate=false,
+      OutputCPUtime=false,
+      OutputFlatModelica=false));
 end Exe4RadiatorsHeatingCurveDerivation;

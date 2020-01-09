@@ -153,5 +153,12 @@ this extra investment cost?
 </li>
 </ol>
 </p>
-</html>"));
+</html>"),
+    experiment(StopTime=2419200, __Dymola_Algorithm="Lsodar"),
+    __Dymola_experimentSetupOutput,
+    __Dymola_experimentFlags(
+      Advanced(GenerateVariableDependencies=false, OutputModelicaCode=false),
+      Evaluate=false,
+      OutputCPUtime=false,
+      OutputFlatModelica=false));
 end Exe5RadiatorsHeatingCurveImplementation;

@@ -64,6 +64,30 @@ previous exercise?
 What is the energy consumed by the compressor of the heat pump? and
 the total discomfort in each of the zones?
 </li>
+<li>
+You come back to the catalogues of the providers that are partnered with
+<i>The Sysis Consultants</i> to check prices and you find out the cost of 
+installing floor heating is approximately of 30 &#8364;/m2. For heat pumps, 
+your preferred supplier is 
+<a href=\"https://www.pzpheating.com/userfiles/files/Price-list_EN_01_04_2014.pdf\">
+PZP HEATING a.s.</a> 
+Go into this catalogue to propose a particular model of a heat pump and
+buffer tank. What is the estimated total price of this
+installation?
+</li>
+<li>
+What is the extra cost in the initial investment of implementing 
+this thermal installation when compared to installation of 
+<a href=\"modelica://TheSysConExe.Exercises.Exe5RadiatorsHeatingCurveImplementation\">
+TheSysConExe.Exercises.Exe5RadiatorsHeatingCurveImplementation</a>?  
+</li>
+<li>
+If the gas price is 0.07 &#8364;/(kW*h) and the electricity price 0.2 &#8364;/(kW*h),
+how many winter months like the one simulated are required to pay back
+this extra investment cost? 
+Is it interesting from the economical point of view?
+Is it interesting from the environmental point of view? 
+</li>
 </ol>
 </html>"));
 end Exe8FloorHeatingBufferTank;

@@ -49,7 +49,7 @@ a TRV since the working principle is the same and the resulting model
 is more efficient. 
 </p>
 <p>
-Firs, add the on-off control already implemented in the previous 
+First, add the on-off control already implemented in the previous 
 exercise. Then, Tune the parameters in each valve to properly follow
 the heating setopoint and simulate to answer the following questions. 
 </p>
@@ -68,10 +68,18 @@ for that?
 Hint: plot the following variables to help you elaborate an answer:
 The heat pump condenser temperature <code>heaPum.con.T</code>, the heat pump
 heat flow rate <code>heaPum.QCon_flow</code>, the floor heating heat 
-flow rates <code>embNor.QTot</code> and <code>embSou.QTot</code>, and the
+flow rate in the north zone <code>embNor.QTot</code>, the floor heating heat
+flow rate in the south zone <code>embSou.QTot</code>, and the
 heat pump COP <code>heaPum.com.COP</code>.
 </p>
 </li>
 </ol>
-</html>"));
+</html>"),
+    experiment(StopTime=2419200, __Dymola_Algorithm="Lsodar"),
+    __Dymola_experimentSetupOutput,
+    __Dymola_experimentFlags(
+      Advanced(GenerateVariableDependencies=false, OutputModelicaCode=false),
+      Evaluate=false,
+      OutputCPUtime=false,
+      OutputFlatModelica=false));
 end Exe7FloorHeatingThermostaticValves;
