@@ -23,8 +23,8 @@ equation
     Documentation(info="<html>
 <p>
 You have extended the previous model with a very simple heating system 
-to provide thermal comfort in both zones of the building. This first
-proposal is composed of an emission system and a production system. 
+to provide thermal comfort in both zones of the building. The heating 
+system is composed of an emission system and a production system. 
 The emission system has one radiator per zone 
 (<code>radNor<\\code> and <code>radSou<\\code>) and one pump 
 (<code>pum<\\code>) to circulate the heating fluid (<code>MediumWater<\\code>). 
@@ -32,8 +32,8 @@ The production system is an ideal boiler that allows to externally set
 the supply temperature of the water to a desired predefined setpoint. 
 </p>
 <p>
-Notice that, if you simulate this model, you will obtain extremely high 
-indoor temperatures. The reason is that the pump of the emission system 
+Notice that, if you simulate this model as such, you will obtain extremely high 
+indoor temperatures. The reason is that the pump 
 is always working and thus the emission system is continuously 
 circulating water at the established boiler supply
 temperature. As a result, we obtain very large heating discomfort while 
@@ -57,8 +57,8 @@ expected output.
 </p>
 It's important to note that, in this case, we are not controlling the 
 production system (the boiler). Instead, we only control the circulation 
-pump and assume that the boiler will be able to provide the established
-constant supply temperature every time that the water circulates.
+pump and assume that the boiler has its own control logic to switch on 
+when required and provide the established constant supply temperature.
 To enable the pump to read an external control input you may want 
 to modify the <i>\"inputType\"</i> parameter of the pump in the General view and 
 change it to <i>\"Use integer input to select state\"</i>.
@@ -112,7 +112,7 @@ usually expressed in units of kW*h, the latter is expressed in units
 of K*h. This model already computes these quantities and the corresponding
 unit changes, you can access them at <code>ene.y<\\occ.A>, 
 <code>rectangularZoneTemplate.comfort.totDis<\\occ.A>, and 
-<code>rectangularZoneTemplate.comfort.totDis<\\occ.A>. 
+<code>rectangularZoneTemplate1.comfort.totDis<\\occ.A>. 
 Which are the values of the energy use of the boiler, and the total 
 discomfort in the north and zouth zones at the end of the simulation? 
 does them make sense? 

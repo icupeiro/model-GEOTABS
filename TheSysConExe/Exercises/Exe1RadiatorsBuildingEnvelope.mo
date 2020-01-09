@@ -50,8 +50,8 @@ model Exe1RadiatorsBuildingEnvelope
 This is the model of the building envelope that Carl developed from 
 the construction data provided by <i>BeautifulEnvelopes</i>. At first
 glance, it may seem simple, but it is an accurate representation of 
-the thermal behaviour of the future building envelope. Your first task
-is to get familiar with this building model, understand its components,
+the thermal behaviour of the future building envelope. Take your time 
+to get familiar with this building model, understand its components,
 simulate it, and plot the results making sure that everything makes sense. 
 </p>
 <p>
@@ -65,8 +65,8 @@ of each class by right clicking the component and selecting
 The first component at the top-left of the model is a <code>SimInfoManager<\\code>.
 This element reads typical yearly weather data of Uccle, where the building
 is to be located. It reads the weather data from a TMY file, and transmits 
-this information to other inner components of the model that may require
-this information. 
+this information to other inner components of the model that could require
+weather data. 
 <\\p>
 <p>
 The next component is an instance of an <code>Occupancy<\\code> model used to 
@@ -75,8 +75,8 @@ designate the heating and cooling setpoints: <code>setHea<\\code> and
 allowed in the building. Instantiating this model allows to simultaneously
 define these comfort constraints for both building zones, without having to
 redefine these in each of them. The same applies for the occupancy schedules
-(number of occupants per time of the day) and the zone areas. A 
-symmetric distribution is assumed: north and south zone have the same
+(number of occupants per time of the day) and the zone areas. The building
+presents a symmetric layout: north and south zone have the same
 area and number of occupants. 
 </p>
 <p>
@@ -101,7 +101,7 @@ below has been obtained by choosing the comfort setpoints, the indoor
 temperatures of both zones and the outdoor temperature. 
 </p>
 <p align=\"center\">
-<img alt=\"image\" src=\"modelica://TheSysConExe/Resources/Images/Exe1BuildingEnvelope.png\" width=\"1800\" border=\"1\"/>
+<img alt=\"image\" src=\"modelica://TheSysConExe/Resources/Images/Exe1RadiatorsBuildingEnvelope.png\" width=\"1600\" border=\"1\"/>
 </p>
 <p>
 Make sure you obtain a similar graph when plotting the same variables and
@@ -114,18 +114,18 @@ Was it expected to have such low temperatures within the building zones?
 Why does that happen?
 </li>
 <li>
-What is the influence of increasing the zone area? why does that happen? 
+What is the influence of increasing or decreasing the zone area? why does that happen? 
 You can change the area of the zones at <code>occ.A<\\occ.A>.
 </li>
 <li>
-What is the influence of increasing the number of occupants per zone? 
+What is the influence of increasing or decreasing the number of occupants per zone? 
 why does that happen? You can change the number of occupants per zone during 
 the occupied period at <code>occ.nOcc<\\occ.A>. Notice that the occupancy 
 schedule is not constant. If you'd like to see the number of occupants 
 per zone plot <code>occ.nOcc<\\occ.A>
 </li>
 <p>
-Well done! now you're ready to start adding thermal systems to the building.
+Now you're ready to start adding thermal systems to the building.
 Before continuing, change back the parameters of the area and the number of 
 occupants to their originall value.  
 <\\p>

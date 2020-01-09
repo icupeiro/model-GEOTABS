@@ -1,6 +1,5 @@
 within TheSysConExe.Exercises;
-model Exe4RadiatorsHeatingCurveDerivation
-  "Derivation of the building heating curve"
+model Exe4RadiatorsHeatingCurveDerivation "Heating curve derivation"
   extends BaseClases.envRadPumBoi;
   Modelica.Blocks.Continuous.LimPID conPID
     "PID controller for the supply temperature from ideal boiler"
@@ -31,7 +30,7 @@ while maximizing the energy efficiency of the production and
 emission systems. 
 </p>
 <p>
-In a controller with a heating curve the supply (or return) 
+In a controller with a heating curve, the supply (or return) 
 temperature is determined depending on the ambient temperature. 
 It is important to note that both, supply or return temperatures
 can be used as far as one is consistent in the implementation. 
@@ -79,10 +78,8 @@ the heating curve by developing a controller that modifies
 the supply temperature from indoor temperature readings. Then,
 we can plot the supplied temperature as a function of the 
 outdoor temperature to directly obtain the heating curve. 
-A PID controller can be used for such task. Take into account
-that such control strategy is not commonly used in practice, 
-and is only implemented here as an approach to eventually 
-obtain a heating curve of this building. Once the heating curve
+A PID controller can be used for such task. 
+Once the heating curve
 is obtained, we will implement it in the following exercise.   
 </p>
 <p>
@@ -106,7 +103,7 @@ Wikipedia 2019</a>
 From the figure, we derive that:
 </p>
 <p align=\"center\" style=\"font-style:italic;\">
-u(t) = K<sub>p</sub> &nbsp; ( e(t) + 1 &frasl; T<sub>i</sub> &nbsp; &int; e(t') dt' + T<sub>d</sub> de(t)&frasl;dt ),
+u(t) = K<sub>p</sub> &nbsp; ( e(t) + 1 &frasl; T<sub>i</sub> &nbsp; &int; e(t') dt' + T<sub>d</sub> de(t')&frasl;dt' ),
 </p>
 <p>
 where
@@ -129,18 +126,19 @@ Modelica.Blocks.Continuous.LimPID</a>
 as an strategy to properly set up the PID parameters. A PI controller
 may be enough for the intended application. Also, set the limits 
 of the controller output to realistic values, for instance 
-20 and 60 &#8451;.
+20 and 60 &#176;C.
 </p>
 
 <p>
 Before plotting the supply temperature as a function of the
-ambient temperature, add a low pass filter to these variables 
+ambient temperature, add a low pass filter (
+<a href=\"modelica://Modelica.Blocks.Continuous.Filter\">
+Modelica.Blocks.Continuous.Filter</a> )
+to these variables 
 with a cut-off frequency of around 3 hours. We are not interested
 in lower frequencies that will only hamper the identification of
 the heating curve, whereas cutting off higher frequencies can 
 lead to loss of information.
-<a href=\"modelica://Modelica.Blocks.Continuous.Filter\">
-Modelica.Blocks.Continuous.Filter</a>.
 You'll need to use the 
 <a href=\"modelica://IDEAS.BoundaryConditions.WeatherData.Bus\">
 IDEAS.BoundaryConditions.WeatherData.Bus</a> 
@@ -172,7 +170,7 @@ ensuring that the supply temperature will suffice to cover the
 heat demand. 
 </li>
 <li>
-Out of curiosity, which are the values of the energy use of the boiler, and the total 
+Which are the values of the energy use of the boiler, and the total 
 discomfort in the north and south zones at the end of the simulation? 
 </li>
 </ol>

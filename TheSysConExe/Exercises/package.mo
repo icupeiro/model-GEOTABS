@@ -23,15 +23,15 @@ trusted you your very first project.
 <p>
 The well-known architectural and construction firm <i>BeautifulEnvelopes</i> have 
 designed an astonishing building envelope of an office building in Uccle,
-Belgium. The figure below shows a 3D floor plan of the future building. 
+Belgium. The figure below shows an interior CAD design of the future building. 
 </p>
 <p align=\"center\">
-<img alt=\"image\" src=\"modelica://TheSysConExe/Resources/Images/office.jpg\" width=\"1000\" border=\"1\"/>
+<img alt=\"image\" src=\"modelica://TheSysConExe/Resources/Images/officeDesign.jpg\" width=\"500\" border=\"1\"/>
 </p>
 <p>
 <i>Source: </i>
 <a href=\"https://www.pinterest.com/pin/598978819160433050/?lp=true\">
-Pinterest</a>
+durabilis.co.uk</a>
 </p>
 <p>
 However, they have no clue on how to design and dimension the thermal 
@@ -64,17 +64,21 @@ Luckily, Carl left
 <a href=\"modelica://TheSysConExe.Exercises.Exe1BuildingEnvelope\">
 a first model of the building envelope</a>.
 where you can start from. 
-Your main task consists on perform simulations of this building envelope model
+Your main task is to perform simulations of this building envelope model
 to identify the most suitable thermal systems and their controls. 
 From their experience, <i>The Sysis Consultants</i> have developed 
-a template 
-that you should use to write down all your results and summarize your conclusions.
+<p>
+<a href=\"https://forms.gle/Z6Ye3GhTn5GUdwSe9\">
+A TEMPLATE THAT YOU SHOULD USE TO WRITE DOWN ALL YOUR RESULTS AND SUMMARIZE YOUR CONCLUSIONS.</a>
+</p>
 This form will be eventually used as a deliverable to the <i>BeautifulEnvelopes</i>
 architectural firm. 
 </p>
 <p>
 GOOD LUCK!
 </p>
+
+
 
 </html>"));
 end Exercises;

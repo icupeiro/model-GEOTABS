@@ -17,8 +17,8 @@ consists of a gas boiler as production system and radiators as
 emission system. 
 In alignment with the green mission of <i>The Sysis Consultants</i>,
 you want to propose another alternative more environmentally friendly. 
-You know that a heat pump will replace the in-place consumption 
-of fossil fuel with cleaner energy coming from the electric grid. 
+You know that a heat pump will replace the local consumption 
+of fossil fuel and substitute it with cleaner energy coming from the electric grid. 
 Additionally, the Geleitsbeek river of Uccle is located very nearby 
 and can be used as the cold source of the heat pump. You are aware 
 that the coefficient of performance (COP) of a heat pump heavily 
@@ -37,7 +37,7 @@ First of all, take some time to understand how the model has changed.
 The radiator models have been changed by models of pipes embedded in 
 the floor of the zones. This model is used for floor heating and 
 for Termally Activated Building Systems (TABS). Also, if you open 
-the floor window of each zone you will realize that its material 
+the floor tab of each zone you will realize that its material 
 structure has been replaced by an insulated floor heating type with 
 heat injection between a layer of 7cm of insulation and a layer of 
 5cm screed. This type also includes 10cm of concrete. A graphical 
@@ -69,9 +69,8 @@ system. The pump of the secondary circuit will activate the water circulation
 from the Geleitsbeek river through the evaporator of the heat
 pump. Finally, the heat pump compressor will activate the refrigerant 
 thermodynamic circuit that will transfer heat from the cold to the hot source. 
-The three of them should be switched on and off at the same time. 
 The performance data used for the implemented heat pump are 
-for a 21 kW heat pump, which is much more than we require for our 
+for a 21 kW heat pump, which is much more than we require for our system. 
 Therefore, set the heat pump scaling factor to a value able to 
 cope with the heat losses but such that do not oversizes the nominal 
 power of the heat pump. For instance, if you use 0.1 as scaling factor, 
@@ -113,7 +112,7 @@ energy coming from?
 <li>
 Can you think of other advantages of 
 providing thermal comfort using electric energy from the grid?
-how can this setup help in the overall efficiency of an 
+how can this setup help in the overall efficiency of a 
 smart-grid?
 </li>
 </ol>

@@ -1,6 +1,6 @@
 within TheSysConExe.Exercises;
 model Exe8FloorHeatingBufferTank
-  "Exercise with floor heating, heat pump, and a buffer tank to decouple emission circuit from production circuit"
+  "Building with floor heating, thermostatic valves, a heat pump, and a buffer tank to decouple emission circuit from production circuit"
   extends BaseClases.envFloPumHP;
   IDEAS.Fluid.Actuators.Valves.TwoWayTRV valNor(
     m_flow_nominal=embNor.m_flow_nominal,
@@ -52,12 +52,13 @@ equation
 <p>
 Attempting to solve the problem encountered in the previous exercise, 
 you decide to include a buffer tank that decouples the HP functioning
-from the emission circuit. 
+from the emission circuit. Add the controllers developed in the previous
+exercises and simulate to answer the following questions. 
 </p>
 <h4>Questions</h4>
 <ol>
 <li>
-How does exactly the buffer tank helps to solve the problem of the 
+How does the buffer tank exactly helps to solve the problem of the 
 previous exercise? 
 </li>
 <li>
@@ -71,7 +72,7 @@ installing floor heating is approximately of 30 &#8364;/m2. For heat pumps,
 your preferred supplier is 
 <a href=\"https://www.pzpheating.com/userfiles/files/Price-list_EN_01_04_2014.pdf\">
 PZP HEATING a.s.</a> 
-Go into this catalogue to propose a particular model of a heat pump and
+Go into this catalogue to propose a particular model of a heat pump and a 
 buffer tank. What is the estimated total price of this
 installation?
 </li>

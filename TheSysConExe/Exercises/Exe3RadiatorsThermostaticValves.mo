@@ -45,7 +45,7 @@ equation
 As you have probably realised from the previous exercise, the thermal 
 behaviour of the on-off control logic was quite reactive, leading to 
 sudden temperature changes within the building zones. This can be avoided
-by using thermostatic that regulate the mass flow rate through each 
+by using thermostatic valves that regulate the mass flow rate through each 
 zone radiator.
 A thermostatic radiator valve (TRV) contains a plug, typically made of
 wax, which expands or contracts with the surrounding temperature. This
@@ -57,8 +57,8 @@ already counts with
 <a href=\"modelica://IDEAS.Fluid.Actuators.Valves.TwoWayTRV\">
 a thermostatic radiator valve model</a>
 that has been implemented for each of the zones of the building. 
-The following figure shows the equivalence between how a thermostatic 
-valve looks in reality and how it looks in the IDEAS library. 
+The following figure shows the equivalence between a real thermostatic 
+valve and a thermostatic radiator valve in the IDEAS library. 
 </p>
 <p align=\"center\">
 <img alt=\"image\" src=\"modelica://TheSysConExe/Resources/Images/TRV.png\" width=\"1000\" border=\"1\"/>
@@ -89,10 +89,10 @@ discomfort in the north and south zones at the end of the simulation?
 does them make sense? How do they compare with the previous exercise?
 </li>
 <li>
-How the zone temperature profiles compare with the previous exercise? 
+How do the zone temperature profiles compare with the previous exercise? 
 </li>
 <li>
-Why are there still zone temperature peaks that remain after adding 
+Why are there still zone temperature peaks that remain even after adding 
 the thermostatic valves? 
 </li>
 </ol>

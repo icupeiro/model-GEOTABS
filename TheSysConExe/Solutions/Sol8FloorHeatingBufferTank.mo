@@ -1,11 +1,12 @@
 within TheSysConExe.Solutions;
 model Sol8FloorHeatingBufferTank
   "Solution of exercise with floor heating, heat pump, and a buffer tank"
-  extends Exercises.Exe8FloorHeatingBufferTank(valSou(P=0.2), valNor(P=0.2));
+  extends Exercises.Exe8FloorHeatingBufferTank(valSou(P=0.2), valNor(P=0.2),
+    heaPum(scaling_factor=0.05));
   Modelica.Blocks.Math.BooleanToInteger booToInt
     "Convert boolean signal into integer "
     annotation (Placement(transformation(extent={{46,112},{66,132}})));
-  Modelica.Blocks.Sources.Constant TemSupRef(k=30 + 273.15)
+  Modelica.Blocks.Sources.Constant TemSupRef(k=40 + 273.15)
     "Supply temperature reference"
     annotation (Placement(transformation(extent={{-66,112},{-46,132}})));
 protected
