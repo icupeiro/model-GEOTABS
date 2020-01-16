@@ -52,7 +52,7 @@ the construction data provided by <i>BeautifulEnvelopes</i>. At first
 glance, it may seem simple, but it is an accurate representation of 
 the thermal behaviour of the future building envelope. Take your time 
 to get familiar with this building model, understand its components,
-simulate it, and plot the results making sure that everything makes sense. 
+simulate it, and plot the results to ensure that everything makes sense. 
 </p>
 <p>
 You can hover your mouse over the different components to see their class
@@ -72,7 +72,7 @@ weather data.
 The next component is an instance of an <code>Occupancy<\\code> model used to 
 designate the heating and cooling setpoints: <code>setHea<\\code> and 
 <code>setCoo<\\code>, which are the lower and upper comfort bounds 
-allowed in the building. Instantiating this model allows to simultaneously
+allowed in the building. This model allows to simultaneously
 define these comfort constraints for both building zones, without having to
 redefine these in each of them. The same applies for the occupancy schedules
 (number of occupants per time of the day) and the zone areas. The building

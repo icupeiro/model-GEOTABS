@@ -87,8 +87,8 @@ power of the heat pump required for this instalation?
 </li>
 <p>
 Note: watch out with large scaling factors. These will lead not only to higher
-installation costs because of an oversized heat pump, but also to decrease the 
-system performance. The latest may be caused by the temperature protection 
+installation costs because of an oversized heat pump, but also to a decrease of 
+the system performance. The latest may be caused by the temperature protection 
 of the heat pump model that disables the heat pump when temperature exceeds a 
 predefined threshold. 
 </p>

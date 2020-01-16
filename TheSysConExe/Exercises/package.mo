@@ -50,7 +50,7 @@ together with the
 <a href=\"modelica://IDEAS\">
 IDEAS</a> 
 Modelica library
-designed by KU Leuven.
+developed by KU Leuven.
 You can find the development page of this library at: 
 <a href=\"https://github.com/open-ideas\">
 https://github.com/open-ideas</a>, 

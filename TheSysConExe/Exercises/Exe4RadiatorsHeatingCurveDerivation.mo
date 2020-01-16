@@ -53,7 +53,7 @@ supply temperature to the zone).
 The offset of the heating curve is determined by &#916;T<sub>amb</sub>.
 This offset indicates that the net heat demand differs from the 
 transmission losses, which happens because of the internal and solar 
-heat gains. It is worth noticing that we are making an important 
+heat gains. It is worth noting that we are making an important 
 assumption here by considering this offset a constant, whereas
 the heat gains are continuously varying. 
 </p>
