@@ -64,4 +64,5 @@ equation
   connect(onOffCon.u, rectangularZoneTemplate.TSensor) annotation (Line(
         points={{-2,74},{-10,74},{-10,60},{20,60},{20,32},{11,32}}, color={
           0,0,127}));
+  annotation (Diagram(coordinateSystem(extent={{-100,-100},{340,120}})));
 end Sol7FloorHeatingThermostaticValves;

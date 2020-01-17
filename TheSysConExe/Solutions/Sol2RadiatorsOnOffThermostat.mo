@@ -31,7 +31,7 @@ equation
         points={{-2,74},{-10,74},{-10,60},{20,60},{20,32},{11,32}}, color={
           0,0,127}));
   annotation (Diagram(coordinateSystem(extent={{-100,-100},{260,120}})),
-      Icon(coordinateSystem(extent={{-100,-100},{260,120}})),
+      Icon(coordinateSystem(extent={{-100,-100},{100,120}})),
     experiment(StopTime=2419200, __Dymola_Algorithm="Lsodar"),
     __Dymola_experimentSetupOutput,
     __Dymola_experimentFlags(

@@ -79,6 +79,6 @@ equation
     annotation (Line(points={{10,21},{28,21},{28,10},{50,10}}, color={191,0,0}));
   connect(pum.port_b,jun. port_1)
     annotation (Line(points={{120,60},{100,60}}, color={0,127,255}));
-  annotation (Diagram(coordinateSystem(extent={{-100,-100},{340,120}})), Icon(
-        coordinateSystem(extent={{-100,-100},{340,120}})));
+
+  annotation (Diagram(coordinateSystem(extent={{-100,-100},{180,100}})));
 end envFloPum;

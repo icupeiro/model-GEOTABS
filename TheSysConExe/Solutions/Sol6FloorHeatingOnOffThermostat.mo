@@ -39,4 +39,5 @@ equation
           260,0},{272,0}}, color={0,0,127}));
   connect(pum.P, enePumSec.u) annotation (Line(points={{119,69},{114,69},{114,0},
           {136,0}}, color={0,0,127}));
+  annotation (Diagram(coordinateSystem(extent={{-100,-100},{340,120}})));
 end Sol6FloorHeatingOnOffThermostat;

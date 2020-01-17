@@ -94,14 +94,13 @@ equation
           -50},{220,20}}, color={0,127,255}));
   connect(pum.port_b, jun.port_1)
     annotation (Line(points={{120,60},{100,60}}, color={0,127,255}));
-  annotation (Diagram(coordinateSystem(extent={{-100,-100},{260,100}})),
-                                                    Icon(coordinateSystem(
-          extent={{-100,-100},{260,100}})),
+  annotation (
     experiment(StopTime=2419200, __Dymola_Algorithm="Lsodar"),
     __Dymola_experimentSetupOutput,
     __Dymola_experimentFlags(
       Advanced(GenerateVariableDependencies=false, OutputModelicaCode=false),
       Evaluate=false,
       OutputCPUtime=false,
-      OutputFlatModelica=false));
+      OutputFlatModelica=false),
+    Diagram(coordinateSystem(extent={{-100,-100},{260,100}})));
 end envRadPumBoi;

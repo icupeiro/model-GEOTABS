@@ -61,5 +61,5 @@ equation
   connect(lowPasFilTe.y, heaCurTab.u[1]) annotation (Line(points={{-19,-80},{
           258,-80},{258,40},{254,40}}, color={0,0,127}));
   annotation (Diagram(coordinateSystem(extent={{-100,-100},{260,120}})), Icon(
-        coordinateSystem(extent={{-100,-100},{260,120}})));
+        coordinateSystem(extent={{-100,-100},{100,120}})));
 end Sol5RadiatorsHeatingCurveImplementation;

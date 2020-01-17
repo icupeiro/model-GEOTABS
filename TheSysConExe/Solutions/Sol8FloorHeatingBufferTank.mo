@@ -24,6 +24,5 @@ equation
           122},{-10,122},{-10,128},{4,128}}, color={0,0,127}));
   connect(onOffCon.u, senTemSup.T) annotation (Line(points={{4,116},{0,116},
           {0,104},{180,104},{180,44},{158,44},{158,49}}, color={0,0,127}));
-  annotation (Diagram(coordinateSystem(extent={{-100,-100},{340,140}})),
-      Icon(coordinateSystem(extent={{-100,-100},{340,140}})));
+  annotation (Diagram(coordinateSystem(extent={{-100,-100},{340,140}})));
 end Sol8FloorHeatingBufferTank;

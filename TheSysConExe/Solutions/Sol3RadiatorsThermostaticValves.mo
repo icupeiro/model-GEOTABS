@@ -40,5 +40,5 @@ equation
       OutputCPUtime=false,
       OutputFlatModelica=false),
     Diagram(coordinateSystem(extent={{-100,-100},{260,120}})),
-    Icon(coordinateSystem(extent={{-100,-100},{260,120}})));
+    Icon(coordinateSystem(extent={{-100,-100},{100,120}})));
 end Sol3RadiatorsThermostaticValves;

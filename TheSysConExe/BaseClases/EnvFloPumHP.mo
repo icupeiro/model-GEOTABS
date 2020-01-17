@@ -50,4 +50,5 @@ equation
           84}}, color={0,0,127}));
   connect(jun1.port_2,heaPum. port_a1) annotation (Line(points={{100,-50},{240,-50},
           {240,-18}}, color={0,127,255}));
+  annotation (Diagram(coordinateSystem(extent={{-100,-100},{340,100}})));
 end envFloPumHP;

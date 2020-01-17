@@ -46,8 +46,7 @@ equation
     annotation (Line(points={{192,60},{168,60}}, color={0,127,255}));
   connect(tan.port_a, heaPum.port_b1) annotation (Line(points={{212,60},{
           240,60},{240,2}}, color={0,127,255}));
-  annotation (Diagram(coordinateSystem(extent={{-100,-100},{340,140}})),
-      Icon(coordinateSystem(extent={{-100,-100},{340,140}})),
+  annotation (
     Documentation(info="<html>
 <p>
 Attempting to solve the problem encountered in the previous exercise, 
