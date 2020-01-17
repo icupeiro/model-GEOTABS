@@ -43,14 +43,14 @@ partial model envRadPumBoi "Envelope, radiators, pump and boiler"
         extent={{-10,10},{10,-10}},
         rotation=270,
         origin={110,82})));
-  IDEAS.Fluid.HeatExchangers.Heater_T boi(
+  CondensingBoiler                    boi(
     redeclare package Medium = MediumWater,
     m_flow_nominal=pum.m_flow_nominal,
     dp_nominal=10000) "Ideal boiler with prescribed supply temperature"
     annotation (Placement(transformation(extent={{220,10},{200,30}})));
   Modelica.Blocks.Continuous.Integrator ene(k=1/3600000)
     "Energy meter with conversion to kWh"
-    annotation (Placement(transformation(extent={{220,72},{240,92}})));
+    annotation (Placement(transformation(extent={{220,70},{240,90}})));
   IDEAS.Fluid.FixedResistances.Junction jun1(
     redeclare package Medium = MediumWater,
     m_flow_nominal={radNor.m_flow_nominal,-radNor.m_flow_nominal - radSou.m_flow_nominal,
@@ -84,8 +84,6 @@ equation
     annotation (Line(points={{148,60},{140,60}}, color={0,127,255}));
   connect(boi.port_b, senTemSup.port_a) annotation (Line(points={{200,20},{
           180,20},{180,60},{168,60}}, color={0,127,255}));
-  connect(boi.Q_flow,ene. u) annotation (Line(points={{199,28},{192,28},{
-          192,82},{218,82}}, color={0,0,127}));
   connect(radNor.port_b, jun1.port_1) annotation (Line(points={{50,-20},{50,
           -50},{80,-50}}, color={0,127,255}));
   connect(radSou.port_b, jun1.port_3)
@@ -94,6 +92,8 @@ equation
           -50},{220,20}}, color={0,127,255}));
   connect(pum.port_b, jun.port_1)
     annotation (Line(points={{120,60},{100,60}}, color={0,127,255}));
+  connect(boi.Q_real, ene.u) annotation (Line(points={{199,12},{194,12},{194,80},
+          {218,80}}, color={0,0,127}));
   annotation (
     experiment(StopTime=2419200, __Dymola_Algorithm="Lsodar"),
     __Dymola_experimentSetupOutput,
