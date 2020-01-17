@@ -5,13 +5,13 @@ model Exe1RadiatorsBuildingEnvelope
       redeclare BaseClases.Comfort comfort(setCoo=occ.setCoo, setHea=occ.setHea),
       redeclare BaseClases.Occupancy occNum(k=occ.k),
       l=sqrt(occ.A),
-      w=sqrt(occ.A),
-      AZone=occ.A), rectangularZoneTemplate1(
+      w=sqrt(occ.A)),
+                    rectangularZoneTemplate1(
       redeclare BaseClases.Comfort comfort(setCoo=occ.setCoo, setHea=occ.setHea),
       redeclare BaseClases.Occupancy occNum(k=occ.k),
       l=sqrt(occ.A),
-      w=sqrt(occ.A),
-      AZone=occ.A)) annotation (
+      w=sqrt(occ.A)))
+                    annotation (
     experiment(
       StartTime=10000000,
       StopTime=11000000,
