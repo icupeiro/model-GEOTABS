@@ -2,8 +2,8 @@ within TheSysConExe.Solutions;
 model Sol3RadiatorsThermostaticValves
   "Solution of exercise 3 for building control with thermostatic valves"
   extends Exercises.Exe3RadiatorsThermostaticValves(
-                                           valNor(P=0.2), valSou(P=0.2),
-    const(k=50 + 273.15),
+    valSou(P=0.1),
+    const(k=60 + 273.15),
     pum(inputType=IDEAS.Fluid.Types.InputType.Stages));
   Modelica.Blocks.Math.BooleanToInteger booToInt
     "Convert boolean signal into integer "
