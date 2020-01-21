@@ -30,15 +30,14 @@ equation
     annotation (Line(points={{90,20},{90,0}}, color={0,127,255}));
   connect(rectangularZoneTemplate.TSensor, valNor.T) annotation (Line(
         points={{11,32},{26,32},{26,30},{39.4,30}}, color={0,0,127}));
-  connect(rectangularZoneTemplate1.TSensor, valSou.T) annotation (Line(
-        points={{11,-28},{32,-28},{32,12},{79.4,12},{79.4,30}}, color={0,0,
-          127}));
   connect(jun.port_3, valSou.port_a)
     annotation (Line(points={{90,50},{90,40}}, color={0,127,255}));
   connect(jun.port_2, valNor.port_a)
     annotation (Line(points={{80,60},{50,60},{50,40}}, color={0,127,255}));
   connect(const.y, boi.TSet) annotation (Line(points={{241,50},{256,50},{
           256,28},{222,28}}, color={0,0,127}));
+  connect(rectangularZoneTemplate1.TSensor, valSou.T) annotation (Line(points={
+          {11,-28},{32,-28},{32,8},{72,8},{72,30},{79.4,30}}, color={0,0,127}));
   annotation (
     Documentation(info="<html>
 <p>

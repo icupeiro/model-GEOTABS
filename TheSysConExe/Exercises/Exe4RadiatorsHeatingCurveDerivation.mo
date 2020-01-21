@@ -126,7 +126,7 @@ Modelica.Blocks.Continuous.LimPID</a>
 as an strategy to properly set up the PID parameters. A PI controller
 may be enough for the intended application. Also, set the limits 
 of the controller output to realistic values, for instance 
-20 and 60 &#176;C.
+20 and 70 &#176;C.
 </p>
 
 <p>

@@ -2,9 +2,9 @@ within TheSysConExe.Solutions;
 model Sol5RadiatorsHeatingCurveImplementation
   "Solution to the heating curve exercise"
   extends Exercises.Exe5RadiatorsHeatingCurveImplementation(
-    heaCurTab(table=[266,330; 286,310]),
-    valNor(P=0.2),
-    valSou(P=0.2),
+    heaCurTab(table=[266,338; 286,300]),
+    valNor(P=0.1),
+    valSou(P=0.1),
     pum(inputType=IDEAS.Fluid.Types.InputType.Stages));
 
   Modelica.Blocks.Continuous.Filter lowPasFilTe(
@@ -61,5 +61,12 @@ equation
   connect(lowPasFilTe.y, heaCurTab.u[1]) annotation (Line(points={{-19,-80},{
           258,-80},{258,40},{254,40}}, color={0,0,127}));
   annotation (Diagram(coordinateSystem(extent={{-100,-100},{260,120}})), Icon(
-        coordinateSystem(extent={{-100,-100},{100,120}})));
+        coordinateSystem(extent={{-100,-100},{100,120}})),
+    experiment(StopTime=2419200),
+    __Dymola_experimentSetupOutput,
+    __Dymola_experimentFlags(
+      Advanced(GenerateVariableDependencies=false, OutputModelicaCode=false),
+      Evaluate=false,
+      OutputCPUtime=false,
+      OutputFlatModelica=false));
 end Sol5RadiatorsHeatingCurveImplementation;

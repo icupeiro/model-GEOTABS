@@ -6,7 +6,7 @@ model Sol4RadiatorsHeatingCurveDerivation
       controllerType=Modelica.Blocks.Types.SimpleController.PI,
       k=100,
       Ti=600,
-      yMax=273.15 + 60,
+      yMax=273.15 + 70,
       yMin=273.15 + 20,
       initType=Modelica.Blocks.Types.InitPID.InitialState));
   Modelica.Blocks.Continuous.Filter lowPasFilTe(

@@ -6,7 +6,8 @@ model Exe5RadiatorsHeatingCurveImplementation
   IDEAS.Fluid.Actuators.Valves.TwoWayTRV valNor(
     m_flow_nominal=radNor.m_flow_nominal,
     dpValve_nominal=20000,
-    redeclare package Medium = MediumWater)
+    redeclare package Medium = MediumWater,
+    riseTime=120)
     "Thermostatic valve for north zone" annotation (Placement(
         transformation(
         extent={{10,-10},{-10,10}},
@@ -15,7 +16,8 @@ model Exe5RadiatorsHeatingCurveImplementation
   IDEAS.Fluid.Actuators.Valves.TwoWayTRV valSou(
     dpValve_nominal=20000,
     m_flow_nominal=radSou.m_flow_nominal,
-    redeclare package Medium = MediumWater)
+    redeclare package Medium = MediumWater,
+    riseTime=120)
     "Thermostatic valve for south zone" annotation (Placement(
         transformation(
         extent={{10,-10},{-10,10}},
@@ -31,9 +33,6 @@ equation
     annotation (Line(points={{90,20},{90,0}}, color={0,127,255}));
   connect(rectangularZoneTemplate.TSensor,valNor. T) annotation (Line(
         points={{11,32},{26,32},{26,30},{39.4,30}}, color={0,0,127}));
-  connect(rectangularZoneTemplate1.TSensor,valSou. T) annotation (Line(
-        points={{11,-28},{32,-28},{32,12},{79.4,12},{79.4,30}}, color={0,0,
-          127}));
   connect(jun.port_3,valSou. port_a)
     annotation (Line(points={{90,50},{90,40}}, color={0,127,255}));
   connect(jun.port_2,valNor. port_a)
@@ -41,6 +40,8 @@ equation
   connect(boi.TSet, heaCurTab.y[1]) annotation (Line(points={{222,28},{228,
           28},{228,40},{231,40}},
                              color={0,0,127}));
+  connect(rectangularZoneTemplate1.TSensor, valSou.T) annotation (Line(points={
+          {11,-28},{32,-28},{32,8},{72,8},{72,30},{79.4,30}}, color={0,0,127}));
   annotation (Documentation(info="<html>
 <p>
 Now it is about time for you to see if there is an 
