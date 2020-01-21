@@ -2,11 +2,13 @@ within TheSysConExe.Exercises;
 model Exe1RadiatorsBuildingEnvelope
   "Building envelope model with two zones and office occupancy"
   extends IDEAS.Examples.Tutorial.Example5(rectangularZoneTemplate(
+      n50=2,
       redeclare BaseClases.Comfort comfort(setCoo=occ.setCoo, setHea=occ.setHea),
       redeclare BaseClases.Occupancy occNum(k=occ.k),
       l=sqrt(occ.A),
       w=sqrt(occ.A)),
                     rectangularZoneTemplate1(
+      n50=2,
       redeclare BaseClases.Comfort comfort(setCoo=occ.setCoo, setHea=occ.setHea),
       redeclare BaseClases.Occupancy occNum(k=occ.k),
       l=sqrt(occ.A),
