@@ -4,9 +4,16 @@ model envFloPum "Envelope, floor heating, and pump"
                                          rectangularZoneTemplate(
       linIntRad=true,
       redeclare IDEAS.Buildings.Data.Constructions.InsulatedFloorHeating
-        conTypFlo,
+        conTypFlo(mats={IDEAS.Buildings.Data.Materials.Concrete(d=0.10),
+            IDEAS.Buildings.Data.Insulation.Pur(d=0.07),
+            IDEAS.Buildings.Data.Materials.Screed(d=0.10),
+            IDEAS.Buildings.Data.Materials.Tile(d=0.01)}),
       hasEmb=true), rectangularZoneTemplate1(redeclare
-        IDEAS.Buildings.Data.Constructions.InsulatedFloorHeating conTypFlo,
+        IDEAS.Buildings.Data.Constructions.InsulatedFloorHeating conTypFlo(mats
+          ={IDEAS.Buildings.Data.Materials.Concrete(d=0.10),
+            IDEAS.Buildings.Data.Insulation.Pur(d=0.07),
+            IDEAS.Buildings.Data.Materials.Screed(d=0.10),
+            IDEAS.Buildings.Data.Materials.Tile(d=0.01)}),
         hasEmb=true));
 
   package MediumWater = IDEAS.Media.Water "Water Medium";
