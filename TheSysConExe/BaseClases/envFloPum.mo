@@ -65,6 +65,9 @@ model envFloPum "Envelope, floor heating, and pump"
     portFlowDirection_3=Modelica.Fluid.Types.PortFlowDirection.Leaving,
     dp_nominal={1000,0,0}) "Junction"
     annotation (Placement(transformation(extent={{100,50},{80,70}})));
+  IDEAS.Fluid.Sensors.Temperature senTemRet(redeclare package Medium =
+        MediumWater) "Return water temperature reading"
+    annotation (Placement(transformation(extent={{116,-90},{136,-70}})));
 equation
   connect(senTemSup.port_b,pum. port_a)
     annotation (Line(points={{148,60},{140,60}}, color={0,127,255}));
@@ -81,5 +84,7 @@ equation
 
   connect(bou.ports[1], pum.port_a)
     annotation (Line(points={{148,80},{148,60},{140,60}}, color={0,127,255}));
+  connect(senTemRet.port, jun1.port_2) annotation (Line(points={{126,-90},{100,
+          -90},{100,-50}}, color={0,127,255}));
   annotation (Diagram(coordinateSystem(extent={{-100,-100},{180,100}})));
 end envFloPum;

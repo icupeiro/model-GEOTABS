@@ -70,6 +70,9 @@ partial model envRadPumBoi "Envelope, radiators, pump and boiler"
     portFlowDirection_3=Modelica.Fluid.Types.PortFlowDirection.Leaving,
     dp_nominal={1000,0,0}) "Junction"
     annotation (Placement(transformation(extent={{100,50},{80,70}})));
+  IDEAS.Fluid.Sensors.Temperature senTemRet(redeclare package Medium =
+        MediumWater) "Return water temperature reading"
+    annotation (Placement(transformation(extent={{116,-90},{136,-70}})));
 equation
   connect(radNor.heatPortCon, rectangularZoneTemplate.gainCon) annotation (
       Line(points={{42.8,-8},{20,-8},{20,27},{10,27}}, color={191,0,0}));
@@ -95,6 +98,8 @@ equation
           {218,80}}, color={0,0,127}));
   connect(bou.ports[1], pum.port_a)
     annotation (Line(points={{148,80},{148,60},{140,60}}, color={0,127,255}));
+  connect(senTemRet.port, jun1.port_2) annotation (Line(points={{126,-90},{100,
+          -90},{100,-50}}, color={0,127,255}));
   annotation (
     experiment(StopTime=2419200, __Dymola_Algorithm="Lsodar"),
     __Dymola_experimentSetupOutput,
