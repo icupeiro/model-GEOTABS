@@ -43,7 +43,7 @@ model envFloPum "Envelope, floor heating, and pump"
     redeclare IDEAS.Fluid.HeatExchangers.RadiantSlab.BaseClasses.FH_Standard1
       RadSlaCha,
     allowFlowReversal=true,
-    m_flow_nominal=0.02,
+    m_flow_nominal=0.04,
     A_floor=rectangularZoneTemplate.AZone)
     "Embedded pipe of floor heating in north zone"
     annotation (Placement(transformation(extent={{40,-10},{60,10}})));
@@ -52,7 +52,7 @@ model envFloPum "Envelope, floor heating, and pump"
     redeclare IDEAS.Fluid.HeatExchangers.RadiantSlab.BaseClasses.FH_Standard1
       RadSlaCha,
     allowFlowReversal=true,
-    m_flow_nominal=0.02,
+    m_flow_nominal=0.04,
     A_floor=rectangularZoneTemplate.AZone)
     "Embedded pipe of floor heating in south zone"
     annotation (Placement(transformation(extent={{80,-10},{100,10}})));
