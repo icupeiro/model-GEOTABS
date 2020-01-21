@@ -22,12 +22,13 @@ model envFloPum "Envelope, floor heating, and pump"
         MediumWater, m_flow_nominal=pum.m_flow_nominal)
     "Supply water temperature sensor"
     annotation (Placement(transformation(extent={{168,70},{148,50}})));
-  IDEAS.Fluid.Sources.Boundary_pT bou(nPorts=1, redeclare package Medium =
-        MediumWater) "Expansion vessel" annotation (Placement(
+  IDEAS.Fluid.Sources.Boundary_pT bou(          redeclare package Medium =
+        MediumWater, nPorts=1)
+                     "Expansion vessel" annotation (Placement(
         transformation(
         extent={{-10,10},{10,-10}},
         rotation=270,
-        origin={110,82})));
+        origin={148,90})));
   IDEAS.Fluid.FixedResistances.Junction jun1(
     redeclare package Medium = MediumWater,
     m_flow_nominal={embNor.m_flow_nominal,-embNor.m_flow_nominal - embSou.m_flow_nominal,
@@ -65,8 +66,6 @@ model envFloPum "Envelope, floor heating, and pump"
     dp_nominal={1000,0,0}) "Junction"
     annotation (Placement(transformation(extent={{100,50},{80,70}})));
 equation
-  connect(bou.ports[1],pum. port_b) annotation (Line(points={{110,72},{110,
-          60},{120,60}}, color={0,127,255}));
   connect(senTemSup.port_b,pum. port_a)
     annotation (Line(points={{148,60},{140,60}}, color={0,127,255}));
   connect(embNor.port_b,jun1. port_1) annotation (Line(points={{60,0},{66,0},{66,
@@ -80,5 +79,7 @@ equation
   connect(pum.port_b,jun. port_1)
     annotation (Line(points={{120,60},{100,60}}, color={0,127,255}));
 
+  connect(bou.ports[1], pum.port_a)
+    annotation (Line(points={{148,80},{148,60},{140,60}}, color={0,127,255}));
   annotation (Diagram(coordinateSystem(extent={{-100,-100},{180,100}})));
 end envFloPum;

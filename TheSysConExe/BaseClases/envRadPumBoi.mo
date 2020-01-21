@@ -37,12 +37,13 @@ partial model envRadPumBoi "Envelope, radiators, pump and boiler"
         MediumWater, m_flow_nominal=pum.m_flow_nominal)
     "Supply water temperature sensor"
     annotation (Placement(transformation(extent={{168,70},{148,50}})));
-  IDEAS.Fluid.Sources.Boundary_pT bou(nPorts=1, redeclare package Medium =
-        MediumWater) "Expansion vessel" annotation (Placement(
+  IDEAS.Fluid.Sources.Boundary_pT bou(          redeclare package Medium =
+        MediumWater, nPorts=1)
+                     "Expansion vessel" annotation (Placement(
         transformation(
         extent={{-10,10},{10,-10}},
         rotation=270,
-        origin={110,82})));
+        origin={148,90})));
   CondensingBoiler                    boi(
     redeclare package Medium = MediumWater,
     m_flow_nominal=pum.m_flow_nominal,
@@ -78,8 +79,6 @@ equation
      Line(points={{82.8,-8},{66,-8},{66,-33},{10,-33}}, color={191,0,0}));
   connect(radSou.heatPortRad, rectangularZoneTemplate1.gainRad) annotation (
      Line(points={{82.8,-12},{70,-12},{70,-36},{10,-36}}, color={191,0,0}));
-  connect(bou.ports[1], pum.port_b) annotation (Line(points={{110,72},{110,
-          60},{120,60}}, color={0,127,255}));
   connect(senTemSup.port_b, pum.port_a)
     annotation (Line(points={{148,60},{140,60}}, color={0,127,255}));
   connect(boi.port_b, senTemSup.port_a) annotation (Line(points={{200,20},{
@@ -94,6 +93,8 @@ equation
     annotation (Line(points={{120,60},{100,60}}, color={0,127,255}));
   connect(boi.Q_real, ene.u) annotation (Line(points={{199,12},{194,12},{194,80},
           {218,80}}, color={0,0,127}));
+  connect(bou.ports[1], pum.port_a)
+    annotation (Line(points={{148,80},{148,60},{140,60}}, color={0,127,255}));
   annotation (
     experiment(StopTime=2419200, __Dymola_Algorithm="Lsodar"),
     __Dymola_experimentSetupOutput,
