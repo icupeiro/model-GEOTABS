@@ -9,24 +9,24 @@ model envFloPum "Envelope, floor heating, and pump"
             IDEAS.Buildings.Data.Materials.Screed(d=0.10),
             IDEAS.Buildings.Data.Materials.Tile(d=0.01)}),
       hasEmb=true), rectangularZoneTemplate1(redeclare
-        IDEAS.Buildings.Data.Constructions.InsulatedFloorHeating conTypFlo(mats
-          ={IDEAS.Buildings.Data.Materials.Concrete(d=0.10),
+        IDEAS.Buildings.Data.Constructions.InsulatedFloorHeating conTypFlo(mats=
+           {IDEAS.Buildings.Data.Materials.Concrete(d=0.10),
             IDEAS.Buildings.Data.Insulation.Pur(d=0.07),
             IDEAS.Buildings.Data.Materials.Screed(d=0.10),
             IDEAS.Buildings.Data.Materials.Tile(d=0.01)}),
         hasEmb=true));
 
   package MediumWater = IDEAS.Media.Water "Water Medium";
-  IDEAS.Fluid.Movers.FlowControlled_dp pum(
+  IDEAS.Fluid.Movers.FlowControlled_dp pumEmi(
     dp_nominal=20000,
     inputType=IDEAS.Fluid.Types.InputType.Constant,
     m_flow_nominal=embNor.m_flow_nominal + embSou.m_flow_nominal,
     redeclare package Medium = MediumWater,
     energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial)
-    "Circulation pump at secondary side"
+    "Circulation pump for emission system"
     annotation (Placement(transformation(extent={{140,50},{120,70}})));
   IDEAS.Fluid.Sensors.TemperatureTwoPort senTemSup(redeclare package Medium =
-        MediumWater, m_flow_nominal=pum.m_flow_nominal)
+        MediumWater, m_flow_nominal=pumEmi.m_flow_nominal)
     "Supply water temperature sensor"
     annotation (Placement(transformation(extent={{168,70},{148,50}})));
   IDEAS.Fluid.Sources.Boundary_pT bou(          redeclare package Medium =
@@ -76,7 +76,7 @@ model envFloPum "Envelope, floor heating, and pump"
         MediumWater) "Return water temperature reading"
     annotation (Placement(transformation(extent={{116,-90},{136,-70}})));
 equation
-  connect(senTemSup.port_b,pum. port_a)
+  connect(senTemSup.port_b, pumEmi.port_a)
     annotation (Line(points={{148,60},{140,60}}, color={0,127,255}));
   connect(embNor.port_b,jun1. port_1) annotation (Line(points={{60,0},{66,0},{66,
           -50},{80,-50}}, color={0,127,255}));
@@ -86,10 +86,10 @@ equation
     annotation (Line(points={{10,-39},{74,-39},{74,10},{90,10}}, color={191,0,0}));
   connect(rectangularZoneTemplate.gainEmb[1], embNor.heatPortEmb[1])
     annotation (Line(points={{10,21},{28,21},{28,10},{50,10}}, color={191,0,0}));
-  connect(pum.port_b,jun. port_1)
+  connect(pumEmi.port_b, jun.port_1)
     annotation (Line(points={{120,60},{100,60}}, color={0,127,255}));
 
-  connect(bou.ports[1], pum.port_a)
+  connect(bou.ports[1], pumEmi.port_a)
     annotation (Line(points={{148,80},{148,60},{140,60}}, color={0,127,255}));
   connect(senTemRet.port, jun1.port_2) annotation (Line(points={{126,-90},{100,
           -90},{100,-50}}, color={0,127,255}));

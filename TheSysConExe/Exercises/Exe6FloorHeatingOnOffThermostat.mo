@@ -9,6 +9,8 @@ equation
           20},{76,20},{76,0},{80,0}}, color={0,127,255}));
   connect(heaPum.port_b1, senTemSup.port_a) annotation (Line(points={{240,2},
           {238,2},{238,60},{168,60}}, color={0,127,255}));
+  connect(jun1.port_2, heaPum.port_a1) annotation (Line(points={{100,-50},{240,
+          -50},{240,-18}}, color={0,127,255}));
   annotation (Documentation(info="<html>
 <p>
 Congratulations! You have already made a proposal for the thermal 

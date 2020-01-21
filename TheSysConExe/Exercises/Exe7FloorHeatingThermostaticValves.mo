@@ -5,7 +5,8 @@ model Exe7FloorHeatingThermostaticValves
   IDEAS.Fluid.Actuators.Valves.TwoWayTRV valNor(
     m_flow_nominal=embNor.m_flow_nominal,
     dpValve_nominal=20000,
-    redeclare package Medium = MediumWater)
+    redeclare package Medium = MediumWater,
+    riseTime=120)
     "Thermostatic valve for north zone" annotation (Placement(
         transformation(
         extent={{10,-10},{-10,10}},
@@ -14,7 +15,8 @@ model Exe7FloorHeatingThermostaticValves
   IDEAS.Fluid.Actuators.Valves.TwoWayTRV valSou(
     dpValve_nominal=20000,
     m_flow_nominal=embSou.m_flow_nominal,
-    redeclare package Medium = MediumWater)
+    redeclare package Medium = MediumWater,
+    riseTime=120)
     "Thermostatic valve for south zone" annotation (Placement(
         transformation(
         extent={{10,-10},{-10,10}},
@@ -36,6 +38,8 @@ equation
           50,16},{34,16},{34,0},{40,0}}, color={0,127,255}));
   connect(heaPum.port_b1, senTemSup.port_a) annotation (Line(points={{240,2},
           {240,60},{168,60},{168,60}}, color={0,127,255}));
+  connect(jun1.port_2, heaPum.port_a1) annotation (Line(points={{100,-50},{240,
+          -50},{240,-18}}, color={0,127,255}));
   annotation (Documentation(info="<html>
 <p>
 This exercise is equivalent to 
