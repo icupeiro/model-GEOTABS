@@ -5,7 +5,8 @@ model Sol8FloorHeatingBufferTank
     valSou(P=0.2),
     valNor(P=0.2),
     heaPum(dp2_nominal=1000, scaling_factor=0.05),
-    pumSec(dp_nominal=20000));
+    pumSec(dp_nominal=20000),
+    pumEmi(inputType=IDEAS.Fluid.Types.InputType.Stages));
   Modelica.Blocks.Math.BooleanToInteger booToInt
     "Convert boolean signal into integer "
     annotation (Placement(transformation(extent={{46,112},{66,132}})));
@@ -52,11 +53,14 @@ equation
   connect(onOffCon.u, senTan.T) annotation (Line(points={{4,116},{-8,116},{-8,
           106},{212,106},{212,14},{226,14},{226,-10},{220,-10}}, color={0,0,127}));
   annotation (Diagram(coordinateSystem(extent={{-100,-100},{340,140}})),
-    experiment(StopTime=2419200, __Dymola_Algorithm="Lsodar"),
+    experiment(
+      StopTime=2419200,
+      Tolerance=1e-06,
+      __Dymola_fixedstepsize=10,
+      __Dymola_Algorithm="Euler"),
     __Dymola_experimentSetupOutput,
-    __Dymola_experimentFlags(
-      Advanced(GenerateVariableDependencies=false, OutputModelicaCode=false),
-      Evaluate=false,
-      OutputCPUtime=false,
-      OutputFlatModelica=false));
+    __Dymola_experimentFlags(Advanced(
+        InlineMethod=0,
+        InlineOrder=2,
+        InlineFixedStep=0.001)));
 end Sol8FloorHeatingBufferTank;
