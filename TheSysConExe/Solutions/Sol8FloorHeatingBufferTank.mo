@@ -55,9 +55,8 @@ equation
   annotation (Diagram(coordinateSystem(extent={{-100,-100},{340,140}})),
     experiment(
       StopTime=2419200,
-      Tolerance=1e-06,
       __Dymola_fixedstepsize=10,
-      __Dymola_Algorithm="Euler"),
+      __Dymola_Algorithm="Dassl"),
     __Dymola_experimentSetupOutput,
     __Dymola_experimentFlags(Advanced(
         InlineMethod=0,

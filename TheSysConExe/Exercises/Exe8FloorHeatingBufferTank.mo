@@ -145,5 +145,12 @@ Is it interesting from the economical point of view?
 Is it interesting from the environmental point of view? 
 </li>
 </ol>
-</html>"));
+</html>"),
+    experiment(StopTime=2419200),
+    __Dymola_experimentSetupOutput,
+    __Dymola_experimentFlags(
+      Advanced(GenerateVariableDependencies=false, OutputModelicaCode=false),
+      Evaluate=false,
+      OutputCPUtime=false,
+      OutputFlatModelica=false));
 end Exe8FloorHeatingBufferTank;
