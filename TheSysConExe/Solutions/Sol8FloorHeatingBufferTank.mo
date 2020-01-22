@@ -37,17 +37,26 @@ equation
                                                          color={255,127,0}));
   connect(TemSupRef.y, onOffCon.reference) annotation (Line(points={{-45,
           122},{-10,122},{-10,128},{4,128}}, color={0,0,127}));
-  connect(onOffCon.u, senTemSup.T) annotation (Line(points={{4,116},{0,116},
-          {0,104},{180,104},{180,44},{158,44},{158,49}}, color={0,0,127}));
   connect(onOffCon1.y, booToInt1.u)
     annotation (Line(points={{21,80},{40,80}}, color={255,0,255}));
   connect(add.y, onOffCon1.reference) annotation (Line(points={{-21,80},{-12,80},
           {-12,86},{-2,86}}, color={0,0,127}));
   connect(occ.setHea,add. u2) annotation (Line(points={{-58,44},{-52,44},{
           -52,74},{-44,74}}, color={0,0,127}));
-  connect(onOffCon1.u, rectangularZoneTemplate.TSensor) annotation (Line(points
-        ={{-2,74},{-10,74},{-10,60},{20,60},{20,32},{11,32}}, color={0,0,127}));
+  connect(onOffCon1.u, rectangularZoneTemplate.TSensor) annotation (Line(points=
+         {{-2,74},{-10,74},{-10,60},{20,60},{20,32},{11,32}}, color={0,0,127}));
   connect(add.u1, OffSet.y)
     annotation (Line(points={{-44,86},{-53,86}}, color={0,0,127}));
-  annotation (Diagram(coordinateSystem(extent={{-100,-100},{340,140}})));
+  connect(booToInt1.y, pumEmi.stage)
+    annotation (Line(points={{63,80},{130,80},{130,72}}, color={255,127,0}));
+  connect(onOffCon.u, senTan.T) annotation (Line(points={{4,116},{-8,116},{-8,
+          106},{212,106},{212,14},{226,14},{226,-10},{220,-10}}, color={0,0,127}));
+  annotation (Diagram(coordinateSystem(extent={{-100,-100},{340,140}})),
+    experiment(StopTime=2419200, __Dymola_Algorithm="Lsodar"),
+    __Dymola_experimentSetupOutput,
+    __Dymola_experimentFlags(
+      Advanced(GenerateVariableDependencies=false, OutputModelicaCode=false),
+      Evaluate=false,
+      OutputCPUtime=false,
+      OutputFlatModelica=false));
 end Sol8FloorHeatingBufferTank;

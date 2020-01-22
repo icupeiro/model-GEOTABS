@@ -1,7 +1,7 @@
 within TheSysConExe.Exercises;
 model Exe8FloorHeatingBufferTank
   "Building with floor heating, thermostatic valves, a heat pump, and a buffer tank to decouple emission circuit from production circuit"
-  extends BaseClases.envFloPumHP;
+  extends BaseClases.envFloPumHP(heaPum(m1_flow_nominal=pumSec.m_flow_nominal));
   IDEAS.Fluid.Actuators.Valves.TwoWayTRV valNor(
     m_flow_nominal=embNor.m_flow_nominal,
     dpValve_nominal=20000,
@@ -29,32 +29,45 @@ model Exe8FloorHeatingBufferTank
     hTan=0.5,
     dIns=0.1) "Buffer tank for avoiding excessive heat pump on/off switches"
     annotation (Placement(transformation(extent={{200,-10},{180,10}})));
-  IDEAS.Fluid.FixedResistances.Junction jun2(
-    redeclare package Medium = MediumWater,
-    m_flow_nominal={embNor.m_flow_nominal,-embNor.m_flow_nominal - embSou.m_flow_nominal,
-        -embNor.m_flow_nominal},
-    portFlowDirection_1=Modelica.Fluid.Types.PortFlowDirection.Entering,
-    portFlowDirection_2=Modelica.Fluid.Types.PortFlowDirection.Leaving,
-    portFlowDirection_3=Modelica.Fluid.Types.PortFlowDirection.Entering,
-    dp_nominal={500,0,500}) "Junction"
-    annotation (Placement(transformation(extent={{170,-40},{190,-60}})));
-  IDEAS.Fluid.FixedResistances.Junction jun3(
-    redeclare package Medium = MediumWater,
-    m_flow_nominal={embNor.m_flow_nominal + embSou.m_flow_nominal,-embNor.m_flow_nominal,
-        -embNor.m_flow_nominal},
-    portFlowDirection_1=Modelica.Fluid.Types.PortFlowDirection.Entering,
-    portFlowDirection_2=Modelica.Fluid.Types.PortFlowDirection.Leaving,
-    portFlowDirection_3=Modelica.Fluid.Types.PortFlowDirection.Leaving,
-    dp_nominal={1000,0,0}) "Junction"
-    annotation (Placement(transformation(extent={{210,50},{190,70}})));
   IDEAS.Fluid.Movers.FlowControlled_dp pumSec(
-    dp_nominal=20000,
+    dp_nominal=heaPum.dp2_nominal,
     inputType=IDEAS.Fluid.Types.InputType.Constant,
     m_flow_nominal=embNor.m_flow_nominal,
     redeclare package Medium = MediumWater,
     energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial)
     "Circulation pump at secondary side"
     annotation (Placement(transformation(extent={{236,50},{216,70}})));
+  IDEAS.Fluid.FixedResistances.PressureDrop res(
+    redeclare package Medium = MediumWater,
+    m_flow_nominal=pumEmi.m_flow_nominal,
+    dp_nominal=500) annotation (Placement(transformation(
+        extent={{-10,-10},{10,10}},
+        rotation=90,
+        origin={180,40})));
+  IDEAS.Fluid.FixedResistances.PressureDrop res1(
+    redeclare package Medium = MediumWater,
+    m_flow_nominal=pumSec.m_flow_nominal,
+    dp_nominal=500) annotation (Placement(transformation(
+        extent={{-10,-10},{10,10}},
+        rotation=270,
+        origin={200,40})));
+  IDEAS.Fluid.FixedResistances.PressureDrop res2(
+    redeclare package Medium = MediumWater,
+    m_flow_nominal=pumEmi.m_flow_nominal,
+    dp_nominal=500) annotation (Placement(transformation(
+        extent={{-10,-10},{10,10}},
+        rotation=90,
+        origin={180,-36})));
+  IDEAS.Fluid.FixedResistances.PressureDrop res3(
+    redeclare package Medium = MediumWater,
+    m_flow_nominal=pumSec.m_flow_nominal,
+    dp_nominal=500) annotation (Placement(transformation(
+        extent={{-10,-10},{10,10}},
+        rotation=270,
+        origin={200,-36})));
+  Modelica.Thermal.HeatTransfer.Sensors.TemperatureSensor senTan
+    "Temperature sensor of tank volume"
+    annotation (Placement(transformation(extent={{200,-20},{220,0}})));
 equation
   connect(rectangularZoneTemplate.TSensor,valNor. T) annotation (Line(
         points={{11,32},{26,32},{26,30},{39.4,30}}, color={0,0,127}));
@@ -69,20 +82,26 @@ equation
     annotation (Line(points={{50,40},{50,60},{80,60}}, color={0,127,255}));
   connect(valNor.port_b, embNor.port_a) annotation (Line(points={{50,20},{
           50,16},{34,16},{34,0},{40,0}}, color={0,127,255}));
-  connect(jun1.port_2, jun2.port_1)
-    annotation (Line(points={{100,-50},{170,-50}}, color={0,127,255}));
-  connect(jun2.port_2, heaPum.port_a1) annotation (Line(points={{190,-50},{240,
-          -50},{240,-18}}, color={0,127,255}));
-  connect(jun2.port_3, tan.port_b)
-    annotation (Line(points={{180,-40},{180,0}}, color={0,127,255}));
-  connect(senTemSup.port_a, jun3.port_2)
-    annotation (Line(points={{168,60},{190,60}}, color={0,127,255}));
-  connect(jun3.port_3, tan.port_a)
-    annotation (Line(points={{200,50},{200,0}}, color={0,127,255}));
-  connect(jun3.port_1, pumSec.port_b)
-    annotation (Line(points={{210,60},{216,60}}, color={0,127,255}));
   connect(pumSec.port_a, heaPum.port_b1)
     annotation (Line(points={{236,60},{240,60},{240,2}}, color={0,127,255}));
+  connect(res.port_b, senTemSup.port_a)
+    annotation (Line(points={{180,50},{180,60},{168,60}}, color={0,127,255}));
+  connect(res1.port_b, tan.port_a)
+    annotation (Line(points={{200,30},{200,0}}, color={0,127,255}));
+  connect(res.port_a, tan.port_a) annotation (Line(points={{180,30},{180,20},{
+          200,20},{200,0}}, color={0,127,255}));
+  connect(res1.port_a, pumSec.port_b)
+    annotation (Line(points={{200,50},{200,60},{216,60}}, color={0,127,255}));
+  connect(tan.port_b, res2.port_b)
+    annotation (Line(points={{180,0},{180,-26}}, color={0,127,255}));
+  connect(res3.port_a, res2.port_b) annotation (Line(points={{200,-26},{200,-20},
+          {180,-20},{180,-26}}, color={0,127,255}));
+  connect(res3.port_b, heaPum.port_a1) annotation (Line(points={{200,-46},{200,
+          -48},{240,-48},{240,-18}}, color={0,127,255}));
+  connect(res2.port_a, jun1.port_2) annotation (Line(points={{180,-46},{180,-50},
+          {100,-50}}, color={0,127,255}));
+  connect(tan.heaPorVol[1], senTan.port)
+    annotation (Line(points={{190,0},{190,-10},{200,-10}}, color={191,0,0}));
   annotation (
     Documentation(info="<html>
 <p>

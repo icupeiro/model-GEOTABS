@@ -12,7 +12,6 @@ model envFloPumHP "Building envelope, floor heating, pump, and heat pump"
     redeclare package Medium2 = MediumWater,
     datHeaPum=
         IDEAS.Fluid.HeatPumps.Data.ScrollWaterToWater.Heating.Viessmann_BW301A21_28kW_5_94COP_R410A(),
-
     scaling_factor=0.1,
     dp1_nominal=10000,
     dp2_nominal=10000,
@@ -34,8 +33,8 @@ model envFloPumHP "Building envelope, floor heating, pump, and heat pump"
         origin={326,-8})));
   IDEAS.Fluid.Movers.FlowControlled_dp pumPri(
     inputType=IDEAS.Fluid.Types.InputType.Constant,
-    dp_nominal=20000,
-    m_flow_nominal=embNor.m_flow_nominal + embSou.m_flow_nominal,
+    dp_nominal=heaPum.dp1_nominal,
+    m_flow_nominal=embNor.m_flow_nominal,
     redeclare package Medium = MediumWater,
     energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial)
     "Circulation pump at primary side"
