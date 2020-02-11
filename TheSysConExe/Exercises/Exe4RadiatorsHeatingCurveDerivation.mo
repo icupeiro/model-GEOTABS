@@ -18,9 +18,9 @@ equation
           -84}}, color={0,0,127}));
   annotation (Documentation(info="<html>
 <p>
-From the previous exercises we have concluded that decreasing
-the supply temperature setpoint of the production system is 
-interesting to increase the efficiency. 
+From the previous exercises we have concluded that adapting
+the supply temperature setpoint of the production system to
+the outdoor conditions may be interesting. 
 So far, a fixed temeprature setpoint has been used. 
 In reality, it is common to use a heating curve to modify 
 the supply temperature setpoint depending on the outdoor 
@@ -44,7 +44,7 @@ steady state we obtain:
 </p>
 <p>
 This is a static model of the building that defines what the 
-supply temperature must be T<sub>w</sub>, for a desired zone temperature
+supply water temperature must be T<sub>w</sub>, for a desired zone temperature
 T<sub>zone</sub>, and a given ambient temperature T<sub>amb</sub>. 
 As you can see, the slope of the heating curve depends on the ratio 
 between the heat transfer coefficient from the zone to the surroundings 
@@ -167,7 +167,7 @@ probably interested in drawing your line slightly above the cloud
 to follow a conservative approach: you want to decrease the supply
 temperature when the outdoor temperature decreases, but always 
 ensuring that the supply temperature will suffice to cover the 
-heat demand. 
+heat demand. Which are the two points that define your curve?
 </li>
 <li>
 Which are the values of the energy use of the boiler, and the total 
@@ -176,11 +176,14 @@ discomfort in the north and south zones at the end of the simulation?
 </ol>
 
 </html>"),
-    experiment(StopTime=2419200, __Dymola_Algorithm="Lsodar"),
+    experiment(StopTime=2419200, __Dymola_Algorithm="Dassl"),
     __Dymola_experimentSetupOutput,
     __Dymola_experimentFlags(
-      Advanced(GenerateVariableDependencies=false, OutputModelicaCode=false),
-      Evaluate=false,
+      Advanced(
+        EvaluateAlsoTop=false,
+        GenerateVariableDependencies=false,
+        OutputModelicaCode=false),
+      Evaluate=true,
       OutputCPUtime=false,
       OutputFlatModelica=false));
 end Exe4RadiatorsHeatingCurveDerivation;

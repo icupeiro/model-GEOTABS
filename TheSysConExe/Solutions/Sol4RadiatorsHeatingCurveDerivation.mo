@@ -43,11 +43,14 @@ equation
   connect(senTemSup.T, lowPasFilSup.u) annotation (Line(points={{158,49},{
           158,28},{134,28},{134,0},{148,0}}, color={0,0,127}));
   annotation (
-    experiment(StopTime=2419200, __Dymola_Algorithm="Lsodar"),
+    experiment(StopTime=2419200, __Dymola_Algorithm="Dassl"),
     __Dymola_experimentSetupOutput,
     __Dymola_experimentFlags(
-      Advanced(GenerateVariableDependencies=false, OutputModelicaCode=false),
-      Evaluate=false,
+      Advanced(
+        EvaluateAlsoTop=false,
+        GenerateVariableDependencies=false,
+        OutputModelicaCode=false),
+      Evaluate=true,
       OutputCPUtime=false,
       OutputFlatModelica=false));
 end Sol4RadiatorsHeatingCurveDerivation;

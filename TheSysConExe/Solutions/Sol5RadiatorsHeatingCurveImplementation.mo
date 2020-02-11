@@ -2,7 +2,7 @@ within TheSysConExe.Solutions;
 model Sol5RadiatorsHeatingCurveImplementation
   "Solution to the heating curve exercise"
   extends Exercises.Exe5RadiatorsHeatingCurveImplementation(
-    heaCurTab(table=[266,338; 286,300]),
+    heaCurTab(table=[266,330; 286,310]),
     valNor(P=0.1),
     valSou(P=0.1),
     pum(inputType=IDEAS.Fluid.Types.InputType.Stages));
@@ -17,7 +17,7 @@ model Sol5RadiatorsHeatingCurveImplementation
     annotation (Placement(transformation(extent={{42,70},{62,90}})));
   Modelica.Blocks.Math.Add add
     annotation (Placement(transformation(extent={{-42,70},{-22,90}})));
-  Modelica.Blocks.Sources.Constant OffSet(k=0.5)
+  Modelica.Blocks.Sources.Constant OffSet(k=0.0001)
     "Offset from heating set point"
     annotation (Placement(transformation(extent={{-74,92},{-54,112}})));
 protected
@@ -62,11 +62,14 @@ equation
           258,-80},{258,40},{254,40}}, color={0,0,127}));
   annotation (Diagram(coordinateSystem(extent={{-100,-100},{260,120}})), Icon(
         coordinateSystem(extent={{-100,-100},{100,120}})),
-    experiment(StopTime=2419200),
+    experiment(StopTime=2419200, __Dymola_Algorithm="Dassl"),
     __Dymola_experimentSetupOutput,
     __Dymola_experimentFlags(
-      Advanced(GenerateVariableDependencies=false, OutputModelicaCode=false),
-      Evaluate=false,
+      Advanced(
+        EvaluateAlsoTop=false,
+        GenerateVariableDependencies=false,
+        OutputModelicaCode=false),
+      Evaluate=true,
       OutputCPUtime=false,
       OutputFlatModelica=false));
 end Sol5RadiatorsHeatingCurveImplementation;

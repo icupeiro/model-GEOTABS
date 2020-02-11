@@ -48,7 +48,7 @@ Now it is about time for you to see if there is an
 added value on implementing the heating curve derived in 
 the previous exercise to obtain some good operational 
 savings for your clients. 
-The <code>heaCurTab</code> is the heating curve table of 
+The <code>heaCurTab</code> is the heating curve table 
 where we are going to define the heating curve derived in 
 the previous exercise. Take some time to understand how 
 this block works. Then, fill in the <code>table</code>
@@ -155,11 +155,14 @@ this extra investment cost?
 </ol>
 </p>
 </html>"),
-    experiment(StopTime=2419200, __Dymola_Algorithm="Lsodar"),
+    experiment(StopTime=2419200, __Dymola_Algorithm="Dassl"),
     __Dymola_experimentSetupOutput,
     __Dymola_experimentFlags(
-      Advanced(GenerateVariableDependencies=false, OutputModelicaCode=false),
-      Evaluate=false,
+      Advanced(
+        EvaluateAlsoTop=false,
+        GenerateVariableDependencies=false,
+        OutputModelicaCode=false),
+      Evaluate=true,
       OutputCPUtime=false,
       OutputFlatModelica=false));
 end Exe5RadiatorsHeatingCurveImplementation;
