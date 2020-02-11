@@ -7,14 +7,14 @@ model Exe1RadiatorsBuildingEnvelope
       redeclare BaseClases.Occupancy occNum(k=occ.k),
       l=sqrt(occ.A),
       w=sqrt(occ.A),
-      A_winA=0.4*occ.A),
+      A_winA=0.5*l*h),
                     rectangularZoneTemplate1(
       n50=2,
       redeclare BaseClases.Comfort comfort(setCoo=occ.setCoo, setHea=occ.setHea),
       redeclare BaseClases.Occupancy occNum(k=occ.k),
       l=sqrt(occ.A),
       w=sqrt(occ.A),
-      A_winC=0.4*occ.A))
+      A_winC=0.5*l*h))
                     annotation (
     experiment(
       StartTime=10000000,
@@ -30,21 +30,24 @@ model Exe1RadiatorsBuildingEnvelope
 
   BaseClases.Occupancy occ(
     linearise=false,
-    A=50,
+    A=500,
     setHeaOcc=21 + 273.15,
     setHeaUno=21 + 273.15,
     setCooOcc=23 + 273.15,
     setCooUno=23 + 273.15,
-    k=10)
+    k=50)
     "Occupancy schedule and setpoints for each of the zones in the building"
     annotation (Placement(transformation(extent={{-80,40},{-60,60}})));
 
   annotation (
-    experiment(StopTime=2419200, __Dymola_Algorithm="Lsodar"),
+    experiment(StopTime=2419200, __Dymola_Algorithm="Dassl"),
     __Dymola_experimentSetupOutput,
     __Dymola_experimentFlags(
-      Advanced(GenerateVariableDependencies=false, OutputModelicaCode=false),
-      Evaluate=false,
+      Advanced(
+        EvaluateAlsoTop=false,
+        GenerateVariableDependencies=false,
+        OutputModelicaCode=false),
+      Evaluate=true,
       OutputCPUtime=false,
       OutputFlatModelica=false),
     Diagram(coordinateSystem(extent={{-100,-100},{100,100}})),

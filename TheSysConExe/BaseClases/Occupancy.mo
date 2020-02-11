@@ -12,7 +12,7 @@ model Occupancy "Occupancy schedule"
   parameter Modelica.SIunits.Temperature setCooUno=26+273.15
       "Cooling setpoint when unoccupied";
 
-  parameter Real k "Number of occupants";
+  parameter Real k "Number of occupants per zone";
   IDEAS.Utilities.Time.CalendarTime calTim(zerTim=IDEAS.Utilities.Time.Types.ZeroTime.NY2019)
     annotation (Placement(transformation(extent={{-20,20},{0,40}})));
   Modelica.Blocks.Sources.RealExpression occ(y=if calTim.weekDay < 6 and (

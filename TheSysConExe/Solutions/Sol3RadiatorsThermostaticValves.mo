@@ -4,7 +4,8 @@ model Sol3RadiatorsThermostaticValves
   extends Exercises.Exe3RadiatorsThermostaticValves(
     valSou(P=0.1),
     const(k=60 + 273.15),
-    pum(inputType=IDEAS.Fluid.Types.InputType.Stages));
+    pum(inputType=IDEAS.Fluid.Types.InputType.Stages),
+    valNor(P=0.1));
   Modelica.Blocks.Math.BooleanToInteger booToInt
     "Convert boolean signal into integer "
     annotation (Placement(transformation(extent={{42,70},{62,90}})));
@@ -32,7 +33,7 @@ equation
         points={{-2,74},{-10,74},{-10,60},{20,60},{20,32},{11,32}}, color={
           0,0,127}));
   annotation (
-    experiment(StopTime=2419200, __Dymola_Algorithm="Lsodar"),
+    experiment(StopTime=2419200, __Dymola_Algorithm="Dassl"),
     __Dymola_experimentSetupOutput,
     __Dymola_experimentFlags(
       Advanced(GenerateVariableDependencies=false, OutputModelicaCode=false),

@@ -7,20 +7,22 @@ partial model envRadPumBoi "Envelope, radiators, pump and boiler"
   package MediumWater = IDEAS.Media.Water "Water Medium";
   IDEAS.Fluid.HeatExchangers.Radiators.RadiatorEN442_2 radNor(
     redeclare package Medium = MediumWater,
-    Q_flow_nominal=1000,
+    Q_flow_nominal=5000,
     T_a_nominal=333.15,
     T_b_nominal=323.15,
-    energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial)
+    energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
+    dp_nominal=pum.dp_nominal/2)
     "Radiator for north zone" annotation (Placement(transformation(
         extent={{10,-10},{-10,10}},
         rotation=90,
         origin={50,-10})));
   IDEAS.Fluid.HeatExchangers.Radiators.RadiatorEN442_2 radSou(
     redeclare package Medium = MediumWater,
-    Q_flow_nominal=1000,
+    Q_flow_nominal=5000,
     T_a_nominal=333.15,
     T_b_nominal=323.15,
-    energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial)
+    energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
+    dp_nominal=pum.dp_nominal/2)
     "Radiator for south zone" annotation (Placement(transformation(
         extent={{10,-10},{-10,10}},
         rotation=90,
@@ -47,7 +49,8 @@ partial model envRadPumBoi "Envelope, radiators, pump and boiler"
   CondensingBoiler                    boi(
     redeclare package Medium = MediumWater,
     m_flow_nominal=pum.m_flow_nominal,
-    dp_nominal=10000) "Ideal boiler with prescribed supply temperature"
+    dp_nominal=pum.dp_nominal/2)
+                      "Ideal boiler with prescribed supply temperature"
     annotation (Placement(transformation(extent={{220,10},{200,30}})));
   Modelica.Blocks.Continuous.Integrator ene(k=1/3600000)
     "Energy meter with conversion to kWh"

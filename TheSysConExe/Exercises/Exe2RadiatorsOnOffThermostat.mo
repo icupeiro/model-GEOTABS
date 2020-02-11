@@ -13,11 +13,14 @@ equation
   connect(const.y, boi.TSet) annotation (Line(points={{241,50},{256,50},{
           256,28},{222,28}}, color={0,0,127}));
   annotation (
-    experiment(StopTime=2419200, __Dymola_Algorithm="Lsodar"),
+    experiment(StopTime=2419200, __Dymola_Algorithm="Dassl"),
     __Dymola_experimentSetupOutput,
     __Dymola_experimentFlags(
-      Advanced(GenerateVariableDependencies=false, OutputModelicaCode=false),
-      Evaluate=false,
+      Advanced(
+        EvaluateAlsoTop=false,
+        GenerateVariableDependencies=false,
+        OutputModelicaCode=false),
+      Evaluate=true,
       OutputCPUtime=false,
       OutputFlatModelica=false),
     Documentation(info="<html>
@@ -103,7 +106,7 @@ you are very encouraged to try them out!
 <li>
 In the previous exercise it was clear that there was thermal discomfort 
 and no energy consumption since the thermal systems were missing. However,
-from now on you will use these two variables as key performance indicators 
+from now on you will use the energy use and thermal discomfort as key performance indicators 
 to compare between the proposed thermal systems and control logics.  
 It is possible to quantify the thermal energy consumed as well as the 
 total discomfort in each of the zones by integrating the instantaneous power

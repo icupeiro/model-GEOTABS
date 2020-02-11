@@ -2,7 +2,7 @@ within TheSysConExe.Solutions;
 model Sol2RadiatorsOnOffThermostat
   "Solution of exercise 2 for building control with on-off thermostat for the pump"
   extends Exercises.Exe2RadiatorsOnOffThermostat(
-                                        pum(inputType=IDEAS.Fluid.Types.InputType.Stages), const(k=60 +
+                                        pum(inputType=IDEAS.Fluid.Types.InputType.Stages), const(k=50 +
           273.15));
   Modelica.Blocks.Math.BooleanToInteger booToInt
     "Convert boolean signal into integer "
@@ -32,11 +32,14 @@ equation
           0,0,127}));
   annotation (Diagram(coordinateSystem(extent={{-100,-100},{260,120}})),
       Icon(coordinateSystem(extent={{-100,-100},{100,120}})),
-    experiment(StopTime=2419200, __Dymola_Algorithm="Lsodar"),
+    experiment(StopTime=2419200, __Dymola_Algorithm="Dassl"),
     __Dymola_experimentSetupOutput,
     __Dymola_experimentFlags(
-      Advanced(GenerateVariableDependencies=false, OutputModelicaCode=false),
-      Evaluate=false,
+      Advanced(
+        EvaluateAlsoTop=false,
+        GenerateVariableDependencies=false,
+        OutputModelicaCode=false),
+      Evaluate=true,
       OutputCPUtime=false,
       OutputFlatModelica=false));
 end Sol2RadiatorsOnOffThermostat;
