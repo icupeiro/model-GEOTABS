@@ -4,19 +4,21 @@ model Exe7FloorHeatingThermostaticValves
   extends BaseClases.envFloPumHP;
   IDEAS.Fluid.Actuators.Valves.TwoWayTRV valNor(
     m_flow_nominal=embNor.m_flow_nominal,
-    dpValve_nominal=20000,
+    dpValve_nominal=pumEmi.dp_nominal*0.9,
     redeclare package Medium = MediumWater,
-    riseTime=120)
+    use_inputFilter=false,
+    from_dp=true)
     "Thermostatic valve for north zone" annotation (Placement(
         transformation(
         extent={{10,-10},{-10,10}},
         rotation=90,
         origin={50,30})));
   IDEAS.Fluid.Actuators.Valves.TwoWayTRV valSou(
-    dpValve_nominal=20000,
+    dpValve_nominal=pumEmi.dp_nominal*0.9,
     m_flow_nominal=embSou.m_flow_nominal,
     redeclare package Medium = MediumWater,
-    riseTime=120)
+    use_inputFilter=false,
+    from_dp=true)
     "Thermostatic valve for south zone" annotation (Placement(
         transformation(
         extent={{10,-10},{-10,10}},
@@ -36,10 +38,10 @@ equation
     annotation (Line(points={{50,40},{50,60},{80,60}}, color={0,127,255}));
   connect(valNor.port_b, embNor.port_a) annotation (Line(points={{50,20},{
           50,16},{34,16},{34,0},{40,0}}, color={0,127,255}));
-  connect(heaPum.port_b1, senTemSup.port_a) annotation (Line(points={{240,2},
+  connect(heaPum.port_b1,senTemSup.port_a)  annotation (Line(points={{240,2},
           {240,60},{168,60},{168,60}}, color={0,127,255}));
-  connect(jun1.port_2, heaPum.port_a1) annotation (Line(points={{100,-50},{240,
-          -50},{240,-18}}, color={0,127,255}));
+  connect(senTemRet.port_a, heaPum.port_a1) annotation (Line(points={{140,-50},
+          {240,-50},{240,-18}}, color={0,127,255}));
   annotation (Documentation(info="<html>
 <p>
 This exercise is equivalent to 
@@ -54,7 +56,7 @@ is more efficient.
 </p>
 <p>
 First, add the on-off control already implemented in the previous 
-exercise. Then, Tune the parameters in each valve to properly follow
+exercise. Then, tune the parameters in each valve to properly follow
 the heating setopoint and simulate to answer the following questions. 
 </p>
 
@@ -79,11 +81,14 @@ heat pump COP <code>heaPum.com.COP</code>.
 </li>
 </ol>
 </html>"),
-    experiment(StopTime=2419200, __Dymola_Algorithm="Lsodar"),
+    experiment(StopTime=2419200, __Dymola_Algorithm="Dassl"),
     __Dymola_experimentSetupOutput,
     __Dymola_experimentFlags(
-      Advanced(GenerateVariableDependencies=false, OutputModelicaCode=false),
-      Evaluate=false,
-      OutputCPUtime=false,
+      Advanced(
+        EvaluateAlsoTop=false,
+        GenerateVariableDependencies=false,
+        OutputModelicaCode=false),
+      Evaluate=true,
+      OutputCPUtime=true,
       OutputFlatModelica=false));
 end Exe7FloorHeatingThermostaticValves;

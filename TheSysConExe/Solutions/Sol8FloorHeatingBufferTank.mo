@@ -4,7 +4,7 @@ model Sol8FloorHeatingBufferTank
   extends Exercises.Exe8FloorHeatingBufferTank(
     valSou(P=0.2),
     valNor(P=0.2),
-    heaPum(dp2_nominal=1000, scaling_factor=0.05),
+    heaPum(dp2_nominal=1000),
     pumSec(dp_nominal=20000),
     pumEmi(inputType=IDEAS.Fluid.Types.InputType.Stages));
   Modelica.Blocks.Math.BooleanToInteger booToInt

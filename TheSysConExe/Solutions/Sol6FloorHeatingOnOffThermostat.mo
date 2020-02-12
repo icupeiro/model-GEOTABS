@@ -2,7 +2,9 @@ within TheSysConExe.Solutions;
 model Sol6FloorHeatingOnOffThermostat
   "Solution of exercise with floor heating, heat pump, and on off thermostat"
   extends Exercises.Exe6FloorHeatingOnOffThermostat(pumEmi(inputType=IDEAS.Fluid.Types.InputType.Constant),
-      heaPum(scaling_factor=0.05));
+      heaPum(scaling_factor=0.3),
+    bou1(T=278.15),
+    pumPri(m_flow_nominal=pumEmi.m_flow_nominal));
   Modelica.Blocks.Math.BooleanToInteger booToInt
     "Convert boolean signal into integer "
     annotation (Placement(transformation(extent={{42,70},{62,90}})));
@@ -40,11 +42,14 @@ equation
   connect(pumEmi.P, enePumSec.u) annotation (Line(points={{119,69},{114,69},{
           114,0},{136,0}}, color={0,0,127}));
   annotation (Diagram(coordinateSystem(extent={{-100,-100},{340,120}})),
-    experiment(StopTime=2419200, __Dymola_Algorithm="Lsodar"),
+    experiment(StopTime=2419200, __Dymola_Algorithm="Dassl"),
     __Dymola_experimentSetupOutput,
     __Dymola_experimentFlags(
-      Advanced(GenerateVariableDependencies=false, OutputModelicaCode=false),
-      Evaluate=false,
-      OutputCPUtime=false,
+      Advanced(
+        EvaluateAlsoTop=false,
+        GenerateVariableDependencies=false,
+        OutputModelicaCode=false),
+      Evaluate=true,
+      OutputCPUtime=true,
       OutputFlatModelica=false));
 end Sol6FloorHeatingOnOffThermostat;

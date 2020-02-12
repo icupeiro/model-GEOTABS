@@ -1,22 +1,25 @@
 within TheSysConExe.Exercises;
 model Exe8FloorHeatingBufferTank
   "Building with floor heating, thermostatic valves, a heat pump, and a buffer tank to decouple emission circuit from production circuit"
-  extends BaseClases.envFloPumHP(heaPum(m1_flow_nominal=pumSec.m_flow_nominal));
+  extends BaseClases.envFloPumHP(heaPum(m1_flow_nominal=pumSec.m_flow_nominal,
+        scaling_factor=0.15));
   IDEAS.Fluid.Actuators.Valves.TwoWayTRV valNor(
     m_flow_nominal=embNor.m_flow_nominal,
-    dpValve_nominal=20000,
+    dpValve_nominal=pumEmi.dp_nominal*0.9,
     redeclare package Medium = MediumWater,
-    riseTime=120)
+    use_inputFilter=false,
+    from_dp=true)
     "Thermostatic valve for north zone" annotation (Placement(
         transformation(
         extent={{10,-10},{-10,10}},
         rotation=90,
         origin={50,30})));
   IDEAS.Fluid.Actuators.Valves.TwoWayTRV valSou(
-    dpValve_nominal=20000,
+    dpValve_nominal=pumEmi.dp_nominal*0.9,
     m_flow_nominal=embSou.m_flow_nominal,
     redeclare package Medium = MediumWater,
-    riseTime=120)
+    use_inputFilter=false,
+    from_dp=true)
     "Thermostatic valve for south zone" annotation (Placement(
         transformation(
         extent={{10,-10},{-10,10}},
@@ -84,7 +87,7 @@ equation
           50,16},{34,16},{34,0},{40,0}}, color={0,127,255}));
   connect(pumSec.port_a, heaPum.port_b1)
     annotation (Line(points={{236,60},{240,60},{240,2}}, color={0,127,255}));
-  connect(res.port_b, senTemSup.port_a)
+  connect(res.port_b,senTemSup.port_a)
     annotation (Line(points={{180,50},{180,60},{168,60}}, color={0,127,255}));
   connect(res1.port_b, tan.port_a)
     annotation (Line(points={{200,30},{200,0}}, color={0,127,255}));
@@ -98,10 +101,10 @@ equation
           {180,-20},{180,-26}}, color={0,127,255}));
   connect(res3.port_b, heaPum.port_a1) annotation (Line(points={{200,-46},{200,
           -48},{240,-48},{240,-18}}, color={0,127,255}));
-  connect(res2.port_a, jun1.port_2) annotation (Line(points={{180,-46},{180,-50},
-          {100,-50}}, color={0,127,255}));
   connect(tan.heaPorVol[1], senTan.port)
     annotation (Line(points={{190,0},{190,-10},{200,-10}}, color={191,0,0}));
+  connect(senTemRet.port_a, res2.port_a) annotation (Line(points={{140,-50},{
+          180,-50},{180,-46}}, color={0,127,255}));
   annotation (
     Documentation(info="<html>
 <p>
@@ -123,7 +126,7 @@ the total discomfort in each of the zones?
 <li>
 You come back to the catalogues of the providers that are partnered with
 <i>The Sysis Consultants</i> to check prices and you find out the cost of 
-installing floor heating is approximately of 30 &#8364;/m2. For heat pumps, 
+installing floor heating is of 30 &#8364;/m2. For heat pumps, 
 your preferred supplier is 
 <a href=\"https://www.pzpheating.com/userfiles/files/Price-list_EN_01_04_2014.pdf\">
 PZP HEATING a.s.</a> 

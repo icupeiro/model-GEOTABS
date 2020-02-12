@@ -4,7 +4,7 @@ model Exe3RadiatorsThermostaticValves
   extends BaseClases.envRadPumBoi;
   IDEAS.Fluid.Actuators.Valves.TwoWayTRV valNor(
     m_flow_nominal=radNor.m_flow_nominal,
-    dpValve_nominal=20000,
+    dpValve_nominal=pum.dp_nominal*0.9,
     redeclare package Medium = MediumWater,
     use_inputFilter=false,
     from_dp=true)
@@ -14,7 +14,7 @@ model Exe3RadiatorsThermostaticValves
         rotation=90,
         origin={50,30})));
   IDEAS.Fluid.Actuators.Valves.TwoWayTRV valSou(
-    dpValve_nominal=20000,
+    dpValve_nominal=pum.dp_nominal*0.9,
     m_flow_nominal=radSou.m_flow_nominal,
     redeclare package Medium = MediumWater,
     use_inputFilter=false,

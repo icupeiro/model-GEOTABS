@@ -7,13 +7,13 @@ equation
           60},{50,20},{34,20},{34,0},{40,0}}, color={0,127,255}));
   connect(jun.port_3, embSou.port_a) annotation (Line(points={{90,50},{90,
           20},{76,20},{76,0},{80,0}}, color={0,127,255}));
-  connect(heaPum.port_b1, senTemSup.port_a) annotation (Line(points={{240,2},
+  connect(heaPum.port_b1,senTemSup.port_a)  annotation (Line(points={{240,2},
           {238,2},{238,60},{168,60}}, color={0,127,255}));
-  connect(jun1.port_2, heaPum.port_a1) annotation (Line(points={{100,-50},{240,
-          -50},{240,-18}}, color={0,127,255}));
+  connect(senTemRet.port_a, heaPum.port_a1) annotation (Line(points={{140,-50},
+          {240,-50},{240,-18}}, color={0,127,255}));
   annotation (Documentation(info="<html>
 <p>
-Congratulations! You have already made a proposal for the thermal 
+Congratulations! You have already made a complete proposal for the thermal 
 systems of the building of <i>BeautifulEnvelopes</i>. This proposal
 consists of a gas boiler as production system and radiators as 
 emission system. 
@@ -36,8 +36,8 @@ your new proposal.
 </p>
 <p>
 First of all, take some time to understand how the model has changed.
-The radiator models have been changed by models of pipes embedded in 
-the floor of the zones. This model is used for floor heating and 
+The radiator models have been replaced by models of pipes embedded in 
+the floor of the zones. These models used for floor heating and 
 for Termally Activated Building Systems (TABS). Also, if you open 
 the floor tab of each zone you will realize that its material 
 structure has been replaced by an insulated floor heating type with 
@@ -90,7 +90,7 @@ power of the heat pump required for this instalation?
 <p>
 Note: watch out with large scaling factors. These will lead not only to higher
 installation costs because of an oversized heat pump, but also to a decrease of 
-the system performance. The latest may be caused by the temperature protection 
+the system performance. The latter may be caused by the temperature protection 
 of the heat pump model that disables the heat pump when temperature exceeds a 
 predefined threshold. 
 </p>
@@ -120,11 +120,14 @@ smart-grid?
 </ol>
 </p>
 </html>"),
-    experiment(StopTime=2419200, __Dymola_Algorithm="Lsodar"),
+    experiment(StopTime=2419200, __Dymola_Algorithm="Dassl"),
     __Dymola_experimentSetupOutput,
     __Dymola_experimentFlags(
-      Advanced(GenerateVariableDependencies=false, OutputModelicaCode=false),
-      Evaluate=false,
-      OutputCPUtime=false,
+      Advanced(
+        EvaluateAlsoTop=false,
+        GenerateVariableDependencies=false,
+        OutputModelicaCode=false),
+      Evaluate=true,
+      OutputCPUtime=true,
       OutputFlatModelica=false));
 end Exe6FloorHeatingOnOffThermostat;

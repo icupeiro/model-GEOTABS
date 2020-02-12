@@ -85,5 +85,4 @@ equation
           lineColor={0,0,127},
           textString="Q_real")}),           Diagram(coordinateSystem(
           preserveAspectRatio=false)));
-
 end CondensingBoiler;

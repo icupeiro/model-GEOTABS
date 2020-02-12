@@ -1,7 +1,7 @@
 within TheSysConExe.Exercises;
 model Exe1RadiatorsBuildingEnvelope
   "Building envelope model with two zones and office occupancy"
-  extends IDEAS.Examples.Tutorial.Example5(rectangularZoneTemplate(
+  extends TheSysConExe.BaseClases.BuildingEnvelope(rectangularZoneTemplate(
       n50=2,
       redeclare BaseClases.Comfort comfort(setCoo=occ.setCoo, setHea=occ.setHea),
       redeclare BaseClases.Occupancy occNum(k=occ.k),
@@ -35,7 +35,7 @@ model Exe1RadiatorsBuildingEnvelope
     setHeaUno=21 + 273.15,
     setCooOcc=23 + 273.15,
     setCooUno=23 + 273.15,
-    k=50)
+    k=30)
     "Occupancy schedule and setpoints for each of the zones in the building"
     annotation (Placement(transformation(extent={{-80,40},{-60,60}})));
 

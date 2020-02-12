@@ -2,24 +2,36 @@ within TheSysConExe.Solutions;
 model Sol7FloorHeatingThermostaticValves
   "Solution of exercise with floor heating, thermostatic valves, and heat pump"
   extends Exercises.Exe7FloorHeatingThermostaticValves(
-    valNor(P=0.5),
-    valSou(P=0.5),
-    heaPum(scaling_factor=0.05));
+    valNor(
+      dpValve_nominal=pumEmi.dp_nominal*0.9,
+           P=0.5,
+      use_inputFilter=false,
+      from_dp=true),
+    valSou(
+      dpValve_nominal=pumEmi.dp_nominal*0.9,
+           P=0.5,
+      use_inputFilter=false,
+      from_dp=true),
+    heaPum(scaling_factor=0.15));
   IDEAS.Fluid.Actuators.Valves.TwoWayTRV valNor(
     m_flow_nominal=embNor.m_flow_nominal,
-    dpValve_nominal=20000,
     redeclare package Medium = MediumWater,
-    P=0.5)
+    dpValve_nominal=pumEmi.dp_nominal*0.9,
+    P=0.5,
+    use_inputFilter=false,
+    from_dp=true)
     "Thermostatic valve for north zone" annotation (Placement(
         transformation(
         extent={{10,-10},{-10,10}},
         rotation=90,
         origin={50,30})));
   IDEAS.Fluid.Actuators.Valves.TwoWayTRV valSou(
-    dpValve_nominal=20000,
+    dpValve_nominal=pumEmi.dp_nominal*0.9,
     m_flow_nominal=embSou.m_flow_nominal,
     redeclare package Medium = MediumWater,
-    P=0.5)
+    P=0.5,
+    use_inputFilter=false,
+    from_dp=true)
     "Thermostatic valve for south zone" annotation (Placement(
         transformation(
         extent={{10,-10},{-10,10}},
@@ -64,5 +76,15 @@ equation
   connect(onOffCon.u, rectangularZoneTemplate.TSensor) annotation (Line(
         points={{-2,74},{-10,74},{-10,60},{20,60},{20,32},{11,32}}, color={
           0,0,127}));
-  annotation (Diagram(coordinateSystem(extent={{-100,-100},{340,120}})));
+  annotation (Diagram(coordinateSystem(extent={{-100,-100},{340,120}})),
+    experiment(StopTime=2419200, __Dymola_Algorithm="Dassl"),
+    __Dymola_experimentSetupOutput,
+    __Dymola_experimentFlags(
+      Advanced(
+        EvaluateAlsoTop=false,
+        GenerateVariableDependencies=false,
+        OutputModelicaCode=false),
+      Evaluate=true,
+      OutputCPUtime=true,
+      OutputFlatModelica=false));
 end Sol7FloorHeatingThermostaticValves;
