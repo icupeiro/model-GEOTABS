@@ -7,7 +7,8 @@ model Exe5RadiatorsHeatingCurveImplementation
     m_flow_nominal=radNor.m_flow_nominal,
     dpValve_nominal=20000,
     redeclare package Medium = MediumWater,
-    riseTime=120)
+    use_inputFilter=false,
+    from_dp=true)
     "Thermostatic valve for north zone" annotation (Placement(
         transformation(
         extent={{10,-10},{-10,10}},
@@ -17,7 +18,8 @@ model Exe5RadiatorsHeatingCurveImplementation
     dpValve_nominal=20000,
     m_flow_nominal=radSou.m_flow_nominal,
     redeclare package Medium = MediumWater,
-    riseTime=120)
+    use_inputFilter=false,
+    from_dp=true)
     "Thermostatic valve for south zone" annotation (Placement(
         transformation(
         extent={{10,-10},{-10,10}},
