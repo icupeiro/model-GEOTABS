@@ -1,21 +1,21 @@
 within TheSysConExe.Exercises;
 model Exe1RadiatorsBuildingEnvelope
   "Building envelope model with two zones and office occupancy"
-  extends TheSysConExe.BaseClases.BuildingEnvelope(rectangularZoneTemplate(
+  extends TheSysConExe.BaseClases.BuildingEnvelope(zonNor(
       n50=2,
       redeclare BaseClases.Comfort comfort(setCoo=occ.setCoo, setHea=occ.setHea),
+
       redeclare BaseClases.Occupancy occNum(k=occ.k),
       l=sqrt(occ.A),
       w=sqrt(occ.A),
-      A_winA=0.5*l*h),
-                    rectangularZoneTemplate1(
+      A_winA=0.5*l*h), zonSou(
       n50=2,
       redeclare BaseClases.Comfort comfort(setCoo=occ.setCoo, setHea=occ.setHea),
+
       redeclare BaseClases.Occupancy occNum(k=occ.k),
       l=sqrt(occ.A),
       w=sqrt(occ.A),
-      A_winC=0.5*l*h))
-                    annotation (
+      A_winC=0.5*l*h)) annotation (
     experiment(
       StartTime=10000000,
       StopTime=11000000,

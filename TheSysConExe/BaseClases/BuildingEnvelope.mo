@@ -9,7 +9,7 @@ model BuildingEnvelope "Building envelope with 2 coupled zones"
 
   inner IDEAS.BoundaryConditions.SimInfoManager sim
     annotation (Placement(transformation(extent={{-100,80},{-80,100}})));
-  IDEAS.Buildings.Components.RectangularZoneTemplate rectangularZoneTemplate(
+  IDEAS.Buildings.Components.RectangularZoneTemplate zonNor(
     redeclare package Medium = Medium,
     aziA=IDEAS.Types.Azimuth.N,
     h=h,
@@ -34,7 +34,8 @@ model BuildingEnvelope "Building envelope with 2 coupled zones"
     redeclare IDEAS.Buildings.Validation.Data.Constructions.HeavyFloor
       conTypFlo) "North part of the zone"
     annotation (Placement(transformation(extent={{-10,20},{10,40}})));
-  IDEAS.Buildings.Components.RectangularZoneTemplate rectangularZoneTemplate1(
+
+  IDEAS.Buildings.Components.RectangularZoneTemplate zonSou(
     redeclare package Medium = Medium,
     aziA=IDEAS.Types.Azimuth.N,
     h=h,
@@ -58,9 +59,9 @@ model BuildingEnvelope "Building envelope with 2 coupled zones"
     redeclare IDEAS.Examples.TwinHouses.BaseClasses.Data.Materials.Glazing
       glazingC) "South part of the zone"
     annotation (Placement(transformation(extent={{-10,-40},{10,-20}})));
+
 equation
-  connect(rectangularZoneTemplate1.proBusA, rectangularZoneTemplate.proBusC)
-    annotation (Line(
+  connect(zonSou.proBusA, zonNor.proBusC) annotation (Line(
       points={{-6,-21},{-6,2},{6.8,2},{6.8,20.2}},
       color={255,204,51},
       thickness=0.5));

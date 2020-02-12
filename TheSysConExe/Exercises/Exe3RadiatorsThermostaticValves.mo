@@ -32,16 +32,16 @@ equation
     annotation (Line(points={{50,20},{50,0}}, color={0,127,255}));
   connect(valSou.port_b, radSou.port_a)
     annotation (Line(points={{90,20},{90,0}}, color={0,127,255}));
-  connect(rectangularZoneTemplate.TSensor, valNor.T) annotation (Line(
-        points={{11,32},{26,32},{26,30},{39.4,30}}, color={0,0,127}));
+  connect(zonNor.TSensor, valNor.T) annotation (Line(points={{11,32},{26,32},{
+          26,30},{39.4,30}}, color={0,0,127}));
   connect(jun.port_3, valSou.port_a)
     annotation (Line(points={{90,50},{90,40}}, color={0,127,255}));
   connect(jun.port_2, valNor.port_a)
     annotation (Line(points={{80,60},{50,60},{50,40}}, color={0,127,255}));
   connect(const.y, boi.TSet) annotation (Line(points={{241,50},{256,50},{
           256,28},{222,28}}, color={0,0,127}));
-  connect(rectangularZoneTemplate1.TSensor, valSou.T) annotation (Line(points={
-          {11,-28},{32,-28},{32,8},{72,8},{72,30},{79.4,30}}, color={0,0,127}));
+  connect(zonSou.TSensor, valSou.T) annotation (Line(points={{11,-28},{32,-28},
+          {32,8},{72,8},{72,30},{79.4,30}}, color={0,0,127}));
   annotation (
     Documentation(info="<html>
 <p>
@@ -93,10 +93,6 @@ does them make sense? How do they compare with the previous exercise?
 </li>
 <li>
 How do the zone temperature profiles compare with the previous exercise? 
-</li>
-<li>
-Why are there still zone temperature peaks that remain even after adding 
-the thermostatic valves? 
 </li>
 </ol>
 </html>"),

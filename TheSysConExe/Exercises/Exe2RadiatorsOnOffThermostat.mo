@@ -1,10 +1,7 @@
 within TheSysConExe.Exercises;
 model Exe2RadiatorsOnOffThermostat
   "Building control by switching emission system on and off"
-  extends BaseClases.envRadPumBoi(
-    radNor(Q_flow_nominal=15000),
-    radSou(Q_flow_nominal=15000),
-    boi(QMax_flow=30000));
+  extends BaseClases.envRadPumBoi;
   Modelica.Blocks.Sources.Constant const(k=60 + 273.15)
     "Supply temperature setpoint"
     annotation (Placement(transformation(extent={{220,40},{240,60}})));

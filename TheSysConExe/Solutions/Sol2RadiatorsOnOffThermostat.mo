@@ -27,9 +27,8 @@ equation
           -52,74},{-44,74}}, color={0,0,127}));
   connect(add.u1, OffSet.y) annotation (Line(points={{-44,86},{-48,86},{-48,
           102},{-53,102}}, color={0,0,127}));
-  connect(onOffCon.u, rectangularZoneTemplate.TSensor) annotation (Line(
-        points={{-2,74},{-10,74},{-10,60},{20,60},{20,32},{11,32}}, color={
-          0,0,127}));
+  connect(onOffCon.u, zonNor.TSensor) annotation (Line(points={{-2,74},{-10,74},
+          {-10,60},{20,60},{20,32},{11,32}}, color={0,0,127}));
   annotation (Diagram(coordinateSystem(extent={{-100,-100},{260,120}})),
       Icon(coordinateSystem(extent={{-100,-100},{100,120}})),
     experiment(StopTime=2419200, __Dymola_Algorithm="Dassl"),

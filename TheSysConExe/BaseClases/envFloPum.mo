@@ -1,20 +1,18 @@
 within TheSysConExe.BaseClases;
 model envFloPum "Envelope, floor heating, and pump"
-  extends Exercises.Exe1RadiatorsBuildingEnvelope(
-                                         rectangularZoneTemplate(
+  extends Exercises.Exe1RadiatorsBuildingEnvelope(zonNor(
       linIntRad=true,
       redeclare IDEAS.Buildings.Data.Constructions.InsulatedFloorHeating
         conTypFlo(mats={IDEAS.Buildings.Data.Materials.Concrete(d=0.10),
             IDEAS.Buildings.Data.Insulation.Pur(d=0.07),
             IDEAS.Buildings.Data.Materials.Screed(d=0.10),
             IDEAS.Buildings.Data.Materials.Tile(d=0.01)}),
-      hasEmb=true), rectangularZoneTemplate1(redeclare
-        IDEAS.Buildings.Data.Constructions.InsulatedFloorHeating conTypFlo(mats=
-           {IDEAS.Buildings.Data.Materials.Concrete(d=0.10),
+      hasEmb=true), zonSou(redeclare
+        IDEAS.Buildings.Data.Constructions.InsulatedFloorHeating conTypFlo(mats
+          ={IDEAS.Buildings.Data.Materials.Concrete(d=0.10),
             IDEAS.Buildings.Data.Insulation.Pur(d=0.07),
             IDEAS.Buildings.Data.Materials.Screed(d=0.10),
-            IDEAS.Buildings.Data.Materials.Tile(d=0.01)}),
-        hasEmb=true));
+            IDEAS.Buildings.Data.Materials.Tile(d=0.01)}), hasEmb=true));
 
   package MediumWater = IDEAS.Media.Water "Water Medium";
   IDEAS.Fluid.Movers.FlowControlled_dp pumEmi(
@@ -57,8 +55,7 @@ model envFloPum "Envelope, floor heating, and pump"
     allowFlowReversal=true,
     m_flow_nominal=0.16,
     dp_nominal=pumEmi.dp_nominal/4,
-    A_floor=rectangularZoneTemplate.AZone)
-    "Embedded pipe of floor heating in north zone"
+    A_floor=zonNor.AZone) "Embedded pipe of floor heating in north zone"
     annotation (Placement(transformation(extent={{40,-10},{60,10}})));
   IDEAS.Fluid.HeatExchangers.RadiantSlab.EmbeddedPipe embSou(
     redeclare package Medium = MediumWater,
@@ -67,8 +64,7 @@ model envFloPum "Envelope, floor heating, and pump"
     allowFlowReversal=true,
     m_flow_nominal=0.16,
     dp_nominal=pumEmi.dp_nominal/4,
-    A_floor=rectangularZoneTemplate.AZone)
-    "Embedded pipe of floor heating in south zone"
+    A_floor=zonNor.AZone) "Embedded pipe of floor heating in south zone"
     annotation (Placement(transformation(extent={{80,-10},{100,10}})));
   IDEAS.Fluid.FixedResistances.Junction jun(
     redeclare package Medium = MediumWater,
@@ -94,10 +90,10 @@ equation
           -50},{80,-50}}, color={0,127,255}));
   connect(embSou.port_b,jun1. port_3) annotation (Line(points={{100,0},{104,0},{
           104,-20},{90,-20},{90,-40}}, color={0,127,255}));
-  connect(rectangularZoneTemplate1.gainEmb[1],embSou. heatPortEmb[1])
-    annotation (Line(points={{10,-39},{74,-39},{74,10},{90,10}}, color={191,0,0}));
-  connect(rectangularZoneTemplate.gainEmb[1], embNor.heatPortEmb[1])
-    annotation (Line(points={{10,21},{28,21},{28,10},{50,10}}, color={191,0,0}));
+  connect(zonSou.gainEmb[1], embSou.heatPortEmb[1]) annotation (Line(points={{
+          10,-39},{74,-39},{74,10},{90,10}}, color={191,0,0}));
+  connect(zonNor.gainEmb[1], embNor.heatPortEmb[1]) annotation (Line(points={{
+          10,21},{28,21},{28,10},{50,10}}, color={191,0,0}));
   connect(pumEmi.port_b, jun.port_1)
     annotation (Line(points={{120,60},{100,60}}, color={0,127,255}));
 

@@ -13,9 +13,8 @@ equation
           {-46,-72},{198,-72}}, color={0,0,127}));
   connect(conPID.y, boi.TSet) annotation (Line(points={{221,-72},{240,-72},
           {240,28},{222,28}}, color={0,0,127}));
-  connect(rectangularZoneTemplate.TSensor, conPID.u_m) annotation (Line(
-        points={{11,32},{20,32},{20,46},{-20,46},{-20,-94},{210,-94},{210,
-          -84}}, color={0,0,127}));
+  connect(zonNor.TSensor, conPID.u_m) annotation (Line(points={{11,32},{20,32},
+          {20,46},{-20,46},{-20,-94},{210,-94},{210,-84}}, color={0,0,127}));
   annotation (Documentation(info="<html>
 <p>
 From the previous exercises we have concluded that adapting
@@ -168,10 +167,6 @@ to follow a conservative approach: you want to decrease the supply
 temperature when the outdoor temperature decreases, but always 
 ensuring that the supply temperature will suffice to cover the 
 heat demand. Which are the two points that define your curve?
-</li>
-<li>
-Which are the values of the energy use of the boiler, and the total 
-discomfort in the north and south zones at the end of the simulation? 
 </li>
 </ol>
 

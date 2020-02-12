@@ -8,7 +8,7 @@ partial model envRadPumBoi "Envelope, radiators, pump and boiler"
   IDEAS.Fluid.HeatExchangers.Radiators.RadiatorEN442_2 radNor(
     redeclare package Medium = MediumWater,
     massDynamics=Modelica.Fluid.Types.Dynamics.SteadyState,
-    Q_flow_nominal=5000,
+    Q_flow_nominal=15000,
     T_a_nominal=333.15,
     T_b_nominal=323.15,
     energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
@@ -20,7 +20,7 @@ partial model envRadPumBoi "Envelope, radiators, pump and boiler"
   IDEAS.Fluid.HeatExchangers.Radiators.RadiatorEN442_2 radSou(
     redeclare package Medium = MediumWater,
     massDynamics=Modelica.Fluid.Types.Dynamics.SteadyState,
-    Q_flow_nominal=5000,
+    Q_flow_nominal=15000,
     T_a_nominal=333.15,
     T_b_nominal=323.15,
     energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
@@ -51,8 +51,8 @@ partial model envRadPumBoi "Envelope, radiators, pump and boiler"
   CondensingBoiler                    boi(
     redeclare package Medium = MediumWater,
     m_flow_nominal=pum.m_flow_nominal,
-    dp_nominal=pum.dp_nominal/4)
-                      "Ideal boiler with prescribed supply temperature"
+    dp_nominal=pum.dp_nominal/4,
+    QMax_flow=30000) "Boiler with prescribed supply temperature"
     annotation (Placement(transformation(extent={{220,10},{200,30}})));
   Modelica.Blocks.Continuous.Integrator ene(k=1/3600000)
     "Energy meter with conversion to kWh"
@@ -89,14 +89,14 @@ partial model envRadPumBoi "Envelope, radiators, pump and boiler"
     tau=0) "Return water temperature sensor"
     annotation (Placement(transformation(extent={{140,-40},{120,-60}})));
 equation
-  connect(radNor.heatPortCon, rectangularZoneTemplate.gainCon) annotation (
-      Line(points={{42.8,-8},{20,-8},{20,27},{10,27}}, color={191,0,0}));
-  connect(radNor.heatPortRad, rectangularZoneTemplate.gainRad) annotation (
-      Line(points={{42.8,-12},{16,-12},{16,24},{10,24}}, color={191,0,0}));
-  connect(radSou.heatPortCon, rectangularZoneTemplate1.gainCon) annotation (
-     Line(points={{82.8,-8},{66,-8},{66,-33},{10,-33}}, color={191,0,0}));
-  connect(radSou.heatPortRad, rectangularZoneTemplate1.gainRad) annotation (
-     Line(points={{82.8,-12},{70,-12},{70,-36},{10,-36}}, color={191,0,0}));
+  connect(radNor.heatPortCon, zonNor.gainCon) annotation (Line(points={{42.8,-8},
+          {20,-8},{20,27},{10,27}}, color={191,0,0}));
+  connect(radNor.heatPortRad, zonNor.gainRad) annotation (Line(points={{42.8,-12},
+          {16,-12},{16,24},{10,24}}, color={191,0,0}));
+  connect(radSou.heatPortCon, zonSou.gainCon) annotation (Line(points={{82.8,-8},
+          {66,-8},{66,-33},{10,-33}}, color={191,0,0}));
+  connect(radSou.heatPortRad, zonSou.gainRad) annotation (Line(points={{82.8,-12},
+          {70,-12},{70,-36},{10,-36}}, color={191,0,0}));
   connect(senTemSup.port_b, pum.port_a)
     annotation (Line(points={{148,60},{140,60}}, color={0,127,255}));
   connect(boi.port_b, senTemSup.port_a) annotation (Line(points={{200,20},{

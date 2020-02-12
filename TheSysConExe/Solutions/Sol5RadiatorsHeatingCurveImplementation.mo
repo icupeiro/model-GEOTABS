@@ -2,7 +2,7 @@ within TheSysConExe.Solutions;
 model Sol5RadiatorsHeatingCurveImplementation
   "Solution to the heating curve exercise"
   extends Exercises.Exe5RadiatorsHeatingCurveImplementation(
-    heaCurTab(table=[266,330; 286,310]),
+    heaCurTab(table=[266,325; 286,310]),
     valNor(P=0.1),
     valSou(P=0.1),
     pum(inputType=IDEAS.Fluid.Types.InputType.Stages));
@@ -39,9 +39,8 @@ equation
           -52,74},{-44,74}}, color={0,0,127}));
   connect(add.u1,OffSet. y) annotation (Line(points={{-44,86},{-48,86},{-48,
           102},{-53,102}}, color={0,0,127}));
-  connect(onOffCon.u, rectangularZoneTemplate.TSensor) annotation (Line(
-        points={{-2,74},{-10,74},{-10,60},{20,60},{20,32},{11,32}}, color={
-          0,0,127}));
+  connect(onOffCon.u, zonNor.TSensor) annotation (Line(points={{-2,74},{-10,74},
+          {-10,60},{20,60},{20,32},{11,32}}, color={0,0,127}));
   connect(sim.weaDatBus, weaDatBus) annotation (Line(
       points={{-80.1,90},{-80,90},{-80,66},{-90,66},{-90,0},{-60,0}},
       color={255,204,51},
