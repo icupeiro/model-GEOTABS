@@ -105,52 +105,52 @@ nominal values):
     <td>18</td>
   </tr>
   <tr>
-    <td>Radiator (1 kW)</td>
-    <td> 48</td>
-  </tr>
-  <tr>
-    <td>Radiator (2 kW)</td>
+    <td>Radiator set (1 kW)</td>
     <td> 155</td>
   </tr>
   <tr>
-    <td>Radiator (10 kW)</td>
-    <td> 470</td>
+    <td>Radiator set (2 kW)</td>
+    <td> 230</td>
   </tr>
   <tr>
-    <td>Radiator (15 kW)</td>
-    <td> 590</td>
+    <td>Radiator set (10 kW)</td>
+    <td> 970</td>
+  </tr>
+  <tr>
+    <td>Radiator set (15 kW)</td>
+    <td> 1290</td>
   </tr>
   <tr>
     <td>Boiler (7 kW) without outdoor reset control</td>
-    <td> 206</td>
+    <td> 2060</td>
   </tr>
   <tr>
     <td>Boiler (7 kW) with outdoor reset control</td>
-    <td> 214</td>
+    <td> 2140</td>
   </tr>
   <tr>
     <td>Boiler (16 kW) without outdoor reset control</td>
-    <td> 307</td>
+    <td> 2150</td>
   </tr>
   <tr>
     <td>Boiler (16 kW) with outdoor reset control</td>
-    <td> 345</td>
+    <td> 2200</td>
   </tr>
   <tr>
     <td>Boiler (20 kW) without outdoor reset control</td>
-    <td> 453</td>
+    <td> 2550</td>
   </tr>
   <tr>
     <td>Boiler (20 kW) with outdoor reset control</td>
-    <td> 481</td>
+    <td> 2700</td>
   </tr>
   <tr>
     <td>Boiler (30 kW) without outdoor reset control</td>
-    <td> 602</td>
+    <td> 3400</td>
   </tr>
   <tr>
     <td>Boiler (30 kW) with outdoor reset control</td>
-    <td> 634</td>
+    <td> 3650</td>
   </tr>
 
 </table>

@@ -72,13 +72,12 @@ model Exe8FloorHeatingBufferTank
     "Temperature sensor of tank volume"
     annotation (Placement(transformation(extent={{200,-20},{220,0}})));
 equation
-  connect(rectangularZoneTemplate.TSensor,valNor. T) annotation (Line(
-        points={{11,32},{26,32},{26,30},{39.4,30}}, color={0,0,127}));
+  connect(zonNor.TSensor, valNor.T) annotation (Line(points={{11,32},{26,32},{
+          26,30},{39.4,30}}, color={0,0,127}));
   connect(jun.port_3, valSou.port_a)
     annotation (Line(points={{90,50},{90,40}}, color={0,127,255}));
-  connect(rectangularZoneTemplate1.TSensor, valSou.T) annotation (Line(
-        points={{11,-28},{30,-28},{30,14},{72,14},{72,30},{79.4,30}}, color=
-         {0,0,127}));
+  connect(zonSou.TSensor, valSou.T) annotation (Line(points={{11,-28},{30,-28},
+          {30,14},{72,14},{72,30},{79.4,30}}, color={0,0,127}));
   connect(valSou.port_b, embSou.port_a) annotation (Line(points={{90,20},{
           90,14},{76,14},{76,0},{80,0}}, color={0,127,255}));
   connect(valNor.port_a, jun.port_2)

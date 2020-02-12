@@ -34,9 +34,8 @@ equation
           102},{-53,102}}, color={0,0,127}));
   connect(booToInt.y, heaPum.stage) annotation (Line(points={{63,80},{82,80},{82,
           112},{338,112},{338,-74},{243,-74},{243,-20}}, color={255,127,0}));
-  connect(onOffCon.u, rectangularZoneTemplate.TSensor) annotation (Line(
-        points={{-2,74},{-10,74},{-10,60},{20,60},{20,32},{11,32}}, color={
-          0,0,127}));
+  connect(onOffCon.u, zonNor.TSensor) annotation (Line(points={{-2,74},{-10,74},
+          {-10,60},{20,60},{20,32},{11,32}}, color={0,0,127}));
   connect(pumPri.P, enePumPrim.u) annotation (Line(points={{275,51},{260,51},{
           260,0},{272,0}}, color={0,0,127}));
   connect(pumEmi.P, enePumSec.u) annotation (Line(points={{119,69},{114,69},{

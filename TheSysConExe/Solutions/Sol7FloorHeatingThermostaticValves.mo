@@ -50,13 +50,12 @@ protected
     "On off controller for switching on and off the pump of the production and emission systems"
     annotation (Placement(transformation(extent={{0,70},{20,90}})));
 equation
-  connect(rectangularZoneTemplate.TSensor,valNor. T) annotation (Line(
-        points={{11,32},{26,32},{26,30},{39.4,30}}, color={0,0,127}));
+  connect(zonNor.TSensor, valNor.T) annotation (Line(points={{11,32},{26,32},{
+          26,30},{39.4,30}}, color={0,0,127}));
   connect(jun.port_3, valSou.port_a)
     annotation (Line(points={{90,50},{90,40}}, color={0,127,255}));
-  connect(rectangularZoneTemplate1.TSensor, valSou.T) annotation (Line(
-        points={{11,-28},{30,-28},{30,14},{72,14},{72,30},{79.4,30}}, color=
-         {0,0,127}));
+  connect(zonSou.TSensor, valSou.T) annotation (Line(points={{11,-28},{30,-28},
+          {30,14},{72,14},{72,30},{79.4,30}}, color={0,0,127}));
   connect(valSou.port_b, embSou.port_a) annotation (Line(points={{90,20},{
           90,14},{76,14},{76,0},{80,0}}, color={0,127,255}));
   connect(valNor.port_a, jun.port_2)
@@ -73,9 +72,8 @@ equation
           102},{-53,102}}, color={0,0,127}));
   connect(booToInt.y, heaPum.stage) annotation (Line(points={{63,80},{82,80},{82,
           112},{338,112},{338,-74},{243,-74},{243,-20}}, color={255,127,0}));
-  connect(onOffCon.u, rectangularZoneTemplate.TSensor) annotation (Line(
-        points={{-2,74},{-10,74},{-10,60},{20,60},{20,32},{11,32}}, color={
-          0,0,127}));
+  connect(onOffCon.u, zonNor.TSensor) annotation (Line(points={{-2,74},{-10,74},
+          {-10,60},{20,60},{20,32},{11,32}}, color={0,0,127}));
   annotation (Diagram(coordinateSystem(extent={{-100,-100},{340,120}})),
     experiment(StopTime=2419200, __Dymola_Algorithm="Dassl"),
     __Dymola_experimentSetupOutput,
