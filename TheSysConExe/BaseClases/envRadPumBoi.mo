@@ -12,7 +12,7 @@ partial model envRadPumBoi "Envelope, radiators, pump and boiler"
     T_a_nominal=333.15,
     T_b_nominal=323.15,
     energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
-    dp_nominal=pum.dp_nominal/2)
+    dp_nominal=pum.dp_nominal/4)
     "Radiator for north zone" annotation (Placement(transformation(
         extent={{10,-10},{-10,10}},
         rotation=90,
@@ -24,7 +24,7 @@ partial model envRadPumBoi "Envelope, radiators, pump and boiler"
     T_a_nominal=333.15,
     T_b_nominal=323.15,
     energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
-    dp_nominal=pum.dp_nominal/2)
+    dp_nominal=pum.dp_nominal/4)
     "Radiator for south zone" annotation (Placement(transformation(
         extent={{10,-10},{-10,10}},
         rotation=90,
@@ -51,7 +51,7 @@ partial model envRadPumBoi "Envelope, radiators, pump and boiler"
   CondensingBoiler                    boi(
     redeclare package Medium = MediumWater,
     m_flow_nominal=pum.m_flow_nominal,
-    dp_nominal=pum.dp_nominal/2)
+    dp_nominal=pum.dp_nominal/4)
                       "Ideal boiler with prescribed supply temperature"
     annotation (Placement(transformation(extent={{220,10},{200,30}})));
   Modelica.Blocks.Continuous.Integrator ene(k=1/3600000)
@@ -67,7 +67,8 @@ partial model envRadPumBoi "Envelope, radiators, pump and boiler"
     portFlowDirection_1=Modelica.Fluid.Types.PortFlowDirection.Entering,
     portFlowDirection_2=Modelica.Fluid.Types.PortFlowDirection.Leaving,
     portFlowDirection_3=Modelica.Fluid.Types.PortFlowDirection.Entering,
-    dp_nominal={500,0,500}) "Junction"
+    dp_nominal={pum.dp_nominal/100,0,pum.dp_nominal/100})
+                            "Junction"
     annotation (Placement(transformation(extent={{80,-40},{100,-60}})));
   IDEAS.Fluid.FixedResistances.Junction jun(
     redeclare package Medium = MediumWater,
@@ -79,7 +80,8 @@ partial model envRadPumBoi "Envelope, radiators, pump and boiler"
     portFlowDirection_1=Modelica.Fluid.Types.PortFlowDirection.Entering,
     portFlowDirection_2=Modelica.Fluid.Types.PortFlowDirection.Leaving,
     portFlowDirection_3=Modelica.Fluid.Types.PortFlowDirection.Leaving,
-    dp_nominal={1000,0,0}) "Junction"
+    dp_nominal={pum.dp_nominal/100,0,0})
+                           "Junction"
     annotation (Placement(transformation(extent={{100,50},{80,70}})));
   IDEAS.Fluid.Sensors.TemperatureTwoPort senTemRet(
     redeclare package Medium = MediumWater,
