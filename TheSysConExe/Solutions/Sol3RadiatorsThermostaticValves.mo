@@ -2,10 +2,32 @@ within TheSysConExe.Solutions;
 model Sol3RadiatorsThermostaticValves
   "Solution of exercise 3 for building control with thermostatic valves"
   extends Exercises.Exe3RadiatorsThermostaticValves(
-    valSou(P=0.1),
+    valSou(P=0.1,
+      use_inputFilter=false,
+      from_dp=true),
     const(k=60 + 273.15),
-    pum(inputType=IDEAS.Fluid.Types.InputType.Stages),
-    valNor(P=0.1));
+    pum(
+      energyDynamics=Modelica.Fluid.Types.Dynamics.SteadyState,
+      massDynamics=Modelica.Fluid.Types.Dynamics.SteadyState,
+        inputType=IDEAS.Fluid.Types.InputType.Stages,
+      use_inputFilter=false),
+    valNor(P=0.1,
+      use_inputFilter=false,
+      from_dp=true),
+    jun1(
+      energyDynamics=Modelica.Fluid.Types.Dynamics.SteadyState,
+      massDynamics=Modelica.Fluid.Types.Dynamics.SteadyState,
+      from_dp=false,
+      verifyFlowReversal=true),
+    jun(
+      energyDynamics=Modelica.Fluid.Types.Dynamics.SteadyState,
+      massDynamics=Modelica.Fluid.Types.Dynamics.SteadyState,
+      from_dp=false,
+      verifyFlowReversal=true),
+    radSou(massDynamics=Modelica.Fluid.Types.Dynamics.SteadyState),
+    radNor(massDynamics=Modelica.Fluid.Types.Dynamics.SteadyState),
+    boi(energyDynamics=Modelica.Fluid.Types.Dynamics.SteadyState),
+    senTemSup(tau=0));
   Modelica.Blocks.Math.BooleanToInteger booToInt
     "Convert boolean signal into integer "
     annotation (Placement(transformation(extent={{42,70},{62,90}})));
