@@ -7,6 +7,7 @@ partial model envRadPumBoi "Envelope, radiators, pump and boiler"
   package MediumWater = IDEAS.Media.Water "Water Medium";
   IDEAS.Fluid.HeatExchangers.Radiators.RadiatorEN442_2 radNor(
     redeclare package Medium = MediumWater,
+    massDynamics=Modelica.Fluid.Types.Dynamics.SteadyState,
     Q_flow_nominal=5000,
     T_a_nominal=333.15,
     T_b_nominal=323.15,
@@ -18,6 +19,7 @@ partial model envRadPumBoi "Envelope, radiators, pump and boiler"
         origin={50,-10})));
   IDEAS.Fluid.HeatExchangers.Radiators.RadiatorEN442_2 radSou(
     redeclare package Medium = MediumWater,
+    massDynamics=Modelica.Fluid.Types.Dynamics.SteadyState,
     Q_flow_nominal=5000,
     T_a_nominal=333.15,
     T_b_nominal=323.15,
@@ -36,8 +38,8 @@ partial model envRadPumBoi "Envelope, radiators, pump and boiler"
     "Circulation pump at secondary side"
     annotation (Placement(transformation(extent={{140,50},{120,70}})));
   IDEAS.Fluid.Sensors.TemperatureTwoPort senTemSup(redeclare package Medium =
-        MediumWater, m_flow_nominal=pum.m_flow_nominal)
-    "Supply water temperature sensor"
+        MediumWater, m_flow_nominal=pum.m_flow_nominal,
+    tau=0) "Supply water temperature sensor"
     annotation (Placement(transformation(extent={{168,70},{148,50}})));
   IDEAS.Fluid.Sources.Boundary_pT bou(          redeclare package Medium =
         MediumWater, nPorts=1)
@@ -57,6 +59,9 @@ partial model envRadPumBoi "Envelope, radiators, pump and boiler"
     annotation (Placement(transformation(extent={{220,70},{240,90}})));
   IDEAS.Fluid.FixedResistances.Junction jun1(
     redeclare package Medium = MediumWater,
+    energyDynamics=Modelica.Fluid.Types.Dynamics.SteadyState,
+    massDynamics=Modelica.Fluid.Types.Dynamics.SteadyState,
+    from_dp=false,
     m_flow_nominal={radNor.m_flow_nominal,-radNor.m_flow_nominal - radSou.m_flow_nominal,
         -radSou.m_flow_nominal},
     portFlowDirection_1=Modelica.Fluid.Types.PortFlowDirection.Entering,
@@ -66,6 +71,9 @@ partial model envRadPumBoi "Envelope, radiators, pump and boiler"
     annotation (Placement(transformation(extent={{80,-40},{100,-60}})));
   IDEAS.Fluid.FixedResistances.Junction jun(
     redeclare package Medium = MediumWater,
+    energyDynamics=Modelica.Fluid.Types.Dynamics.SteadyState,
+    massDynamics=Modelica.Fluid.Types.Dynamics.SteadyState,
+    from_dp=false,
     m_flow_nominal={radNor.m_flow_nominal + radSou.m_flow_nominal,-radNor.m_flow_nominal,
         -radSou.m_flow_nominal},
     portFlowDirection_1=Modelica.Fluid.Types.PortFlowDirection.Entering,
@@ -73,9 +81,11 @@ partial model envRadPumBoi "Envelope, radiators, pump and boiler"
     portFlowDirection_3=Modelica.Fluid.Types.PortFlowDirection.Leaving,
     dp_nominal={1000,0,0}) "Junction"
     annotation (Placement(transformation(extent={{100,50},{80,70}})));
-  IDEAS.Fluid.Sensors.Temperature senTemRet(redeclare package Medium =
-        MediumWater) "Return water temperature reading"
-    annotation (Placement(transformation(extent={{116,-90},{136,-70}})));
+  IDEAS.Fluid.Sensors.TemperatureTwoPort senTemRet(
+    redeclare package Medium = MediumWater,
+    m_flow_nominal=pum.m_flow_nominal,
+    tau=0) "Return water temperature sensor"
+    annotation (Placement(transformation(extent={{140,-40},{120,-60}})));
 equation
   connect(radNor.heatPortCon, rectangularZoneTemplate.gainCon) annotation (
       Line(points={{42.8,-8},{20,-8},{20,27},{10,27}}, color={191,0,0}));
@@ -93,16 +103,16 @@ equation
           -50},{80,-50}}, color={0,127,255}));
   connect(radSou.port_b, jun1.port_3)
     annotation (Line(points={{90,-20},{90,-40}}, color={0,127,255}));
-  connect(jun1.port_2, boi.port_a) annotation (Line(points={{100,-50},{220,
-          -50},{220,20}}, color={0,127,255}));
   connect(pum.port_b, jun.port_1)
     annotation (Line(points={{120,60},{100,60}}, color={0,127,255}));
   connect(boi.Q_real, ene.u) annotation (Line(points={{199,12},{194,12},{194,80},
           {218,80}}, color={0,0,127}));
   connect(bou.ports[1], pum.port_a)
     annotation (Line(points={{148,80},{148,60},{140,60}}, color={0,127,255}));
-  connect(senTemRet.port, jun1.port_2) annotation (Line(points={{126,-90},{100,
-          -90},{100,-50}}, color={0,127,255}));
+  connect(jun1.port_2, senTemRet.port_b)
+    annotation (Line(points={{100,-50},{120,-50}}, color={0,127,255}));
+  connect(senTemRet.port_a, boi.port_a) annotation (Line(points={{140,-50},{220,
+          -50},{220,20}}, color={0,127,255}));
   annotation (
     experiment(StopTime=2419200, __Dymola_Algorithm="Lsodar"),
     __Dymola_experimentSetupOutput,
