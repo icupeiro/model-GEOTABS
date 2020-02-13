@@ -2,11 +2,11 @@ within TheSysConExe.Solutions;
 model Sol8FloorHeatingBufferTank
   "Solution of exercise with floor heating, heat pump, and a buffer tank"
   extends Exercises.Exe8FloorHeatingBufferTank(
-    valSou(P=0.2),
-    valNor(P=0.2),
-    heaPum(dp2_nominal=1000),
+    valSou(TSet=294.45, P=0.1),
+    valNor(TSet=294.45, P=0.1),
     pumSec(dp_nominal=20000),
-    pumEmi(inputType=IDEAS.Fluid.Types.InputType.Stages));
+    pumEmi(inputType=IDEAS.Fluid.Types.InputType.Stages),
+    heaPum(scaling_factor=0.7));
   Modelica.Blocks.Math.BooleanToInteger booToInt
     "Convert boolean signal into integer "
     annotation (Placement(transformation(extent={{46,112},{66,132}})));

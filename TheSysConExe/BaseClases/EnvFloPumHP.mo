@@ -36,7 +36,7 @@ model envFloPumHP "Building envelope, floor heating, pump, and heat pump"
     inputType=IDEAS.Fluid.Types.InputType.Constant,
     use_inputFilter=false,
     dp_nominal=heaPum.dp1_nominal,
-    m_flow_nominal=embNor.m_flow_nominal,
+    m_flow_nominal=pumEmi.m_flow_nominal,
     redeclare package Medium = MediumWater,
     energyDynamics=Modelica.Fluid.Types.Dynamics.SteadyState)
     "Circulation pump at primary side"

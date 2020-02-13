@@ -1,11 +1,10 @@
 within TheSysConExe.Exercises;
 model Exe8FloorHeatingBufferTank
   "Building with floor heating, thermostatic valves, a heat pump, and a buffer tank to decouple emission circuit from production circuit"
-  extends BaseClases.envFloPumHP(heaPum(m1_flow_nominal=pumSec.m_flow_nominal,
-        scaling_factor=0.15));
+  extends BaseClases.envFloPumHP;
   IDEAS.Fluid.Actuators.Valves.TwoWayTRV valNor(
     m_flow_nominal=embNor.m_flow_nominal,
-    dpValve_nominal=pumEmi.dp_nominal*0.9,
+    dpValve_nominal=pumEmi.dp_nominal/2,
     redeclare package Medium = MediumWater,
     use_inputFilter=false,
     from_dp=true)
@@ -15,7 +14,7 @@ model Exe8FloorHeatingBufferTank
         rotation=90,
         origin={50,30})));
   IDEAS.Fluid.Actuators.Valves.TwoWayTRV valSou(
-    dpValve_nominal=pumEmi.dp_nominal*0.9,
+    dpValve_nominal=pumEmi.dp_nominal/2,
     m_flow_nominal=embSou.m_flow_nominal,
     redeclare package Medium = MediumWater,
     use_inputFilter=false,
@@ -28,16 +27,18 @@ model Exe8FloorHeatingBufferTank
   IDEAS.Fluid.Storage.Stratified tan(
     redeclare package Medium = MediumWater,
     m_flow_nominal=pumEmi.m_flow_nominal,
-    VTan=0.1,
+    VTan=0.3,
     hTan=0.5,
     dIns=0.1) "Buffer tank for avoiding excessive heat pump on/off switches"
     annotation (Placement(transformation(extent={{200,-10},{180,10}})));
   IDEAS.Fluid.Movers.FlowControlled_dp pumSec(
+    massDynamics=Modelica.Fluid.Types.Dynamics.SteadyState,
+    use_inputFilter=false,
     dp_nominal=heaPum.dp2_nominal,
     inputType=IDEAS.Fluid.Types.InputType.Constant,
-    m_flow_nominal=embNor.m_flow_nominal,
+    m_flow_nominal=pumEmi.m_flow_nominal,
     redeclare package Medium = MediumWater,
-    energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial)
+    energyDynamics=Modelica.Fluid.Types.Dynamics.SteadyState)
     "Circulation pump at secondary side"
     annotation (Placement(transformation(extent={{236,50},{216,70}})));
   IDEAS.Fluid.FixedResistances.PressureDrop res(

@@ -8,8 +8,8 @@ model envFloPum "Envelope, floor heating, and pump"
             IDEAS.Buildings.Data.Materials.Screed(d=0.10),
             IDEAS.Buildings.Data.Materials.Tile(d=0.01)}),
       hasEmb=true), zonSou(redeclare
-        IDEAS.Buildings.Data.Constructions.InsulatedFloorHeating conTypFlo(mats
-          ={IDEAS.Buildings.Data.Materials.Concrete(d=0.10),
+        IDEAS.Buildings.Data.Constructions.InsulatedFloorHeating conTypFlo(mats=
+           {IDEAS.Buildings.Data.Materials.Concrete(d=0.10),
             IDEAS.Buildings.Data.Insulation.Pur(d=0.07),
             IDEAS.Buildings.Data.Materials.Screed(d=0.10),
             IDEAS.Buildings.Data.Materials.Tile(d=0.01)}), hasEmb=true));
@@ -40,6 +40,7 @@ model envFloPum "Envelope, floor heating, and pump"
     redeclare package Medium = MediumWater,
     energyDynamics=Modelica.Fluid.Types.Dynamics.SteadyState,
     massDynamics=Modelica.Fluid.Types.Dynamics.SteadyState,
+    from_dp=false,
     m_flow_nominal={embNor.m_flow_nominal,-embNor.m_flow_nominal - embSou.m_flow_nominal,
         -embSou.m_flow_nominal},
     portFlowDirection_1=Modelica.Fluid.Types.PortFlowDirection.Entering,
@@ -53,7 +54,7 @@ model envFloPum "Envelope, floor heating, and pump"
     redeclare IDEAS.Fluid.HeatExchangers.RadiantSlab.BaseClasses.FH_Standard1
       RadSlaCha,
     allowFlowReversal=true,
-    m_flow_nominal=0.16,
+    m_flow_nominal=0.2,
     dp_nominal=pumEmi.dp_nominal/4,
     A_floor=zonNor.AZone) "Embedded pipe of floor heating in north zone"
     annotation (Placement(transformation(extent={{40,-10},{60,10}})));
@@ -62,7 +63,7 @@ model envFloPum "Envelope, floor heating, and pump"
     redeclare IDEAS.Fluid.HeatExchangers.RadiantSlab.BaseClasses.FH_Standard1
       RadSlaCha,
     allowFlowReversal=true,
-    m_flow_nominal=0.16,
+    m_flow_nominal=0.2,
     dp_nominal=pumEmi.dp_nominal/4,
     A_floor=zonNor.AZone) "Embedded pipe of floor heating in south zone"
     annotation (Placement(transformation(extent={{80,-10},{100,10}})));
@@ -70,6 +71,7 @@ model envFloPum "Envelope, floor heating, and pump"
     redeclare package Medium = MediumWater,
     energyDynamics=Modelica.Fluid.Types.Dynamics.SteadyState,
     massDynamics=Modelica.Fluid.Types.Dynamics.SteadyState,
+    from_dp=false,
     m_flow_nominal={embNor.m_flow_nominal + embSou.m_flow_nominal,-embNor.m_flow_nominal,
         -embSou.m_flow_nominal},
     portFlowDirection_1=Modelica.Fluid.Types.PortFlowDirection.Entering,

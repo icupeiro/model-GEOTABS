@@ -2,41 +2,9 @@ within TheSysConExe.Solutions;
 model Sol7FloorHeatingThermostaticValves
   "Solution of exercise with floor heating, thermostatic valves, and heat pump"
   extends Exercises.Exe7FloorHeatingThermostaticValves(
-    valNor(
-      dpValve_nominal=pumEmi.dp_nominal*0.9,
-           P=0.5,
-      use_inputFilter=false,
-      from_dp=true),
-    valSou(
-      dpValve_nominal=pumEmi.dp_nominal*0.9,
-           P=0.5,
-      use_inputFilter=false,
-      from_dp=true),
-    heaPum(scaling_factor=0.15));
-  IDEAS.Fluid.Actuators.Valves.TwoWayTRV valNor(
-    m_flow_nominal=embNor.m_flow_nominal,
-    redeclare package Medium = MediumWater,
-    dpValve_nominal=pumEmi.dp_nominal*0.9,
-    P=0.5,
-    use_inputFilter=false,
-    from_dp=true)
-    "Thermostatic valve for north zone" annotation (Placement(
-        transformation(
-        extent={{10,-10},{-10,10}},
-        rotation=90,
-        origin={50,30})));
-  IDEAS.Fluid.Actuators.Valves.TwoWayTRV valSou(
-    dpValve_nominal=pumEmi.dp_nominal*0.9,
-    m_flow_nominal=embSou.m_flow_nominal,
-    redeclare package Medium = MediumWater,
-    P=0.5,
-    use_inputFilter=false,
-    from_dp=true)
-    "Thermostatic valve for south zone" annotation (Placement(
-        transformation(
-        extent={{10,-10},{-10,10}},
-        rotation=90,
-        origin={90,30})));
+    heaPum(scaling_factor=0.6),
+    valNor(P=0.1),
+    valSou(P=0.1));
   Modelica.Blocks.Math.BooleanToInteger booToInt
     "Convert boolean signal into integer "
     annotation (Placement(transformation(extent={{42,70},{62,90}})));
@@ -50,18 +18,6 @@ protected
     "On off controller for switching on and off the pump of the production and emission systems"
     annotation (Placement(transformation(extent={{0,70},{20,90}})));
 equation
-  connect(zonNor.TSensor, valNor.T) annotation (Line(points={{11,32},{26,32},{
-          26,30},{39.4,30}}, color={0,0,127}));
-  connect(jun.port_3, valSou.port_a)
-    annotation (Line(points={{90,50},{90,40}}, color={0,127,255}));
-  connect(zonSou.TSensor, valSou.T) annotation (Line(points={{11,-28},{30,-28},
-          {30,14},{72,14},{72,30},{79.4,30}}, color={0,0,127}));
-  connect(valSou.port_b, embSou.port_a) annotation (Line(points={{90,20},{
-          90,14},{76,14},{76,0},{80,0}}, color={0,127,255}));
-  connect(valNor.port_a, jun.port_2)
-    annotation (Line(points={{50,40},{50,60},{80,60}}, color={0,127,255}));
-  connect(valNor.port_b, embNor.port_a) annotation (Line(points={{50,20},{
-          50,16},{34,16},{34,0},{40,0}}, color={0,127,255}));
   connect(onOffCon.y,booToInt. u)
     annotation (Line(points={{21,80},{40,80}}, color={255,0,255}));
   connect(add.y,onOffCon. reference) annotation (Line(points={{-21,80},{-12,

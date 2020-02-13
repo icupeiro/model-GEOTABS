@@ -37,7 +37,7 @@ your new proposal.
 <p>
 First of all, take some time to understand how the model has changed.
 The radiator models have been replaced by models of pipes embedded in 
-the floor of the zones. These models used for floor heating and 
+the floor of the zones. These models are used for floor heating and 
 for Termally Activated Building Systems (TABS). Also, if you open 
 the floor tab of each zone you will realize that its material 
 structure has been replaced by an insulated floor heating type with 
@@ -47,7 +47,7 @@ representation of this floor type and a radiant floor under construction
 is shown in the figures below. 
 </p>
 <p align=\"center\">
-<img alt=\"image\" src=\"modelica://TheSysConExe/Resources/Images/floorHeating.png\" width=\"1000\" border=\"1\"/>
+<img alt=\"image\" src=\"modelica://TheSysConExe/Resources/Images/floorHeating.png\" width=\"1200\" border=\"1\"/>
 </p>
 <p>
 <i>Source left figure: </i>
@@ -63,7 +63,7 @@ Spiderex</a>
 Start by implementing an on-off control logic similar to 
 <a href=\"modelica://TheSysConExe.Exercises.Exe2RadiatorsOnOffThermostat\">
 TheSysConExe.Exercises.Exe2OnOffThermostat</a>. 
-This time, take into account that you should swtch on and off the 
+This time, take into account that you should switch on and off the 
 compressor of the heat pump. The circulation pumps should always be on.
 The pump of the primary
 circuit will activate the water circulation through the emission 
@@ -91,8 +91,8 @@ power of the heat pump required for this instalation?
 Note: watch out with large scaling factors. These will lead not only to higher
 installation costs because of an oversized heat pump, but also to a decrease of 
 the system performance. The latter may be caused by the temperature protection 
-of the heat pump model that disables the heat pump when temperature exceeds a 
-predefined threshold. 
+of the heat pump model that disables the heat pump when the condenser temperature 
+exceeds (or when the evaporator temperaure lowers down) a predefined threshold. 
 </p>
 <li>
 Which are the values of the energy use of the heat pump compressor? 

@@ -4,7 +4,7 @@ model Exe7FloorHeatingThermostaticValves
   extends BaseClases.envFloPumHP;
   IDEAS.Fluid.Actuators.Valves.TwoWayTRV valNor(
     m_flow_nominal=embNor.m_flow_nominal,
-    dpValve_nominal=pumEmi.dp_nominal*0.9,
+    dpValve_nominal=pumEmi.dp_nominal/2,
     redeclare package Medium = MediumWater,
     use_inputFilter=false,
     from_dp=true)
@@ -14,7 +14,7 @@ model Exe7FloorHeatingThermostaticValves
         rotation=90,
         origin={50,30})));
   IDEAS.Fluid.Actuators.Valves.TwoWayTRV valSou(
-    dpValve_nominal=pumEmi.dp_nominal*0.9,
+    dpValve_nominal=pumEmi.dp_nominal/2,
     m_flow_nominal=embSou.m_flow_nominal,
     redeclare package Medium = MediumWater,
     use_inputFilter=false,
@@ -57,6 +57,8 @@ is more efficient.
 First, add the on-off control already implemented in the previous 
 exercise. Then, tune the parameters in each valve to properly follow
 the heating setopoint and simulate to answer the following questions. 
+If the simulation time is too long, it may help to slightly reduce the 
+heat pump scaling factor.
 </p>
 
 <h4>Questions</h4>
@@ -65,9 +67,9 @@ the heating setopoint and simulate to answer the following questions.
 How the zone temperature profiles compare with the previous exercise? 
 </li>
 <li>
-In fact, we have probably achieved an smoother temperature control. 
+In fact, we have probably achieved a smoother temperature control. 
 We may even expect it to be more efficient, however, we see that both, the energy
-use and thermal discomfort have considerably increased. What is the reason
+use and thermal discomfort have substantially increased. What is the reason
 for that?
 <p>
 Hint: plot the following variables to help you elaborate an answer:
@@ -75,7 +77,7 @@ The heat pump condenser temperature <code>heaPum.con.T</code>, the heat pump
 heat flow rate <code>heaPum.QCon_flow</code>, the floor heating heat 
 flow rate in the north zone <code>embNor.QTot</code>, the floor heating heat
 flow rate in the south zone <code>embSou.QTot</code>, and the
-heat pump COP <code>heaPum.com.COP</code>.
+heat pump COP <code>heaPum.com.COP</code>. 
 </p>
 </li>
 </ol>
