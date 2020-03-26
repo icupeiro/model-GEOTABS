@@ -6,7 +6,6 @@ model Envelope
       redeclare IDEAS.Buildings.Components.InterzonalAirFlow.n50Tight
         interzonalAirFlow,
       redeclare IDEAS.Buildings.Components.Occupants.Fixed occNum(nOccFix=occ.k),
-
       occTyp(QlatPp=0),
       l=2*sqrt(occ.A),
       w=sqrt(occ.A)/2,
@@ -27,7 +26,6 @@ model Envelope
       redeclare IDEAS.Buildings.Components.InterzonalAirFlow.n50Tight
         interzonalAirFlow,
       redeclare IDEAS.Buildings.Components.Occupants.Fixed occNum(nOccFix=occ.k),
-
       occTyp(QlatPp=0),
       l=2*sqrt(occ.A),
       w=sqrt(occ.A)/2,
@@ -43,6 +41,7 @@ model Envelope
         conTypCei,
       redeclare TheSysConExe.GEOTABS.BaseClasses.Constructions.GEOTABSFloor
         conTypFlo));
+
   BaseClases.Occupancy occ(
     linearise=false,
     A=500,

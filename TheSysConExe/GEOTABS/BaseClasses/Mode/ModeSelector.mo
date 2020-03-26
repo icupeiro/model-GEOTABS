@@ -26,8 +26,8 @@ model ModeSelector
     nOut=3) annotation (Placement(transformation(extent={{52,-14},{60,-6}})));
   Components.Transition T1(delayedTransition=true, waitTime=waitTime)
     annotation (Placement(transformation(extent={{52,2},{60,10}})));
-  Modelica.Blocks.Logical.GreaterEqualThreshold greaterEqualThreshold(threshold
-      =heaSwi)
+  Modelica.Blocks.Logical.GreaterEqualThreshold greaterEqualThreshold(threshold=
+       heaSwi)
     annotation (Placement(transformation(extent={{-50,10},{-30,30}})));
   Modelica.Blocks.Logical.LessEqualThreshold lessEqualThreshold(threshold=
         cooSwi)
