@@ -28,11 +28,10 @@ model BuildingEnvelope "Building envelope with 2 coupled zones"
     hasWinA=true,
     A_winA=2*1.3,
     redeclare IDEAS.Buildings.Validation.Data.Constructions.LightRoof conTypCei,
-
-    redeclare IDEAS.Examples.TwinHouses.BaseClasses.Data.Materials.Glazing
-      glazingA,
     redeclare IDEAS.Buildings.Validation.Data.Constructions.HeavyFloor
-      conTypFlo) "North part of the zone"
+      conTypFlo,
+    redeclare IDEAS.Examples.TwinHouses.BaseClasses.Data.Materials.Glazing
+      glazingA)  "North part of the zone"
     annotation (Placement(transformation(extent={{-10,20},{10,40}})));
 
   IDEAS.Buildings.Components.RectangularZoneTemplate zonSou(
@@ -48,7 +47,6 @@ model BuildingEnvelope "Building envelope with 2 coupled zones"
     redeclare IDEAS.Buildings.Validation.Data.Constructions.HeavyWall conTypC,
     redeclare IDEAS.Buildings.Validation.Data.Constructions.HeavyWall conTypD,
     redeclare IDEAS.Buildings.Validation.Data.Constructions.LightRoof conTypCei,
-
     redeclare IDEAS.Buildings.Validation.Data.Constructions.HeavyFloor
       conTypFlo,
     bouTypA=IDEAS.Buildings.Components.Interfaces.BoundaryType.External,
