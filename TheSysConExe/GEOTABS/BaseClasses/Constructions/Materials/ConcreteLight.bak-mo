@@ -1,0 +1,13 @@
+within TheSysConExe.GEOTABS.BaseClasses.Constructions.Materials;
+record ConcreteLight =
+                  IDEAS.Buildings.Data.Interfaces.Material (
+    k=1.4,
+    c=600,
+    rho=1000,
+    epsLw=0.88,
+    epsSw=0.55) "Dense cast concrete, also for finishing" annotation (
+    Documentation(info="<html>
+<p>
+Thermal properties of concrete.
+</p>
+</html>"));
