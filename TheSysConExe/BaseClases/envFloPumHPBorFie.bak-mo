@@ -1,0 +1,39 @@
+within TheSysConExe.BaseClases;
+model envFloPumHPBorFie
+  extends envFloPumHP(bou1(nPorts=1));
+  IDEAS.Fluid.Geothermal.Borefields.OneUTube borFie(
+    redeclare package Medium = MediumWater,
+    allowFlowReversal=false,
+    borFieDat=borFieDat,
+    z0=0,
+    dT_dz=0)
+    annotation (Placement(transformation(extent={{280,-54},{300,-34}})));
+  parameter IDEAS.Fluid.Geothermal.Borefields.Data.Borefield.Example borFieDat(
+    filDat=IDEAS.Fluid.Geothermal.Borefields.Data.Filling.Bentonite(kFil=1.5),
+    soiDat=IDEAS.Fluid.Geothermal.Borefields.Data.Soil.SandStone(
+        kSoi=2,
+        cSoi=1200,
+        dSoi=1675),
+    conDat=IDEAS.Fluid.Geothermal.Borefields.Data.Configuration.Example(
+        use_Rb=true,
+        Rb=0.12,
+        mBor_flow_nominal=0.115625,
+        hBor=140,
+        rBor=0.06,
+        dBor=0,
+        nBor=16,
+        cooBor=[0,0; 0,8; 0,16; 0,24; 8,0; 8,8; 8,16; 8,24; 16,0; 16,8; 16,16;
+          16,24; 24,0; 24,8; 24,16; 24,24],
+        rTub=0.0167,
+        kTub=0.42,
+        eTub=0.002,
+        xC=0.025))
+    annotation (Placement(transformation(extent={{280,-98},{300,-78}})));
+equation
+  connect(heaPum.port_b2, borFie.port_a) annotation (Line(points={{252,-18},{
+          252,-44},{280,-44}}, color={0,127,255}));
+  connect(borFie.port_b, pumPri.port_a) annotation (Line(points={{300,-44},{310,
+          -44},{310,42},{296,42}}, color={0,127,255}));
+  connect(bou1.ports[1], pumPri.port_a) annotation (Line(points={{316,-8},{314,
+          -8},{314,-6},{310,-6},{310,42},{296,42}}, color={0,127,255}));
+end envFloPumHPBorFie;

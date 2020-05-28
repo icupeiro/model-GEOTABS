@@ -1,0 +1,11 @@
+within TheSysConExe.BaseClases;
+model envFloPumHPSource
+  "Building envelope, floor heating, pump, and heat pump"
+  extends envFloPumHP(bou1(T=283.15, nPorts=2));
+equation
+  connect(bou1.ports[1], pumPri.port_a) annotation (Line(points={{316,-8},{306,
+          -8},{306,42},{296,42}}, color={0,127,255}));
+  connect(heaPum.port_b2, bou1.ports[2]) annotation (Line(points={{252,-18},{
+          252,-52},{316,-52},{316,-8}}, color={0,127,255}));
+  annotation (Diagram(coordinateSystem(extent={{-100,-100},{340,100}})));
+end envFloPumHPSource;
